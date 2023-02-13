@@ -1,1 +1,1 @@
-from waffle import optim, tensor, nn
+from waffle import tensor, nn
