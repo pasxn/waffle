@@ -1,1 +1,1 @@
-from waffle import tensor, nn
+from waffle import tensor, ops

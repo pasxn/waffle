@@ -1,4 +1,4 @@
 from waffle.tensor import Tensor
 
-x = Tensor(2)
-print(x.data)
+x = Tensor([1, 2, 3])
+print(x.data.shape)
