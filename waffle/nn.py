@@ -46,4 +46,6 @@ Some implementations will be redundent but the final optimized ops map will give
 
 Numpy and GPU defa, if time permits, Neon
 
+When compiling the model shapetrecker will compile the kernels for all the sizes needed for the particular network and after that those binaries can be executed
+So there is no need of writing kernels with dynamic shapes, I think that is how it's done
 '''
