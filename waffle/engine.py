@@ -21,7 +21,7 @@ slice
 expland
 flip
 
-Linear <- implement in nn file, use the ops implemented in all the backends
+Linear <- implement in engine file, use the ops implemented in all the backends
 Batchnorm2D
 MaxPool2D
 Conv2D
