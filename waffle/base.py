@@ -1,7 +1,7 @@
 import numpy as np
 from waffle.util import prod
 
-class Tensor:
+class tensor:
     def __init__(self, data):
         if isinstance(data, list):
             self.data = np.array(data, dtype=np.float32)
@@ -53,7 +53,7 @@ class Tensor:
         return cls(np.eye(dim).astype(np.float32), **kwargs)
 
 
-    # ***** slising and indexing *****
+    # ***** slicing and indexing *****
     def __getitem__(self, val):
         arg = []; new_shape = []
         if val is not None:

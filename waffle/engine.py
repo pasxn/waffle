@@ -1,3 +1,12 @@
+# backends = [CPU, NEON, GPU]
+
+'''
+engine file is where the mapping of backends and keeping track of backends will be done
+can be done using object oriented design as well as proceedural design
+'''
+
+# engine file ops class maybe 
+
 '''
 noop <- implement on all the backends
 neg
