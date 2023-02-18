@@ -1,15 +1,31 @@
-# backends = [CPU, NEON, GPU]
+
 
 '''
-engine file is where the mapping of backends and keeping track of backends will be done
+ops file is where the mapping of backends and keeping track of backends will be done
 can be done using object oriented design as well as proceedural design
 '''
+from waffle.util import DEVICES
 
-# engine file ops class maybe 
+class Linear:
+    def __init__(self, device=DEVICES.HET):
+      self.device = device
+
+    # if self.device this do this else do that
+
+class Conv2D:
+    def __init__(self, device=DEVICES.HET):
+      self.device = device
+
+class Batchnorm2D:
+    def __init__(self, device=DEVICES.HET):
+      self.device = device
+
+class MaxPool2D:
+    def __init__(self, device=DEVICES.HET):
+      self.device = device
 
 '''
-noop <- implement on all the backends
-neg
+neg <- implement on all the backends
 relu
 exp
 sign
@@ -24,7 +40,7 @@ max
 
 conv <- implement on all the backends
 
-reshape <- implement on cpu only,prolly in somewhere like the shapetracker 
+reshape <- implement on cpu only,prolly in somewhere like the shapetracker, or maybe in tensor itself
 permute
 slice
 expland

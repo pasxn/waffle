@@ -12,6 +12,8 @@ nn.run()
 
 
 '''
+from waffle.util import DEVICES
 
 class nn:
-    pass
+    def __init__(self, device=DEVICES.HET):
+        self.device = device
