@@ -1,8 +1,9 @@
 import numpy as np
 from waffle.util import prod
+from waffle.util import DEVICES
 
 class tensor:
-    def __init__(self, data):
+    def __init__(self, data, device=DEVICES.HET):
         if isinstance(data, list):
             self.data = np.array(data, dtype=np.float32)
         elif isinstance(data, int) or isinstance(data, float):
@@ -11,9 +12,11 @@ class tensor:
             self.data = data if data.shape else data.reshape((1,))
         else:
             raise RuntimeError(f"can't create Tensor from {data}")
+        
+        self.device = device
     
     def __repr__(self):
-        return f"<Tensor {self.data!r}>"
+        return f"<Tensor {self.data!r}, device={self.device.name!r}>"
 
     
     # ***** data handlers ****
