@@ -6,23 +6,31 @@ can be done using object oriented design as well as proceedural design
 '''
 from waffle.util import DEVICES
 
+GLOBAL_DEVICE = DEVICES.HET
+
+def set_device(device):
+   global GLOBAL_DEVICE
+   GLOBAL_DEVICE = device
+
 class Linear:
-    def __init__(self, device=DEVICES.HET):
+    def __init__(self, device=GLOBAL_DEVICE):
       self.device = device
 
     # if self.device this do this else do that
 
 class Conv2D:
-    def __init__(self, device=DEVICES.HET):
+    def __init__(self, device=GLOBAL_DEVICE):
       self.device = device
 
 class Batchnorm2D:
-    def __init__(self, device=DEVICES.HET):
+    def __init__(self, device=GLOBAL_DEVICE):
       self.device = device
 
 class MaxPool2D:
-    def __init__(self, device=DEVICES.HET):
+    def __init__(self, device=GLOBAL_DEVICE):
       self.device = device
+
+# all the ops will be implemented here and will be called from here, device selection is also done here
 
 '''
 neg <- implement on all the backends
@@ -51,6 +59,8 @@ Batchnorm2D
 MaxPool2D
 Conv2D
 
+
+NonLeniarities <- in nn
 sigmoid
 relu
 elu
@@ -62,8 +72,6 @@ gelu
 leakyrelu
 mish
 softplus
-
-NonLeniarities <- prolly will be redundent
 
 There should be a flag to track the backend for all the backend functions
 Later some operations are explicitly mapped to the particular backend
