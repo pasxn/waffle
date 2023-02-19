@@ -8,6 +8,7 @@ class tensor:
         elif isinstance(data, int) or isinstance(data, float):
             self.data = np.array([data], dtype=np.float32)
         elif isinstance(data, np.ndarray):
+            if data.shape == tuple(): data = data.reshape((1,))
             self.data = data if data.shape else data.reshape((1,))
         else:
             raise RuntimeError(f"can't create Tensor from {data}")
@@ -51,20 +52,20 @@ class tensor:
     @classmethod
     def eye(cls, dim, **kwargs):
         return cls(np.eye(dim).astype(np.float32), **kwargs)
+    
 
+    # ***** CPU explicit helper functions *****
+    def resize(self, *shape):
+        self.data.resize((shape))
 
-    # ***** slicing and indexing *****
-    def __getitem__(self, val):
-        arg = []; new_shape = []
-        if val is not None:
-            for i, s in enumerate(val if isinstance(val, (list, tuple)) else [val]):
-                if isinstance(s, int): arg.append((s, s + 1))
-                else: arg.append((s.start if s.start is not None else 0,(s.stop if s.stop >=0 else
-                                self.shape[i]+s.stop) if s.stop is not None else self.shape[i]))
-                new_shape.append(arg[-1][1] - arg[-1][0])
-                assert s.step is None or s.step == 1
-        new_shape += self.shape[len(arg):]
-        if len(new_shape) == 0: new_shape = (1,)
-        ret = self.slice(arg = arg + [(0,self.shape[i]) for i in range(len(arg), len(self.shape))])
-        
-        return ret.reshape(shape=new_shape) if tuple(ret.shape) != tuple(new_shape) else ret
+    def reshape(self, *shape, **kwargs): # order='C' or order='F'
+        return tensor(self.data.reshape(shape, **kwargs))
+    
+    def concat(self, y, axis=0, order=0):
+        if not isinstance(y, tensor): raise RuntimeError("input is not a waffle tensor")
+        if order == 0:
+            return np.concatenate((self.data, y.data), axis=axis)
+        elif order == 1:
+            return np.concatenate((y.data, self.data), axis=axis)
+        else:
+            raise RuntimeError(f"order is goven as {order}. order should be 0 or 1")

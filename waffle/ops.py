@@ -8,7 +8,7 @@ from waffle.util import DEVICES
 
 GLOBAL_DEVICE = DEVICES.HET
 
-def set_device(device):
+def set_global_device(device):
    global GLOBAL_DEVICE
    GLOBAL_DEVICE = device
 
@@ -18,11 +18,11 @@ class Linear:
 
     # if self.device this do this else do that
 
-class Conv2D:
+class Batchnorm2D:
     def __init__(self, device=GLOBAL_DEVICE):
       self.device = device
 
-class Batchnorm2D:
+class Conv2D:
     def __init__(self, device=GLOBAL_DEVICE):
       self.device = device
 
@@ -50,11 +50,22 @@ max
 
 conv <- implement on all the backends
 
-reshape <- implement on cpu only,prolly in somewhere like the shapetracker, or maybe in tensor itself
+<- implement on cpu only, prolly in somewhere like the shapetracker, or maybe in tensor itself ->
+reshape [done]
+resize [done]
+cat [done]
+pad2d
+transpose
+flatten
 permute
 slice
 expland
 flip
+
+sum
+max
+mean
+
 
 Linear <- implement in engine file, use the ops implemented in all the backends
 Batchnorm2D
@@ -83,4 +94,7 @@ Numpy and GPU defa, if time permits, Neon
 
 When compiling the model shapetrecker will compile the kernels for all the sizes needed for the particular network and after that those binaries can be executed
 So there is no need of writing kernels with dynamic shapes, I think that is how it's done
+
+20/02
+iplemented slicing and indexing is wrong, decided to not implement it until it's needed if ever, can use np slising until then. even tested in unit test
 '''
