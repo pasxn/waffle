@@ -6,23 +6,33 @@ can be done using object oriented design as well as proceedural design
 '''
 from waffle.util import DEVICES
 
+GLOBAL_DEVICE = DEVICES.HET
+
+def set_global_device(device):
+   global GLOBAL_DEVICE
+   GLOBAL_DEVICE = device
+
 class Linear:
-    def __init__(self, device=DEVICES.HET):
+    def __init__(self, device=GLOBAL_DEVICE):
       self.device = device
 
     # if self.device this do this else do that
 
-class Conv2D:
-    def __init__(self, device=DEVICES.HET):
+class Batchnorm2D:
+    def __init__(self, device=GLOBAL_DEVICE):
       self.device = device
 
-class Batchnorm2D:
-    def __init__(self, device=DEVICES.HET):
+class Conv2D:
+    def __init__(self, device=GLOBAL_DEVICE):
       self.device = device
 
 class MaxPool2D:
-    def __init__(self, device=DEVICES.HET):
+    def __init__(self, device=GLOBAL_DEVICE):
       self.device = device
+
+def test(): print(GLOBAL_DEVICE)
+
+# all the ops will be implemented here and will be called from here, device selection is also done here
 
 '''
 neg <- implement on all the backends
@@ -40,17 +50,31 @@ max
 
 conv <- implement on all the backends
 
-reshape <- implement on cpu only,prolly in somewhere like the shapetracker, or maybe in tensor itself
-permute
-slice
-expland
-flip
+<- implement on cpu only, prolly in somewhere like the shapetracker, or maybe in tensor itself ->
+reshape [done]
+resize [done]
+cat [done]
+pad2d [done]
+transpose [done]
+flatten [done]
+reval [done]
+permute [done]
+slice [done]
+expand [done]
+flip [done]
+
+sum
+max
+mean
+
 
 Linear <- implement in engine file, use the ops implemented in all the backends
 Batchnorm2D
 MaxPool2D
 Conv2D
 
+
+NonLeniarities <- in nn
 sigmoid
 relu
 elu
@@ -63,8 +87,6 @@ leakyrelu
 mish
 softplus
 
-NonLeniarities <- prolly will be redundent
-
 There should be a flag to track the backend for all the backend functions
 Later some operations are explicitly mapped to the particular backend
 Some implementations will be redundent but the final optimized ops map will give the best results
@@ -73,4 +95,7 @@ Numpy and GPU defa, if time permits, Neon
 
 When compiling the model shapetrecker will compile the kernels for all the sizes needed for the particular network and after that those binaries can be executed
 So there is no need of writing kernels with dynamic shapes, I think that is how it's done
+
+20/02
+iplemented slicing and indexing is wrong, decided to not implement it until it's needed if ever, can use np slising until then. even tested in unit test
 '''
