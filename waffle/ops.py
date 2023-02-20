@@ -58,10 +58,10 @@ pad2d [done]
 transpose [done]
 flatten [done]
 reval [done]
-permute
-slice
-expland
-flip
+permute [done]
+slice [done]
+expand [done]
+flip [done]
 
 sum
 max

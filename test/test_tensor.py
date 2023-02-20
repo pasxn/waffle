@@ -51,11 +51,9 @@ class test_tensor(unittest.TestCase):
     
     t1 = tensor([1, 2])
     t2 = tensor([[1, 2], [3, 4]])
-    t3 = tensor.randn(2, 3, 4)
 
     np.testing.assert_allclose(tensor([1 ,2]).data, t1.transpose().data)
     np.testing.assert_allclose(tensor([[1 ,3], [2, 4]]).data, t2.transpose().data)
-    np.testing.assert_allclose(t3.data.transpose((1, 0, 2)), t3.transpose((1, 0, 2)).data)
     
     t1 = tensor.randn(20, 16, 4)
 
@@ -66,6 +64,23 @@ class test_tensor(unittest.TestCase):
 
     t1.reval()
     np.testing.assert_allclose(t2.data.flatten(), t1.data)
+
+    t1 = tensor.randn(2, 3, 4)
+
+    np.testing.assert_allclose(t1.data.transpose((1, 0, 2)), t1.premute((1, 0, 2)).data)
+
+    t1 = tensor([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+
+    np.testing.assert_allclose(tensor([[6], [9]]).data, t1.slice((1, 3), (2, 4)).data)
+
+    t1 = tensor.randn(4)
+
+    np.testing.assert_allclose((1, 4), t1.expand(0).shape)
+    np.testing.assert_allclose((1, 4, 1), t1.expand((0, 2)).shape)
+
+    t1 = tensor([[1, 2], [3, 4]])
+
+    np.testing.assert_allclose(tensor([[4, 3], [2, 1]]).data, t1.flip().data)
 
 
 if __name__ == '__main__':
