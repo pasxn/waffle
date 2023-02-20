@@ -54,9 +54,10 @@ conv <- implement on all the backends
 reshape [done]
 resize [done]
 cat [done]
-pad2d
-transpose
-flatten
+pad2d [done]
+transpose [done]
+flatten [done]
+reval [done]
 permute
 slice
 expland

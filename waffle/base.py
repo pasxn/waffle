@@ -1,4 +1,5 @@
 import numpy as np
+from typing import Tuple
 from waffle.util import prod
 
 class tensor:
@@ -14,7 +15,7 @@ class tensor:
             raise RuntimeError(f"can't create Tensor from {data}")
     
     def __repr__(self):
-        return f"<Tensor {self.data!r}>"
+        return f"<tensor {self.data!r}>"
 
     
     # ***** data handlers ****
@@ -55,17 +56,43 @@ class tensor:
     
 
     # ***** CPU explicit helper functions *****
-    def resize(self, *shape):
-        self.data.resize((shape))
+    def resize(self, *shape, **kwargs): # order='C' or order='F'
+        self.data = self.data.reshape(shape, **kwargs)
 
     def reshape(self, *shape, **kwargs): # order='C' or order='F'
         return tensor(self.data.reshape(shape, **kwargs))
     
     def concat(self, y, axis=0, order=0):
-        if not isinstance(y, tensor): raise RuntimeError("input is not a waffle tensor")
+        if not isinstance(y, tensor): raise RuntimeError("input must be a waffle tensor")
         if order == 0:
-            return np.concatenate((self.data, y.data), axis=axis)
+            return tensor(np.concatenate((self.data, y.data), axis=axis))
         elif order == 1:
-            return np.concatenate((y.data, self.data), axis=axis)
+            return tensor(np.concatenate((y.data, self.data), axis=axis))
         else:
-            raise RuntimeError(f"order is goven as {order}. order should be 0 or 1")
+            raise RuntimeError(f"order is goven as {order}. order must be 0 or 1")
+        
+    def pad2d(self, arg, mode='constant'):
+        if isinstance(arg, tuple):
+            return tensor(np.pad(self.data, arg, mode=mode))
+        elif isinstance(arg, int):
+            return tensor(np.pad(self.data, pad_width=arg, mode=mode))
+        else:
+            raise RuntimeError("argument must be an int ora tuple ((top, bottom), (left, right))")
+        
+    def transpose(self, axes=None):
+        '''
+        axes (1, 0, 2): numbers refer to the dimensions of the original array
+        assuming it's a 3 dimensional array
+        '''
+        if axes is not None and isinstance(axes, tuple):
+            return tensor(self.data.transpose(axes))
+        elif axes is None:
+            return tensor(self.data.transpose())
+        else:
+            RuntimeError("axes must be a tuple with dimensions equal to the dimensions of the tensor")
+
+    def flatten(self):
+        return tensor(self.data.flatten())
+    
+    def reval(self):
+        self.data = self.data.flatten()
