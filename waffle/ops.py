@@ -30,8 +30,6 @@ class MaxPool2D:
     def __init__(self, device=GLOBAL_DEVICE):
       self.device = device
 
-def test(): print(GLOBAL_DEVICE)
-
 # all the ops will be implemented here and will be called from here, device selection is also done here
 
 '''
@@ -47,6 +45,7 @@ pow
 cmpeq
 sum
 max
+
 
 conv <- implement on all the backends
 
