@@ -107,4 +107,9 @@ class tensor:
       return tensor(np.flip(self.data, axis=axis))
     else:
       raise RuntimeError("axis must be an int or a tuple")
-    
+  
+  
+  # ***** broadcasting mechanism *****
+  @staticmethod
+  def broadcasted(fxn, tx, ty):
+    pass

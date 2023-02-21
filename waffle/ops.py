@@ -97,4 +97,8 @@ So there is no need of writing kernels with dynamic shapes, I think that is how 
 
 20/02
 iplemented slicing and indexing is wrong, decided to not implement it until it's needed if ever, can use np slising until then. even tested in unit test
+
+21/02 
+
+implementing all the ops in this file as classes or functions
 '''
