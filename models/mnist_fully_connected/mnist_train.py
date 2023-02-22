@@ -33,22 +33,22 @@ optimizer = optim.Adam(model.parameters(), lr=learning_rate)
 
 #training the network
 for epoch in range(num_epochs):
-    for batch_idx, (data, targets) in enumerate(train_loader):
-        data = data.to(device=device)
-        targets = targets.to(device=device)
+  for batch_idx, (data, targets) in enumerate(train_loader):
+    data = data.to(device=device)
+    targets = targets.to(device=device)
         
-        #converting the img metrix into a single dimention vector 
-        data =data.reshape(data.shape[0], -1)
+    #converting the img metrix into a single dimention vector 
+    data =data.reshape(data.shape[0], -1)
         
-        #fowarding the data
-        scores = model(data)
-        loss = criterion(scores, targets)
+    #fowarding the data
+    scores = model(data)
+    loss = criterion(scores, targets)
         
-        #backword
-        optimizer.zero_grad()
-        loss.backward()
+    #backword
+    optimizer.zero_grad()
+    loss.backward()
         
-        optimizer.step()
+    optimizer.step()
 
 #save the model  Checkpoint
 torch.save(model.state_dict(), '/models/mnist_fully_connected/MNist.ckpt')
