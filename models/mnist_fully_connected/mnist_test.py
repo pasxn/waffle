@@ -4,10 +4,9 @@ import torchvision.datasets as datasets  #to import MNist
 import torchvision.transforms as transforms 
 import torch.onnx
 
-from model_mnist import NN
+from models.mnist_fully_connected.mnist_model import NN
+from models.mnist_fully_connected.mnist_util import input_size, num_classes, device, train_loader, test_loader
 
-device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-input_size = 784; num_classes = 10; batch_size = 64 #64 imgs at a time
 
 model = NN(input_size=input_size, num_classes=num_classes).to(device)
 
@@ -34,14 +33,7 @@ def check_accuracy(loader, model):
    
     model.train()
 
-#load data using torchvision lib
-train_dataset = datasets.MNIST(root='dataset/', train=True, transform=transforms.ToTensor(), download=True)
-train_loader = DataLoader(dataset=train_dataset, batch_size=batch_size, shuffle=True)
-
-test_dataset = datasets.MNIST(root='dataset/', train=False, transform=transforms.ToTensor(), download=True)
-test_loader = DataLoader(dataset=train_dataset, batch_size=batch_size, shuffle=True)
-
-print("accuracy,train set: ")
+print("accuracy train set: ")
 check_accuracy(train_loader, model)
-print("accuracy,test set: ")
+print("accuracy test set: ")
 check_accuracy(test_loader, model)
