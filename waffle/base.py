@@ -1,5 +1,5 @@
 import numpy as np
-from typing import Tuple
+from typing import Tuple, Type
 from waffle.util import prod
 
 class tensor:
@@ -111,5 +111,15 @@ class tensor:
   
   # ***** broadcasting mechanism *****
   @staticmethod
-  def broadcasted(fxn, tx, ty):
-    pass
+  def broadcasted(tx, ty):
+    if isinstance(tx, int) or isinstance(tx, float): tx = tensor([tx])
+    elif isinstance(ty, int) or isinstance(ty, float): ty = tensor([ty])
+    shp1 = np.array(tx.shape); shp2 = np.array(ty.shape)
+    broadcast_shape = tuple((np.maximum(shp1, shp2)).astype(int))
+
+    txx = tensor(np.resize(tx.data, broadcast_shape))
+    tyy = tensor(np.resize(ty.data, broadcast_shape))
+
+    # print(txx); print(tyy)
+
+    return fxn(txx, tyy)

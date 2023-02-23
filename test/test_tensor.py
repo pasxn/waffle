@@ -70,6 +70,9 @@ class test_tensor(unittest.TestCase):
     t1 = tensor([[1, 2], [3, 4]])
     np.testing.assert_allclose(tensor([[4, 3], [2, 1]]).data, t1.flip().data)
 
+  def test_broadcasting(self):
+    pass
+
 
 if __name__ == '__main__':
   unittest.main()
