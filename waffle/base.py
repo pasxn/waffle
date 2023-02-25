@@ -1,12 +1,14 @@
 import numpy as np
-from typing import Tuple, Type
+from typing import Tuple
+
+from waffle import ops
 from waffle.util import prod
 
 class tensor:
   def __init__(self, data):
     if isinstance(data, list):
       self.data = np.array(data, dtype=np.float32)
-    elif isinstance(data, int) or isinstance(data, float):
+    elif isinstance(data, int) or isinstance(data, float) or isinstance(data, np.float32):
       self.data = np.array([data], dtype=np.float32)
     elif isinstance(data, np.ndarray):
       if data.shape == tuple(): data = data.reshape((1,))
@@ -126,3 +128,6 @@ class tensor:
     tyy = tensor(np.resize(ty.data, broadcast_shape))
 
     return fxn(txx, tyy)
+  
+  # ***** arithmetic operations*****
+  def add(self, y): return self.broadcasted(ops.add, self, y)
