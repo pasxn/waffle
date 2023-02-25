@@ -7,8 +7,8 @@ from PIL import Image
 
 # Define transforms for the data
 transform = transforms.Compose([
-    transforms.ToTensor(),
-    transforms.Normalize((0.1307,), (0.3081,))
+  transforms.ToTensor(),
+  transforms.Normalize((0.1307,), (0.3081,))
 ])
 #values (0.1307,) and (0.3081,) are the mean and standard deviation of the MNIST dataset, 
 
