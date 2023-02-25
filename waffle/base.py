@@ -111,13 +111,13 @@ class tensor:
   
   # ***** broadcasting mechanism *****
   @staticmethod
-  def broadcasted(tx, ty):
+  def broadcasted(fxn, tx, ty):
     if isinstance(tx, int) or isinstance(tx, float): tx = tensor([tx])
     elif isinstance(ty, int) or isinstance(ty, float): ty = tensor([ty])
 
     txl = len(tx.shape); tyl = len(ty.shape); tdl = abs(txl - tyl)
-    if txl > tyl and (txl != 1 or tyl != 1): ty = tensor(np.resize(ty.data, (1,) * tdl + ty.shape))
-    if txl < tyl and (txl != 1 or tyl != 1): tx = tensor(np.resize(tx.data, (1,) * tdl + tx.shape))
+    if txl > tyl and txl != 1 and tyl != 1: ty = tensor(np.resize(ty.data, (1,) * tdl + ty.shape))
+    if txl < tyl and txl != 1 and tyl != 1: tx = tensor(np.resize(tx.data, (1,) * tdl + tx.shape))
 
     shp1 = np.array(tx.shape); shp2 = np.array(ty.shape)
     broadcast_shape = tuple((np.maximum(shp1, shp2)).astype(int))
@@ -125,7 +125,4 @@ class tensor:
     txx = tensor(np.resize(tx.data, broadcast_shape))
     tyy = tensor(np.resize(ty.data, broadcast_shape))
 
-    print(txx.shape); print(tyy.shape)
-    print(txx); print(tyy)
-
-    # return fxn(txx, tyy)
+    return fxn(txx, tyy)
