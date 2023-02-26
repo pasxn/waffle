@@ -1,12 +1,14 @@
 import numpy as np
 from typing import Tuple
+
+from waffle import ops
 from waffle.util import prod
 
 class tensor:
   def __init__(self, data):
     if isinstance(data, list):
       self.data = np.array(data, dtype=np.float32)
-    elif isinstance(data, int) or isinstance(data, float):
+    elif isinstance(data, int) or isinstance(data, float) or isinstance(data, np.float32):
       self.data = np.array([data], dtype=np.float32)
     elif isinstance(data, np.ndarray):
       if data.shape == tuple(): data = data.reshape((1,))
@@ -112,4 +114,20 @@ class tensor:
   # ***** broadcasting mechanism *****
   @staticmethod
   def broadcasted(fxn, tx, ty):
-    pass
+    if isinstance(tx, int) or isinstance(tx, float): tx = tensor([tx])
+    elif isinstance(ty, int) or isinstance(ty, float): ty = tensor([ty])
+
+    txl = len(tx.shape); tyl = len(ty.shape); tdl = abs(txl - tyl)
+    if txl > tyl and txl != 1 and tyl != 1: ty = tensor(np.resize(ty.data, (1,) * tdl + ty.shape))
+    if txl < tyl and txl != 1 and tyl != 1: tx = tensor(np.resize(tx.data, (1,) * tdl + tx.shape))
+
+    shp1 = np.array(tx.shape); shp2 = np.array(ty.shape)
+    broadcast_shape = tuple((np.maximum(shp1, shp2)).astype(int))
+
+    txx = tensor(np.resize(tx.data, broadcast_shape))
+    tyy = tensor(np.resize(ty.data, broadcast_shape))
+
+    return fxn(txx, tyy)
+  
+  # ***** arithmetic operations*****
+  def add(self, y): return self.broadcasted(ops.add, self, y)

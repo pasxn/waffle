@@ -70,6 +70,17 @@ class test_tensor(unittest.TestCase):
     t1 = tensor([[1, 2], [3, 4]])
     np.testing.assert_allclose(tensor([[4, 3], [2, 1]]).data, t1.flip().data)
 
+  def test_broadcasting(self):
+    t1 = tensor.ones(2)
+    t2 = tensor.ones(2)
+    t3 = tensor.ones(1, 2)
+    t4 = tensor.randn(4, 4, 2)
+    t5 = tensor.randn(1, 4)
+
+    np.testing.assert_allclose(tensor([2, 2]).data, t1.add(t2).data)
+    np.testing.assert_allclose(tensor([[2, 2]]).data, t3.add(tensor(1)).data)
+    np.testing.assert_allclose(tuple([4, 4, 3]), t4.add(tensor.ones(3)).shape)
+    np.testing.assert_allclose(tuple([4, 4, 4]), t4.add(t5).shape)
 
 if __name__ == '__main__':
   unittest.main()
