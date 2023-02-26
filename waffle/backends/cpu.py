@@ -1,5 +1,6 @@
 from waffle.backends.cpu_backend import cpu_ops
 
+
 def neg(x):
   from waffle.base import tensor
   return tensor(cpu_ops.neg(x.data))
