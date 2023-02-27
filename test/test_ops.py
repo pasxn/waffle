@@ -10,6 +10,7 @@ class test_ops(unittest.TestCase):
     t1 = tensor.ones(2)
     t2 = tensor.ones(2)
 
+    # TODO: Remove .data when the support for tensor == tensor is added
     np.testing.assert_allclose(tensor(  [-1., -1.]            ).data, ops.neg(t1).data)
     np.testing.assert_allclose(tensor(  [1., 1.]              ).data, ops.relu(t1).data)
     np.testing.assert_allclose(tensor(  [2.718282, 2.718282]  ).data, ops.exp(t1).data)
