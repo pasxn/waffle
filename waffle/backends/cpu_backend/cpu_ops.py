@@ -16,23 +16,23 @@ def log(x:np.ndarray) -> np.ndarray:
 def reciprocal(x:np.ndarray) -> np.ndarray:
   return 1.0/x
 
-def add(x:np.ndarray, y:np.ndarray)-> np.ndarray:
+def add(x:np.ndarray, y:np.ndarray) -> np.ndarray:
   return x+y
 
-def sub(x:np.ndarray, y:np.ndarray)-> np.ndarray:
+def sub(x:np.ndarray, y:np.ndarray) -> np.ndarray:
   return x-y
 
-def mul(x:np.ndarray, y:np.ndarray)-> np.ndarray:
+def mul(x:np.ndarray, y:np.ndarray) -> np.ndarray:
   return x*y
 
-def div(x:np.ndarray, y:np.ndarray)-> np.ndarray:
+def div(x:np.ndarray, y:np.ndarray) -> np.ndarray:
   return x/y
 
-def pow(x:np.ndarray, y:np.ndarray)-> np.ndarray:
+def pow(x:np.ndarray, y:np.ndarray) -> np.ndarray:
   return x**y
 
-def sum(x:np.ndarray, axis=None)-> np.ndarray:
+def sum(x:np.ndarray, axis=None) -> np.ndarray:
   return np.sum(x, axis)
 
-def max(x:np.ndarray, axis=None)-> np.ndarray:
+def max(x:np.ndarray, axis=None) -> np.ndarray:
   return x.max(axis)
