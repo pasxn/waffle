@@ -109,8 +109,12 @@ class tensor:
       return tensor(np.flip(self.data, axis=axis))
     else:
       raise RuntimeError("axis must be an int or a tuple")
+    
   
+  def __getitem__(self, val):
+    return tensor(self.data[val])
   
+
   # ***** broadcasting mechanism *****
   @staticmethod
   def broadcasted(fxn, tx, ty):
@@ -137,4 +141,3 @@ class tensor:
   def pow(self, y): return self.broadcasted(ops.pow, self, y)
   def sum(self, axis=None): return self.broadcasted(ops.sum, self, axis)
   def max(self, axis=None): return self.broadcasted(ops.max, self, axis)
-  
