@@ -134,6 +134,8 @@ class tensor:
     return fxn(txx, tyy)
   
   # ***** arithmetic operations*****
+  def __neg__(self): return ops.neg(self)
+
   def add(self, y): return self.broadcasted(ops.add, self, y)
   def sub(self, y): return self.broadcasted(ops.sub, self, y)
   def mul(self, y): return self.broadcasted(ops.mul, self, y)
@@ -141,3 +143,21 @@ class tensor:
   def pow(self, y): return self.broadcasted(ops.pow, self, y)
   def sum(self, axis=None): return self.broadcasted(ops.sum, self, axis)
   def max(self, axis=None): return self.broadcasted(ops.max, self, axis)
+
+  def __add__(self, y): return self.add(y)
+  def __sub__(self, y): return self.sub(y)
+  def __mul__(self, y): return self.mul(y)
+  def __pow__(self, y): return self.pow(y)
+  def __truediv__(self, y): return self.div(y)
+
+  def __radd__(self, y): return self.add(y)
+  def __rsub__(self, y): return self.sub(y)
+  def __rmul__(self, y): return self.mul(y)
+  def __rpow__(self, y): return self.pow(y)
+  def __rtruediv__(self, y): return self.div(y)
+
+  def __iadd__(self, y): return self.add(y)
+  def __isub__(self, y): return self.sub(y)
+  def __imul__(self, y): return self.mul(y)
+  def __ipow__(self, y): return self.pow(y)
+  def __itruediv__(self, y): return self.div(y)
