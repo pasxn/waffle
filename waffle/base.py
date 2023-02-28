@@ -19,7 +19,7 @@ class tensor:
   def __repr__(self):
     return f"<tensor {self.data!r}>"
 
-    
+
   # ***** data handlers ****
   @property
   def shape(self): return self.data.shape
@@ -131,3 +131,10 @@ class tensor:
   
   # ***** arithmetic operations*****
   def add(self, y): return self.broadcasted(ops.add, self, y)
+  def sub(self, y): return self.broadcasted(ops.sub, self, y)
+  def mul(self, y): return self.broadcasted(ops.mul, self, y)
+  def div(self, y): return self.broadcasted(ops.div, self, y)
+  def pow(self, y): return self.broadcasted(ops.pow, self, y)
+  def sum(self, axis=None): return self.broadcasted(ops.sum, self, axis)
+  def max(self, axis=None): return self.broadcasted(ops.max, self, axis)
+  
