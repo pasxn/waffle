@@ -5,7 +5,7 @@ from waffle.base import tensor
 
 class test_tensor(unittest.TestCase):
     
-  def test_slicing_n_indexing(self):
+  def test_slicing_n_indexing_numpy(self):
     t1 = tensor.ones(10)
     t2 = tensor([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
       
@@ -16,6 +16,13 @@ class test_tensor(unittest.TestCase):
     np.testing.assert_allclose(tensor([0, 1, 2]).data, t2.data[0:3])
     np.testing.assert_allclose(tensor([0, 1, 2]).data, t2.data[:3])
     np.testing.assert_allclose(t2.data, t2.data[:])
+
+  def test_slicing_n_indexing_in_built(self):
+    t1 = tensor([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
+
+    np.testing.assert_allclose(tensor([0]).data, t1[0].data)
+    np.testing.assert_allclose(tensor([9]).data, t1[-1].data)
+    np.testing.assert_allclose(tensor([0, 1, 2]).data, t1[0:3].data)
 
   def test_helper_functions(self):
     t1 = tensor([1, 2, 3, 4, 5, 6])
@@ -81,6 +88,23 @@ class test_tensor(unittest.TestCase):
     np.testing.assert_allclose(tensor([[2, 2]]).data, t3.add(tensor(1)).data)
     np.testing.assert_allclose(tuple([4, 4, 3]), t4.add(tensor.ones(3)).shape)
     np.testing.assert_allclose(tuple([4, 4, 4]), t4.add(t5).shape)
+
+  def test_arithmetic(self):
+    t1 = tensor.ones(2)
+    t2 = tensor.ones(2)
+
+    np.testing.assert_allclose(tensor([2, 2]).data, (t1 + t2).data)
+    np.testing.assert_allclose(tensor([0, 0]).data, (t1 - t2).data)
+    np.testing.assert_allclose(tensor([1, 1]).data, (t1 * t2).data)
+    np.testing.assert_allclose(tensor([1, 1]).data, (t1 / t2).data)
+    np.testing.assert_allclose(tensor([1, 1]).data, (t1 ** t2).data)
+
+    t1 = tensor([[1, 2], [3, 4]])
+    t2 = tensor([[5, 6], [7, 8]])
+
+    np.testing.assert_allclose(tensor([10]).data, t1.sum().data)
+    np.testing.assert_allclose(tensor([8]).data, t2.max().data)
+
 
 if __name__ == '__main__':
   unittest.main()

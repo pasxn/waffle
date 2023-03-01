@@ -1,9 +1,6 @@
-'''
-ops file is where the mapping of backends and keeping track of backends will be done
-can be done using object oriented design as well as proceedural design
-'''
 from waffle.backends import cpu, gpu, neon
 from waffle.util import DEVICES
+
 
 GLOBAL_DEVICE = DEVICES.HET
 
@@ -11,6 +8,8 @@ def set_global_device(device):
    global GLOBAL_DEVICE
    GLOBAL_DEVICE = device
 
+
+# ***** nn ops ****
 class Linear:
     def __init__(self, device=GLOBAL_DEVICE):
       self.device = device
@@ -29,44 +28,78 @@ class MaxPool2D:
     def __init__(self, device=GLOBAL_DEVICE):
       self.device = device
 
-# def neg(x:tensor) -> tensor:
-#   pass
 
-# def relu(x:tensor) -> tensor:
-#   return tensor(cpu_ops.relu(x.data))
-
-# def exp(x:tensor) -> tensor:
-#   return tensor(cpu_ops.exp(x.data))
-
-# def log(x:tensor) -> tensor:
-#   return tensor(cpu_ops.log(x.data))
-
-# def reciprocal(x:tensor) -> tensor:
-#   return tensor(cpu_ops.reciprocal(x.data))
-
-def add(x, y):
-  if   GLOBAL_DEVICE == DEVICES.CPU: return cpu.add(x,y)
+# ***** basic functional ops ****
+def neg(x):
+  if   GLOBAL_DEVICE == DEVICES.CPU: return cpu.neg(x)
   elif GLOBAL_DEVICE == DEVICES.GPU: pass
-  elif GLOBAL_DEVICE == DEVICES.HET: return cpu.add(x,y)
+  elif GLOBAL_DEVICE == DEVICES.HET: return cpu.neg(x)
   else:raise RuntimeError("device is not configured correctly") 
 
-# def sub(x:tensor, y:tensor)-> tensor:
-#   return tensor(cpu_ops.sub(x.data-y.data))
+def relu(x):
+  if   GLOBAL_DEVICE == DEVICES.CPU: return cpu.relu(x)
+  elif GLOBAL_DEVICE == DEVICES.GPU: pass
+  elif GLOBAL_DEVICE == DEVICES.HET: return cpu.relu(x)
+  else:raise RuntimeError("device is not configured correctly") 
 
-# def mul(x:tensor, y:tensor)-> tensor:
-#   return tensor(cpu_ops.mul(x.data*y.data))
+def exp(x):
+  if   GLOBAL_DEVICE == DEVICES.CPU: return cpu.exp(x)
+  elif GLOBAL_DEVICE == DEVICES.GPU: pass
+  elif GLOBAL_DEVICE == DEVICES.HET: return cpu.exp(x)
+  else:raise RuntimeError("device is not configured correctly") 
 
-# def div(x:tensor, y:tensor)-> tensor:
-#   return tensor(cpu_ops.div(x.data/y.data))
+def log(x):
+  if   GLOBAL_DEVICE == DEVICES.CPU: return cpu.log(x)
+  elif GLOBAL_DEVICE == DEVICES.GPU: pass
+  elif GLOBAL_DEVICE == DEVICES.HET: return cpu.log(x)
+  else:raise RuntimeError("device is not configured correctly") 
 
-# def pow(x:tensor, y:tensor)-> tensor:
-#   return tensor(cpu_ops.pow(x.data**y.data))
+def reciprocal(x):
+  if   GLOBAL_DEVICE == DEVICES.CPU: return cpu.reciprocal(x)
+  elif GLOBAL_DEVICE == DEVICES.GPU: pass
+  elif GLOBAL_DEVICE == DEVICES.HET: return cpu.reciprocal(x)
+  else:raise RuntimeError("device is not configured correctly") 
+def add(x, y):
+  if   GLOBAL_DEVICE == DEVICES.CPU: return cpu.add(x, y)
+  elif GLOBAL_DEVICE == DEVICES.GPU: pass
+  elif GLOBAL_DEVICE == DEVICES.HET: return cpu.add(x, y)
+  else:raise RuntimeError("device is not configured correctly") 
 
-# def sum(x:tensor, axis:int=None)-> tensor:
-#   return tensor(cpu_ops.sum((x.data, axis)))
+def sub(x, y):
+  if   GLOBAL_DEVICE == DEVICES.CPU: return cpu.sub(x, y)
+  elif GLOBAL_DEVICE == DEVICES.GPU: pass
+  elif GLOBAL_DEVICE == DEVICES.HET: return cpu.sub(x, y)
+  else:raise RuntimeError("device is not configured correctly") 
 
-# def max(x:tensor, axis:int=None)-> tensor:
-#   return tensor(cpu_ops.max((x.data, axis)))
+def mul(x, y):
+  if   GLOBAL_DEVICE == DEVICES.CPU: return cpu.mul(x, y)
+  elif GLOBAL_DEVICE == DEVICES.GPU: pass
+  elif GLOBAL_DEVICE == DEVICES.HET: return cpu.mul(x, y)
+  else:raise RuntimeError("device is not configured correctly") 
+
+def div(x, y):
+  if   GLOBAL_DEVICE == DEVICES.CPU: return cpu.div(x, y)
+  elif GLOBAL_DEVICE == DEVICES.GPU: pass
+  elif GLOBAL_DEVICE == DEVICES.HET: return cpu.div(x, y)
+  else:raise RuntimeError("device is not configured correctly") 
+
+def pow(x, y):
+  if   GLOBAL_DEVICE == DEVICES.CPU: return cpu.pow(x, y)
+  elif GLOBAL_DEVICE == DEVICES.GPU: pass
+  elif GLOBAL_DEVICE == DEVICES.HET: return cpu.pow(x, y)
+  else:raise RuntimeError("device is not configured correctly") 
+
+def sum(x, axis=None):
+  if   GLOBAL_DEVICE == DEVICES.CPU: return cpu.sum(x, axis)
+  elif GLOBAL_DEVICE == DEVICES.GPU: pass
+  elif GLOBAL_DEVICE == DEVICES.HET: return cpu.sum(x, axis)
+  else:raise RuntimeError("device is not configured correctly") 
+
+def max(x, axis=None):
+  if   GLOBAL_DEVICE == DEVICES.CPU: return cpu.max(x, axis)
+  elif GLOBAL_DEVICE == DEVICES.GPU: pass
+  elif GLOBAL_DEVICE == DEVICES.HET: return cpu.max(x, axis)
+  else:raise RuntimeError("device is not configured correctly") 
 
 # all the ops will be implemented here and will be called from here, device selection is also done here
 # an operator function will be here to select layers for nn when implementing onnx 
@@ -111,13 +144,13 @@ max
 mean
 
 
-Linear <- implement in engine file, use the ops implemented in all the backends
+Linear <- implement in this file, use the ops implemented in all the backends
 Batchnorm2D
 MaxPool2D
 Conv2D
 
 
-NonLeniarities <- in nn
+NonLeniarities <- in this, ops.Relu
 sigmoid
 relu
 elu
