@@ -89,5 +89,22 @@ class test_tensor(unittest.TestCase):
     np.testing.assert_allclose(tuple([4, 4, 3]), t4.add(tensor.ones(3)).shape)
     np.testing.assert_allclose(tuple([4, 4, 4]), t4.add(t5).shape)
 
+  def test_arithmetic(self):
+    t1 = tensor.ones(2)
+    t2 = tensor.ones(2)
+
+    np.testing.assert_allclose(tensor([2, 2]).data, (t1 + t2).data)
+    np.testing.assert_allclose(tensor([0, 0]).data, (t1 - t2).data)
+    np.testing.assert_allclose(tensor([1, 1]).data, (t1 * t2).data)
+    np.testing.assert_allclose(tensor([1, 1]).data, (t1 / t2).data)
+    np.testing.assert_allclose(tensor([1, 1]).data, (t1 ** t2).data)
+
+    t1 = tensor([[1, 2], [3, 4]])
+    t2 = tensor([[5, 6], [7, 8]])
+
+    np.testing.assert_allclose(tensor([10]).data, t1.sum().data)
+    np.testing.assert_allclose(tensor([8]).data, t2.max().data)
+
+
 if __name__ == '__main__':
   unittest.main()

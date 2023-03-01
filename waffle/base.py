@@ -111,6 +111,7 @@ class tensor:
       raise RuntimeError("axis must be an int or a tuple")
     
   
+  # ***** slicing and indexing *****
   def __getitem__(self, val):
     return tensor(self.data[val])
   
@@ -133,6 +134,7 @@ class tensor:
 
     return fxn(txx, tyy)
   
+
   # ***** arithmetic operations*****
   def __neg__(self): return ops.neg(self)
 
@@ -141,8 +143,8 @@ class tensor:
   def mul(self, y): return self.broadcasted(ops.mul, self, y)
   def div(self, y): return self.broadcasted(ops.div, self, y)
   def pow(self, y): return self.broadcasted(ops.pow, self, y)
-  def sum(self, axis=None): return self.broadcasted(ops.sum, self, axis)
-  def max(self, axis=None): return self.broadcasted(ops.max, self, axis)
+  def sum(self, axis=None): return ops.sum(self, axis)
+  def max(self, axis=None): return ops.max(self, axis)
 
   def __add__(self, y): return self.add(y)
   def __sub__(self, y): return self.sub(y)
