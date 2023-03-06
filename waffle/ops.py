@@ -1,5 +1,10 @@
-from waffle.backends import cpu, gpu, neon
-from waffle.util import DEVICES
+from waffle.backends import cpu, gpu
+from enum import Enum
+
+
+DEVICES = Enum("DEVICES", ["CPU", "GPU", "HET"])
+OPS = Enum("OPS", ["NEG", "RELU", "EXP", "LOG", "RECIPROCAL", "ADD", "SUB", "MUL", "DIV", "POW", "SUM", "MAX", "GEMM"])
+LAYERS = Enum("LAYERS", ["LINEAR", "BATCHNORM2D", "CONV2D", "MAXPOOL2D"])
 
 
 GLOBAL_DEVICE = DEVICES.HET

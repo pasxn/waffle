@@ -2,7 +2,6 @@ import numpy as np
 from typing import Tuple
 
 from waffle import ops
-from waffle.util import prod
 
 class tensor:
   def __init__(self, data):
