@@ -41,6 +41,10 @@ def pow(x, y):
   from waffle.base import tensor
   return tensor(cpu_ops.pow(x.data, y.data))
 
+def gemm(x, y):
+  from waffle.base import tensor
+  return tensor(cpu_ops.gemm(x.data, y.data))
+
 def sum(x, axis=None):
   from waffle.base import tensor
   return tensor(cpu_ops.sum(x.data, axis))

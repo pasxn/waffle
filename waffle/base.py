@@ -142,6 +142,7 @@ class tensor:
   def mul(self, y): return self.broadcasted(ops.mul, self, y)
   def div(self, y): return self.broadcasted(ops.div, self, y)
   def pow(self, y): return self.broadcasted(ops.pow, self, y)
+  def dot(self, y): return ops.gemm(self, y)
   def sum(self, axis=None): return ops.sum(self, axis)
   def max(self, axis=None): return ops.max(self, axis)
 
@@ -150,15 +151,18 @@ class tensor:
   def __mul__(self, y): return self.mul(y)
   def __pow__(self, y): return self.pow(y)
   def __truediv__(self, y): return self.div(y)
+  def __matmul__(self, x): return self.dot(x)
 
   def __radd__(self, y): return self.add(y)
   def __rsub__(self, y): return self.sub(y)
   def __rmul__(self, y): return self.mul(y)
   def __rpow__(self, y): return self.pow(y)
   def __rtruediv__(self, y): return self.div(y)
+  def __rmatmul__(self, x): return self.dot(x)
 
   def __iadd__(self, y): return self.add(y)
   def __isub__(self, y): return self.sub(y)
   def __imul__(self, y): return self.mul(y)
   def __ipow__(self, y): return self.pow(y)
   def __itruediv__(self, y): return self.div(y)
+  def __imatmul__(self, x): return self.dot(x)

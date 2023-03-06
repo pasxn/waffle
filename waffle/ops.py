@@ -104,7 +104,13 @@ def max(x, axis=None):
   if   GLOBAL_DEVICE == DEVICES.CPU: return cpu.max(x, axis)
   elif GLOBAL_DEVICE == DEVICES.GPU: pass
   elif GLOBAL_DEVICE == DEVICES.HET: return cpu.max(x, axis)
-  else:raise RuntimeError("device is not configured correctly") 
+  else:raise RuntimeError("device is not configured correctly")
+
+def gemm(x, y):
+  if   GLOBAL_DEVICE == DEVICES.CPU: return cpu.gemm(x, y)
+  elif GLOBAL_DEVICE == DEVICES.GPU: pass
+  elif GLOBAL_DEVICE == DEVICES.HET: return cpu.gemm(x, y)
+  else:raise RuntimeError("device is not configured correctly")
 
 # all the ops will be implemented here and will be called from here, device selection is also done here
 # an operator function will be here to select layers for nn when implementing onnx 

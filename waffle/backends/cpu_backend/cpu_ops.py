@@ -31,6 +31,9 @@ def div(x:np.ndarray, y:np.ndarray) -> np.ndarray:
 def pow(x:np.ndarray, y:np.ndarray) -> np.ndarray:
   return x**y
 
+def gemm(x:np.ndarray, y:np.ndarray) -> np.ndarray:
+  return x@y
+
 def sum(x:np.ndarray, axis=None) -> np.ndarray:
   return np.sum(x, axis)
 
