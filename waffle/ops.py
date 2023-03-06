@@ -121,9 +121,13 @@ pow
 sum
 max
 --
-conv <- implement on all the backends
 gemm
 
+only gemm is enough
+use gemm for conv
+study best way to gemm
+study about gemm kernels
+add conv through gemm doc to doc library
 
 
 <- implement on cpu only, prolly in somewhere like the shapetracker, or maybe in tensor itself ->
@@ -139,9 +143,9 @@ slice [done]
 expand [done]
 flip [done]
 
-sum
-max
-mean
+sum [done]
+max [done]
+mean 
 
 
 Linear <- implement in this file, use the ops implemented in all the backends
