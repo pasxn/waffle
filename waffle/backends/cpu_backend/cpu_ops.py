@@ -13,9 +13,6 @@ def exp(x:np.ndarray) -> np.ndarray:
 def log(x:np.ndarray) -> np.ndarray:
   return np.log(x)
 
-def reciprocal(x:np.ndarray) -> np.ndarray:
-  return 1.0/x
-
 def add(x:np.ndarray, y:np.ndarray) -> np.ndarray:
   return x+y
 

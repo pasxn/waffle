@@ -17,10 +17,6 @@ def log(x):
   from waffle.base import tensor
   return tensor(cpu_ops.log(x.data))
 
-def reciprocal(x):
-  from waffle.base import tensor
-  return tensor(cpu_ops.reciprocal(x.data))
-
 def add(x, y):
   from waffle.base import tensor
   return tensor(cpu_ops.add(x.data, y.data))
