@@ -14,7 +14,6 @@ class test_cpu_ops(unittest.TestCase):
     np.testing.assert_allclose(np.array(  [1., 1.]              ), cpu.relu(t1).data)
     np.testing.assert_allclose(np.array(  [2.718282, 2.718282]  ), cpu.exp(t1).data)
     np.testing.assert_allclose(np.array(  [0, 0]                ), cpu.log(t1).data)
-    np.testing.assert_allclose(np.array(  [1., 1.]              ), cpu.reciprocal(t1).data)
     np.testing.assert_allclose(np.array(  [2., 2.]              ), cpu.add(t1,t2).data)
     np.testing.assert_allclose(np.array(  [0, 0]                ), cpu.sub(t1,t2).data)
     np.testing.assert_allclose(np.array(  [1., 1]               ), cpu.mul(t1,t2).data)

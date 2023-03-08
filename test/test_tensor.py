@@ -105,6 +105,11 @@ class test_tensor(unittest.TestCase):
     np.testing.assert_allclose(tensor([10]).data, t1.sum().data)
     np.testing.assert_allclose(tensor([8]).data, t2.max().data)
 
+    t1 = tensor.randn(2048, 1024)
+    t2 = tensor.randn(1024, 2048)
+
+    np.testing.assert_allclose((2048, 2048), (t1@t2).shape)
+
 
 if __name__ == '__main__':
   unittest.main()

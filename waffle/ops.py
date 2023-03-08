@@ -1,5 +1,10 @@
-from waffle.backends import cpu, gpu, neon
-from waffle.util import DEVICES
+from waffle.backends import cpu, gpu
+from enum import Enum
+
+
+DEVICES = Enum("DEVICES", ["CPU", "GPU", "HET"])
+OPS = Enum("OPS", ["NEG", "RELU", "EXP", "LOG", "ADD", "SUB", "MUL", "DIV", "POW", "SUM", "MAX", "GEMM"])
+LAYERS = Enum("LAYERS", ["LINEAR", "BATCHNORM2D", "CONV2D", "MAXPOOL2D"])
 
 
 GLOBAL_DEVICE = DEVICES.HET
@@ -54,11 +59,6 @@ def log(x):
   elif GLOBAL_DEVICE == DEVICES.HET: return cpu.log(x)
   else:raise RuntimeError("device is not configured correctly") 
 
-def reciprocal(x):
-  if   GLOBAL_DEVICE == DEVICES.CPU: return cpu.reciprocal(x)
-  elif GLOBAL_DEVICE == DEVICES.GPU: pass
-  elif GLOBAL_DEVICE == DEVICES.HET: return cpu.reciprocal(x)
-  else:raise RuntimeError("device is not configured correctly") 
 def add(x, y):
   if   GLOBAL_DEVICE == DEVICES.CPU: return cpu.add(x, y)
   elif GLOBAL_DEVICE == DEVICES.GPU: pass
@@ -87,7 +87,13 @@ def pow(x, y):
   if   GLOBAL_DEVICE == DEVICES.CPU: return cpu.pow(x, y)
   elif GLOBAL_DEVICE == DEVICES.GPU: pass
   elif GLOBAL_DEVICE == DEVICES.HET: return cpu.pow(x, y)
-  else:raise RuntimeError("device is not configured correctly") 
+  else:raise RuntimeError("device is not configured correctly")
+
+def gemm(x, y):
+  if   GLOBAL_DEVICE == DEVICES.CPU: return cpu.gemm(x, y)
+  elif GLOBAL_DEVICE == DEVICES.GPU: pass
+  elif GLOBAL_DEVICE == DEVICES.HET: return cpu.gemm(x, y)
+  else:raise RuntimeError("device is not configured correctly")
 
 def sum(x, axis=None):
   if   GLOBAL_DEVICE == DEVICES.CPU: return cpu.sum(x, axis)
@@ -99,7 +105,7 @@ def max(x, axis=None):
   if   GLOBAL_DEVICE == DEVICES.CPU: return cpu.max(x, axis)
   elif GLOBAL_DEVICE == DEVICES.GPU: pass
   elif GLOBAL_DEVICE == DEVICES.HET: return cpu.max(x, axis)
-  else:raise RuntimeError("device is not configured correctly") 
+  else:raise RuntimeError("device is not configured correctly")
 
 # all the ops will be implemented here and will be called from here, device selection is also done here
 # an operator function will be here to select layers for nn when implementing onnx 
@@ -111,7 +117,6 @@ relu
 exp
 log
 >>>> gt0 = compire equal greater than 0
-reciprocal
 add
 sub
 mul
@@ -121,9 +126,13 @@ pow
 sum
 max
 --
-conv <- implement on all the backends
 gemm
 
+only gemm is enough
+use gemm for conv
+study best way to gemm
+study about gemm kernels
+add conv through gemm doc to doc library
 
 
 <- implement on cpu only, prolly in somewhere like the shapetracker, or maybe in tensor itself ->
@@ -139,9 +148,9 @@ slice [done]
 expand [done]
 flip [done]
 
-sum
-max
-mean
+sum [done]
+max [done]
+mean 
 
 
 Linear <- implement in this file, use the ops implemented in all the backends
