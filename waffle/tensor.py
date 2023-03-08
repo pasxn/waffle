@@ -1,7 +1,7 @@
 import numpy as np
 from typing import Tuple
 
-from waffle.ops import fops
+from waffle import ops
 
 class tensor:
   def __init__(self, data):
@@ -135,16 +135,16 @@ class tensor:
   
 
   # ***** arithmetic operations*****
-  def __neg__(self): return fops.neg(self)
+  def __neg__(self): return ops.neg(self)
 
-  def add(self, y): return self.broadcasted(fops.add, self, y)
-  def sub(self, y): return self.broadcasted(fops.sub, self, y)
-  def mul(self, y): return self.broadcasted(fops.mul, self, y)
-  def div(self, y): return self.broadcasted(fops.div, self, y)
-  def pow(self, y): return self.broadcasted(fops.pow, self, y)
-  def dot(self, y): return fops.gemm(self, y)
-  def sum(self, axis=None): return fops.sum(self, axis)
-  def max(self, axis=None): return fops.max(self, axis)
+  def add(self, y): return self.broadcasted(ops.add, self, y)
+  def sub(self, y): return self.broadcasted(ops.sub, self, y)
+  def mul(self, y): return self.broadcasted(ops.mul, self, y)
+  def div(self, y): return self.broadcasted(ops.div, self, y)
+  def pow(self, y): return self.broadcasted(ops.pow, self, y)
+  def dot(self, y): return ops.gemm(self, y)
+  def sum(self, axis=None): return ops.sum(self, axis)
+  def max(self, axis=None): return ops.max(self, axis)
 
   def __add__(self, y): return self.add(y)
   def __sub__(self, y): return self.sub(y)

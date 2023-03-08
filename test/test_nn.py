@@ -2,7 +2,7 @@ import unittest
 
 from waffle import tensor
 from waffle import nn
-from waffle.ops import fops
+from waffle import ops
 
 class test_nn(unittest.TestCase):
     
@@ -17,11 +17,11 @@ class test_nn(unittest.TestCase):
         self.t3 = tensor.randn(2, 3, 4, 1)
 
       def forward(self):
-        x1 = fops.exp(self.t1 + self.t2) + self.t0
+        x1 = ops.exp(self.t1 + self.t2) + self.t0
         x2 = self.t1 + x1
         x3 = x2**1
-        x4 = fops.relu(self.t3 * x3.sum())
-        x5 = fops.log(x4.max())
+        x4 = ops.relu(self.t3 * x3.sum())
+        x5 = ops.log(x4.max())
 
         return x5
 
