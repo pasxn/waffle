@@ -1,7 +1,6 @@
 import unittest
 import numpy as np
-
-from waffle.base import tensor
+from waffle import tensor
 
 class test_tensor(unittest.TestCase):
     

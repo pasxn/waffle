@@ -1,8 +1,8 @@
 import unittest
 import numpy as np
 
-from waffle.base import tensor
-from waffle import ops
+from waffle import tensor
+from waffle.ops import fops
 
 class test_ops(unittest.TestCase):
     
@@ -11,17 +11,17 @@ class test_ops(unittest.TestCase):
     t2 = tensor.ones(2)
 
     # TODO: Remove .data when the support for tensor == tensor is added
-    np.testing.assert_allclose(tensor(  [-1., -1.]            ).data, ops.neg(t1).data)
-    np.testing.assert_allclose(tensor(  [1., 1.]              ).data, ops.relu(t1).data)
-    np.testing.assert_allclose(tensor(  [2.718282, 2.718282]  ).data, ops.exp(t1).data)
-    np.testing.assert_allclose(tensor(  [0, 0]                ).data, ops.log(t1).data)
-    np.testing.assert_allclose(tensor(  [2., 2.]              ).data, ops.add(t1,t2).data)
-    np.testing.assert_allclose(tensor(  [0, 0]                ).data, ops.sub(t1,t2).data)
-    np.testing.assert_allclose(tensor(  [1., 1]               ).data, ops.mul(t1,t2).data)
-    np.testing.assert_allclose(tensor(  [1., 1.]              ).data, ops.div(t1,t2).data)
-    np.testing.assert_allclose(tensor(  [1., 1.]              ).data, ops.pow(t1,t2).data)
-    np.testing.assert_allclose(tensor(  [2.0]                 ).data, ops.sum(t1).data)
-    np.testing.assert_allclose(tensor(  [1.0]                 ).data, ops.max(t1).data)
+    np.testing.assert_allclose(tensor(  [-1., -1.]            ).data, fops.neg(t1).data)
+    np.testing.assert_allclose(tensor(  [1., 1.]              ).data, fops.relu(t1).data)
+    np.testing.assert_allclose(tensor(  [2.718282, 2.718282]  ).data, fops.exp(t1).data)
+    np.testing.assert_allclose(tensor(  [0, 0]                ).data, fops.log(t1).data)
+    np.testing.assert_allclose(tensor(  [2., 2.]              ).data, fops.add(t1,t2).data)
+    np.testing.assert_allclose(tensor(  [0, 0]                ).data, fops.sub(t1,t2).data)
+    np.testing.assert_allclose(tensor(  [1., 1]               ).data, fops.mul(t1,t2).data)
+    np.testing.assert_allclose(tensor(  [1., 1.]              ).data, fops.div(t1,t2).data)
+    np.testing.assert_allclose(tensor(  [1., 1.]              ).data, fops.pow(t1,t2).data)
+    np.testing.assert_allclose(tensor(  [2.0]                 ).data, fops.sum(t1).data)
+    np.testing.assert_allclose(tensor(  [1.0]                 ).data, fops.max(t1).data)
 
 if __name__ == '__main__':
   unittest.main()
