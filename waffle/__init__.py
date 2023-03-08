@@ -1,1 +1,2 @@
-from waffle import base, core, ops
+from waffle.tensor import tensor
+import waffle.nn as nn

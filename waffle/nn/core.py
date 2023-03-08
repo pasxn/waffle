@@ -12,7 +12,9 @@ nn.run()
 
 
 '''
+from waffle import tensor
 
-class nn:
+
+class Module:
   def __init__(self):
     pass

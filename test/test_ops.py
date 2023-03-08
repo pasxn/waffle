@@ -1,7 +1,7 @@
 import unittest
 import numpy as np
 
-from waffle.base import tensor
+from waffle import tensor
 from waffle import ops
 
 class test_ops(unittest.TestCase):

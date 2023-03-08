@@ -1,14 +1,14 @@
 import unittest
 
-from waffle.base import tensor
-from waffle.core import nn
+from waffle import tensor
+from waffle.nn import core
 from waffle import ops
 
 class test_nn(unittest.TestCase):
     
   def test_nn_arithmetic(self):
 
-    class nn_arith(nn):
+    class nn_arith(core.Module):
       def __init__(self, input):
         super(nn_arith, self).__init__()
         self.t0 = input
