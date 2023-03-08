@@ -1,3 +1,4 @@
+import math
 import numpy as np
 from typing import Tuple
 
@@ -49,12 +50,12 @@ class tensor:
 
   @classmethod
   def uniform(cls, *shape, **kwargs):
-    return cls((np.random.uniform(-1., 1., size=shape)/np.sqrt(prod(shape))).astype(np.float32), **kwargs)
+    return cls((np.random.uniform(-1., 1., size=shape)/np.sqrt(math.prod(shape))).astype(np.float32), **kwargs)
 
   @classmethod
   def eye(cls, dim, **kwargs):
     return cls(np.eye(dim).astype(np.float32), **kwargs)
-    
+  
 
   # ***** CPU explicit helper functions *****
   def resize(self, *shape, **kwargs): # order='C' or order='F'

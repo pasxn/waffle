@@ -16,5 +16,8 @@ from waffle import tensor
 
 
 class Module:
-  def __init__(self):
+  def __init__(self, *args, **kwargs):
+    print(args)
+
+  def run(self):
     pass
