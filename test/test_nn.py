@@ -1,14 +1,15 @@
 import unittest
+import numpy as np
 
 from waffle import tensor
-from waffle.nn import core
+from waffle import nn
 from waffle import ops
 
 class test_nn(unittest.TestCase):
     
   def test_nn_arithmetic(self):
 
-    class nn_arith(core.Module):
+    class nn_arith(nn.Module):
       def __init__(self, input):
         super(nn_arith, self).__init__()
         self.t0 = input
@@ -29,6 +30,13 @@ class test_nn(unittest.TestCase):
     n1 = nn_arith(t0)
     for i in range(100):
       n1.forward()
+  
+  def test_nn_linear(self):
+    from examples.mnist_fully_connected.mnist_model import MnistNN
+    model = MnistNN(784, 10)
+    x = tensor.randn(784, 1)
+
+    np.testing.assert_allclose((10, 1), model.run(x).shape)
 
 if __name__ == '__main__':
   unittest.main()
