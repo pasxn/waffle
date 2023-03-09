@@ -32,29 +32,33 @@ class tensor:
 
     
   # ***** creation helper functions *****
-  @classmethod
-  def zeros(cls, *shape, **kwargs):
-    return cls(np.zeros(shape, dtype=np.float32), **kwargs)
+  @staticmethod
+  def zeros(*shape, **kwargs):
+    return tensor(np.zeros(shape, dtype=np.float32), **kwargs)
 
-  @classmethod
-  def ones(cls, *shape, **kwargs):
-    return cls(np.ones(shape, dtype=np.float32), **kwargs)
+  @staticmethod
+  def ones(*shape, **kwargs):
+    return tensor(np.ones(shape, dtype=np.float32), **kwargs)
 
-  @classmethod
-  def randn(cls, *shape, **kwargs):
-    return cls(np.random.randn(*shape).astype(np.float32), **kwargs)
+  @staticmethod
+  def randn(*shape, **kwargs):
+    return tensor(np.random.randn(*shape).astype(np.float32), **kwargs)
     
-  @classmethod
-  def arange(cls, stop, start=0, **kwargs):
-    return cls(np.arange(start=start, stop=stop).astype(np.float32), **kwargs)
+  @staticmethod
+  def arange(stop, start=0, **kwargs):
+    return tensor(np.arange(start=start, stop=stop).astype(np.float32), **kwargs)
 
-  @classmethod
-  def uniform(cls, *shape, **kwargs):
-    return cls((np.random.uniform(-1., 1., size=shape)/np.sqrt(math.prod(shape))).astype(np.float32), **kwargs)
+  @staticmethod
+  def uniform(*shape, **kwargs):
+    return tensor((np.random.uniform(-1., 1., size=shape)/np.sqrt(math.prod(shape))).astype(np.float32), **kwargs)
+  
+  @staticmethod
+  def glorot_uniform(*shape, **kwargs): 
+    return tensor.uniform(*shape, **kwargs).mul((6/(shape[0]+math.prod(shape[1:])))**0.5)
 
-  @classmethod
-  def eye(cls, dim, **kwargs):
-    return cls(np.eye(dim).astype(np.float32), **kwargs)
+  @staticmethod
+  def eye(dim, **kwargs):
+    return tensor(np.eye(dim).astype(np.float32), **kwargs)
   
 
   # ***** CPU explicit helper functions *****
