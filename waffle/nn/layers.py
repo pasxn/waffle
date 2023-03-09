@@ -36,3 +36,4 @@ class MaxPool2D:
 class Relu:
   def __call__(self, x):
     return ops.relu(x)
+  
