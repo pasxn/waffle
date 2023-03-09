@@ -10,7 +10,7 @@ from models.mnist_fully_connected.mnist_util import input_size, num_classes, dev
 
 model = NN(input_size=input_size, num_classes=num_classes).to(device)
 
-state_dict = torch.load('MNist.ckpt')
+state_dict = torch.load('models/mnist_fully_connected/MNist.ckpt')
 model.load_state_dict(state_dict)
 
 def check_accuracy(loader, model):
@@ -29,7 +29,7 @@ def check_accuracy(loader, model):
       num_correct += (predictions == y).sum()
       num_samples += predictions.size(0)
             
-    print(f'Got {num_correct} / {num_samples} with accuracy {float(num_correct)/float(num_samples)*100:.2f}')
+    print(f'Got {num_correct} / {num_samples} with accuracy {float(num_correct)/float(num_samples)*100:.2f} %')
    
   model.train()
 
