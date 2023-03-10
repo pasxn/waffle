@@ -10,6 +10,7 @@ class NN(nn.Module):
   def forward(self, x):
     x = F.relu(self.fc1(x))      #ACTIVATION FUNCTION
     x = self.fc2(x)
+    x = F.relu(x)
 
     return x
     

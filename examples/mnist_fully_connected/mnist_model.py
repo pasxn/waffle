@@ -7,11 +7,13 @@ class MnistNN(nn.Module):
     self.fc1 = nn.Linear(input_size, 50)
     self.ac1 = nn.Relu()
     self.fc2 = nn.Linear(50, num_classes)
+    self.ac2 = nn.Relu()
     
   def forward(self, x):
     x = self.fc1(x)
     x = self.ac1(x)
     x = self.fc2(x)
+    x = self.ac2(x)
 
     return x
   
