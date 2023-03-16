@@ -2,13 +2,14 @@
 
 import os
 from setuptools import setup
+from waffle import __version__
 
 directory = os.path.abspath(os.path.dirname(__file__))
 with open(os.path.join(directory, 'README.md'), encoding='utf-8') as f:
   long_description = f.read()
 
 setup(name='waffle',
-  version='0.0.1',
+  version=__version__,
   description='A hardware accelerated machine learning inference framework for Raspberry Pi',
   author='Pasan Perera, Kavin Amantha, Afkar Ahamed',
   license='MIT',
