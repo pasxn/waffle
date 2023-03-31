@@ -1,4 +1,4 @@
-from waffle.backends.cpu_backend import cpu_ops
+from waffle.backend.cpu_backend import cpu_ops
 
 
 def neg(x):

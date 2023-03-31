@@ -1,4 +1,4 @@
-from waffle.backends import cpu, gpu
+from waffle.backend import cpu, gpu
 from enum import Enum
 
 
