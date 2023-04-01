@@ -5,8 +5,12 @@ from setuptools import setup
 from waffle import __version__
 
 directory = os.path.abspath(os.path.dirname(__file__))
+
 with open(os.path.join(directory, 'README.md'), encoding='utf-8') as f:
   long_description = f.read()
+
+with open(os.path.join(directory, 'requirements.txt'), encoding='utf-8') as r:
+  requirements = [req.strip() for req in r.readlines()]
 
 setup(name='waffle',
   version=__version__,
@@ -15,7 +19,7 @@ setup(name='waffle',
   license='MIT',
   long_description=long_description,
   long_description_content_type='text/markdown',
-  packages = ['waffle'],
+  packages = requirements,
   classifiers=[
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License"
