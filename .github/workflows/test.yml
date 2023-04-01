@@ -19,6 +19,8 @@ jobs:
           python-version: "3.10"
           architecture: "x64"
     - name: Install Dependencies
+      run: pip3 install numpy
+    - name: Install waffle
       run: python3 -m pip install -e .
     - name: Run Pytest
       run: python3 -m pytest -s -v
