@@ -19,12 +19,12 @@ setup(name='waffle',
   license='MIT',
   long_description=long_description,
   long_description_content_type='text/markdown',
-  packages = requirements,
+  packages = ['waffle'],
   classifiers=[
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License"
   ],
-  install_requires=['numpy'],
+  install_requires=requirements,
   python_requires='>=3.8',
   include_package_data=True
 )
