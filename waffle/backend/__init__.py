@@ -1,1 +1,1 @@
-from waffle.backend.shapetracker import shapetracker
+from waffle.backend.compiler import shapetracker

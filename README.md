@@ -11,5 +11,5 @@ python3 -m pip install -e .
 ### Running tests
 
 ```bash
-python3 -m pytest
+python -m pytest -s -v
 ```
