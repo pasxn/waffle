@@ -23,3 +23,11 @@ class shapetracker:
   @staticmethod
   def fill(shape):
     shapetracker.shapes.append(shape)
+
+  @staticmethod
+  def clear():
+    shapetracker.shapes.clear()
+
+  @staticmethod
+  def pop():
+    return shapetracker.shapes.pop()
