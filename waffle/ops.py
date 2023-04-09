@@ -13,6 +13,7 @@ def neg(x):
   shape = shapetracker.parse(x.shape, None, OPS.NEG)
   if compile is True:
     shapetracker.fill(shape)
+    return cpu.neg(x)
   else:
     if   device == DEVICES.CPU: return cpu.neg(x)
     elif device == DEVICES.GPU: pass
@@ -23,6 +24,7 @@ def relu(x):
   shape = shapetracker.parse(x.shape, None, OPS.RELU)
   if compile is True:
     shapetracker.fill(shape)
+    return cpu.relu(x)
   else:
     if   device == DEVICES.CPU: return cpu.relu(x)
     elif device == DEVICES.GPU: pass
@@ -33,6 +35,7 @@ def exp(x):
   shape = shapetracker.parse(x.shape, None, OPS.EXP)
   if compile is True:
     shapetracker.fill(shape)
+    return cpu.exp(x)
   else:
     if   device == DEVICES.CPU: return cpu.exp(x)
     elif device == DEVICES.GPU: pass
@@ -43,6 +46,7 @@ def log(x):
   shape = shapetracker.parse(x.shape, None, OPS.LOG)
   if compile is True:
     shapetracker.fill(shape)
+    return cpu.log(x)
   else:
     if   device == DEVICES.CPU: return cpu.log(x)
     elif device == DEVICES.GPU: pass
@@ -53,6 +57,7 @@ def add(x, y):
   shape = shapetracker.parse(x.shape, y.shape, OPS.ADD)
   if compile is True:
     shapetracker.fill(shape)
+    return cpu.add(x, y)
   else:
     if   device == DEVICES.CPU: return cpu.add(x, y)
     elif device == DEVICES.GPU: pass
@@ -63,6 +68,7 @@ def sub(x, y):
   shape = shapetracker.parse(x.shape, y.shape, OPS.SUB)
   if compile is True:
     shapetracker.fill(shape)
+    return cpu.sub(x, y)
   else:
     if   device == DEVICES.CPU: return cpu.sub(x, y)
     elif device == DEVICES.GPU: pass
@@ -73,6 +79,7 @@ def mul(x, y):
   shape = shapetracker.parse(x.shape, y.shape, OPS.MUL)
   if compile is True:
     shapetracker.fill(shape)
+    return cpu.mul(x, y)
   else:
     if   device == DEVICES.CPU: return cpu.mul(x, y)
     elif device == DEVICES.GPU: pass
@@ -83,6 +90,7 @@ def div(x, y):
   shape = shapetracker.parse(x.shape, y.shape, OPS.DIV)
   if compile is True:
     shapetracker.fill(shape)
+    return cpu.div(x, y)
   else:
     if   device == DEVICES.CPU: return cpu.div(x, y)
     elif device == DEVICES.GPU: pass
@@ -93,6 +101,7 @@ def pow(x, y):
   shape = shapetracker.parse(x.shape, y.shape, OPS.POW)
   if compile is True:
     shapetracker.fill(shape)
+    return cpu.pow(x, y)
   else:
     if   device == DEVICES.CPU: return cpu.pow(x, y)
     elif device == DEVICES.GPU: pass
@@ -103,6 +112,7 @@ def gemm(x, y):
   shape = shapetracker.parse(x.shape, y.shape, OPS.GEMM)
   if compile is True:
     shapetracker.fill(shape)
+    return cpu.gemm(x, y)
   else:
     if   device == DEVICES.CPU: return cpu.gemm(x, y)
     elif device == DEVICES.GPU: pass
@@ -113,6 +123,7 @@ def sum(x, axis=None):
   shape = shapetracker.parse(x.shape, None, OPS.SUM)
   if compile is True:
     shapetracker.fill(shape)
+    return cpu.sum(x, axis)
   else:
     if   device == DEVICES.CPU: return cpu.sum(x, axis)
     elif device == DEVICES.GPU: pass
@@ -123,6 +134,7 @@ def max(x, axis=None):
   shape = shapetracker.parse(x.shape, None, OPS.MAX)
   if compile is True:
     shapetracker.fill(shape)
+    return cpu.max(x, axis)
   else:
     if   device == DEVICES.CPU: return cpu.max(x, axis)
     elif device == DEVICES.GPU: pass
