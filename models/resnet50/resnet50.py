@@ -80,13 +80,6 @@ print('Accuracy: {:.2%}'.format(accuracy))
 print('Average Loss: {:.4f}'.format(avg_loss))
 
 # %%
-#export the model into ONNX format
-import torch.onnx as onnx
-dummy_input = torch.randn(1, 3, 224, 224)
-output_file = "resnet50.onnx"
-onnx.export(model, dummy_input, output_file, verbose=True)
-
-# %%
 # Export the model to ONNX format
 input_tensor = torch.randn(1, 3, 224, 224)  # Assumes input images of size 224x224 with 3 channels
 onnx_file_path = "resnet50.onnx"
