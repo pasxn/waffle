@@ -9,10 +9,6 @@ import torch.nn as nn
 # Load the pre-trained ResNet-18 model from PyTorch's model zoo
 resnet = models.resnet18(pretrained=True)
 
-# Replace the last layer of the ResNet-18 model
-num_ftrs = resnet.fc.in_features
-resnet.fc = nn.Linear(num_ftrs, 10)
-
 # %%
 # Set the model to evaluation mode
 resnet.eval()
