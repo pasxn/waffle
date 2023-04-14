@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import os
+import platform
 from setuptools import setup
 from waffle import __version__
 
@@ -23,7 +24,9 @@ with open(os.path.join(directory, 'README.md'), encoding='utf-8') as f:
 with open(os.path.join(directory, 'requirements.txt'), encoding='utf-8') as r:
   requirements = [req.strip() for req in r.readlines()]
 
-clone_build_v3dlib()
+processor = platform.processor()
+if "armv7l" in processor and "BCM2711" in processor:
+  clone_build_v3dlib()
 
 setup(name='waffle',
   version=__version__,
