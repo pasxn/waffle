@@ -15,7 +15,7 @@ class shapetracker:
       'y_shape' : y_shape,
       'x_dim'   : x_dim,
       'y_dim'   : y_dim,
-      'op_type' : (op_type.name).lower()
+      'op_type' : op_type.name.lower()
     }
     
     return shape
