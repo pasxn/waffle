@@ -14,6 +14,6 @@ class Module:
   def compile(self):
     pass
 
-  def run(self, x):
+  def run(self, x:tensor) -> tensor:
     return self.forward(x)
   
