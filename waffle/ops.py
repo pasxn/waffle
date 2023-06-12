@@ -3,7 +3,7 @@ from enum import Enum
 from waffle import tensor
 
 
-DEVICES = Enum("DEVICES", ["CPU", "GPU", "HET"])
+DEVICES = Enum("DEVICES", ["CPU", "HET"])
 OPS = Enum("OPS", ["NEG", "RELU", "EXP", "LOG", "ADD", "SUB", "MUL", "DIV", "POW", "SUM", "MAX", "GEMM"])
 LAYERS = Enum("LAYERS", ["LINEAR", "BATCHNORM2D", "CONV2D", "MAXPOOL2D"])
 
@@ -17,7 +17,6 @@ def neg(x:tensor) -> tensor:
     return cpu.neg(x)
   else:
     if   device == DEVICES.CPU: return cpu.neg(x)
-    elif device == DEVICES.GPU: pass
     elif device == DEVICES.HET: return cpu.neg(x)
     else:raise RuntimeError("device is not configured correctly")
 
@@ -28,7 +27,6 @@ def relu(x:tensor) -> tensor:
     return cpu.relu(x)
   else:
     if   device == DEVICES.CPU: return cpu.relu(x)
-    elif device == DEVICES.GPU: pass
     elif device == DEVICES.HET: return cpu.relu(x)
     else:raise RuntimeError("device is not configured correctly")
   
@@ -39,7 +37,6 @@ def exp(x:tensor) -> tensor:
     return cpu.exp(x)
   else:
     if   device == DEVICES.CPU: return cpu.exp(x)
-    elif device == DEVICES.GPU: pass
     elif device == DEVICES.HET: return cpu.exp(x)
     else:raise RuntimeError("device is not configured correctly")
 
@@ -50,7 +47,6 @@ def log(x:tensor) -> tensor:
     return cpu.log(x)
   else:
     if   device == DEVICES.CPU: return cpu.log(x)
-    elif device == DEVICES.GPU: pass
     elif device == DEVICES.HET: return cpu.log(x)
     else:raise RuntimeError("device is not configured correctly")
 
@@ -61,7 +57,6 @@ def add(x:tensor, y:tensor) -> tensor:
     return cpu.add(x, y)
   else:
     if   device == DEVICES.CPU: return cpu.add(x, y)
-    elif device == DEVICES.GPU: pass
     elif device == DEVICES.HET: return cpu.add(x, y)
     else:raise RuntimeError("device is not configured correctly")
 
@@ -72,7 +67,6 @@ def sub(x:tensor, y:tensor) -> tensor:
     return cpu.sub(x, y)
   else:
     if   device == DEVICES.CPU: return cpu.sub(x, y)
-    elif device == DEVICES.GPU: pass
     elif device == DEVICES.HET: return cpu.sub(x, y)
     else:raise RuntimeError("device is not configured correctly")
 
@@ -83,7 +77,6 @@ def mul(x:tensor, y:tensor) -> tensor:
     return cpu.mul(x, y)
   else:
     if   device == DEVICES.CPU: return cpu.mul(x, y)
-    elif device == DEVICES.GPU: pass
     elif device == DEVICES.HET: return cpu.mul(x, y)
     else:raise RuntimeError("device is not configured correctly")
 
@@ -94,7 +87,6 @@ def div(x:tensor, y:tensor) -> tensor:
     return cpu.div(x, y)
   else:
     if   device == DEVICES.CPU: return cpu.div(x, y)
-    elif device == DEVICES.GPU: pass
     elif device == DEVICES.HET: return cpu.div(x, y)
     else:raise RuntimeError("device is not configured correctly")
 
@@ -105,7 +97,6 @@ def pow(x:tensor, y:tensor) -> tensor:
     return cpu.pow(x, y)
   else:
     if   device == DEVICES.CPU: return cpu.pow(x, y)
-    elif device == DEVICES.GPU: pass
     elif device == DEVICES.HET: return cpu.pow(x, y)
     else:raise RuntimeError("device is not configured correctly")
 
@@ -116,7 +107,6 @@ def gemm(x:tensor, y:tensor) -> tensor:
     return cpu.gemm(x, y)
   else:
     if   device == DEVICES.CPU: return cpu.gemm(x, y)
-    elif device == DEVICES.GPU: pass
     elif device == DEVICES.HET: return cpu.gemm(x, y)
     else:raise RuntimeError("device is not configured correctly")
 
@@ -127,7 +117,6 @@ def sum(x:tensor, axis=None) -> tensor:
     return cpu.sum(x, axis)
   else:
     if   device == DEVICES.CPU: return cpu.sum(x, axis)
-    elif device == DEVICES.GPU: pass
     elif device == DEVICES.HET: return cpu.sum(x, axis)
     else:raise RuntimeError("device is not configured correctly")
 
@@ -138,6 +127,5 @@ def max(x:tensor, axis=None) -> tensor:
     return cpu.max(x, axis)
   else:
     if   device == DEVICES.CPU: return cpu.max(x, axis)
-    elif device == DEVICES.GPU: pass
     elif device == DEVICES.HET: return cpu.max(x, axis)
     else:raise RuntimeError("device is not configured correctly")
