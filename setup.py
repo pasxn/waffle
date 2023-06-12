@@ -1,8 +1,20 @@
 #!/usr/bin/env python
 
 import os
+import platform
 from setuptools import setup
 from waffle import __version__
+
+
+def clone_build_v3dlib():
+  current_dir = os.getcwd()
+  os.chdir('waffle/backend/gpu_backend')
+  os.system('git clone https://github.com/wimrijnders/V3DLib.git')
+  
+  os.chdir('V3DLib')
+  os.system('ls') # change to the build command
+
+  os.chdir(current_dir)
 
 directory = os.path.abspath(os.path.dirname(__file__))
 
@@ -11,6 +23,10 @@ with open(os.path.join(directory, 'README.md'), encoding='utf-8') as f:
 
 with open(os.path.join(directory, 'requirements.txt'), encoding='utf-8') as r:
   requirements = [req.strip() for req in r.readlines()]
+
+processor = platform.processor()
+if "armv7l" in processor and "BCM2711" in processor:
+  clone_build_v3dlib()
 
 setup(name='waffle',
   version=__version__,
