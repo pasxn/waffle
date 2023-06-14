@@ -10,10 +10,15 @@ def clone_build_v3dlib():
   current_dir = os.getcwd()
   os.chdir('waffle/backend/gpu_backend')
   os.system('git clone https://github.com/wimrijnders/V3DLib.git')
+  os.system('git clone https://github.com/wimrijnders/CmdParameter.git')
   
   os.chdir('V3DLib')
   os.system('ls') # change to the build command
+  os.chdir('..')
 
+  os.chdir('CmdParameter')
+  os.system('ls') # change to the build command
+  
   os.chdir(current_dir)
 
 directory = os.path.abspath(os.path.dirname(__file__))
