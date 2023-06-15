@@ -27,13 +27,17 @@ for i, node in enumerate(model.graph.node):
     if attr.type == onnx.AttributeProto.FLOATS:
       print(f"  Values1: {attr.floats}")
     elif attr.type == onnx.AttributeProto.INTS:
-      print(f"  Values2: {attr.ints}")
+      print(f"  Values2: {attr.ints}") 
     #attributes can be stored in texts (Names)
     elif attr.type == onnx.AttributeProto.STRING:
       print(f"  Values3: {attr.s}")
     #can be tensors??  
     elif attr.type == onnx.AttributeProto.TENSOR:
       print(f" Tensor Value: ", attr.t.float_data)
+    elif attr.name == "axis":
+      print(f"  Value: {attr.i}")
+    elif attr.name == "group":
+      print(f"  Value: {attr.i}")     
     print()
     print()
   
