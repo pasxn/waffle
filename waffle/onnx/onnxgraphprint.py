@@ -1,9 +1,10 @@
-#%% For Node Details including bias & Weights
+#For Node Details including bias & Weights
 import onnx
 import numpy as np
 
 # Load the ONNX model
-model_path = '../../models/resnet18/resnet18.onnx'
+model_path = 'models/resnet18/resnet18.onnx'
+
 model = onnx.load(model_path)
 
 # Print node details
@@ -52,4 +53,3 @@ for i, node in enumerate(model.graph.node):
 print()
 print()
 
-# %%
