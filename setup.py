@@ -11,12 +11,16 @@ def clone_build_v3dlib():
   os.chdir('waffle/backend/gpu_backend')
   os.system('git clone https://github.com/wimrijnders/V3DLib.git')
   os.system('git clone https://github.com/wimrijnders/CmdParameter.git')
-  
-  os.chdir('V3DLib')
+
+  os.chdir('CmdParameter')
   os.system('ls') # change to the build command
   os.chdir('..')
 
-  os.chdir('CmdParameter')
+  os.system('cp generate.sh V3DLib/script')
+  os.system('cp make_kernels V3DLib')
+  
+  os.chdir('V3DLib')
+  os.system('./scripts/generate.sh')
   os.system('ls') # change to the build command
   
   os.chdir(current_dir)
