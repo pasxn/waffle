@@ -20,7 +20,7 @@ def clone_build_v3dlib():
   os.system('cp make_kernels V3DLib')
   
   os.chdir('V3DLib')
-  os.system('./scripts/generate.sh')
+  os.system('./script/generate.sh')
   os.system('ls') # change to the build command
   
   os.chdir(current_dir)
