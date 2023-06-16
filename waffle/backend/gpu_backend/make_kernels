@@ -43,26 +43,25 @@
 # Stuff for external libraries
 #
 INCLUDE_EXTERN= \
- -I CmdParameter/Lib \
- -I V3DLib/mesa/include \
- -I V3DLib/mesa/src
+ -I ../CmdParameter/Lib \
+ -I mesa/include \
+ -I mesa/src
 
 LIB_EXTERN= \
- -LV3DLib/obj/mesa/bin -lmesa
+ -Lobj/mesa/bin -lmesa
 
 LIB_DEPEND=
 
 ifeq ($(DEBUG), 1)
-	LIB_EXTERN += -L CmdParameter/obj-debug -lCmdParameter
-	LIB_DEPEND += CmdParameter/obj-debug/libCmdParameter.a
+	LIB_EXTERN += -L ../CmdParameter/obj-debug -lCmdParameter
+	LIB_DEPEND += ../CmdParameter/obj-debug/libCmdParameter.a
 else
-	LIB_EXTERN += -L CmdParameter/obj -lCmdParameter
-	LIB_DEPEND += CmdParameter/obj/libCmdParameter.a
+	LIB_EXTERN += -L ../CmdParameter/obj -lCmdParameter
+	LIB_DEPEND += ../CmdParameter/obj/libCmdParameter.a
 endif
 
 
-#ROOT= Lib
-ROOT=V3DLib/Lib
+ROOT= Lib
 
 # Compiler and default flags
 CXX= g++
@@ -86,8 +85,7 @@ CXX_FLAGS = \
  -I $(ROOT) $(INCLUDE_EXTERN) -MMD -MP -MF"$(@:%.o=%.d)"
 
 # Object directory
-OBJ_DIR := V3DLib
-#OBJ_DIR := $(OBJ_DIR)/obj
+OBJ_DIR := ../target
 
 
 # QPU or emulation mode
@@ -105,11 +103,9 @@ $(info Building on a Pi platform)
 endif
 
   CXX_FLAGS += -DQPU_MODE -I /opt/vc/include
-  OBJ_DIR := $(OBJ_DIR)/obj
   OBJ_DIR := $(OBJ_DIR)/qpu
 	LIBS += -L /opt/vc/lib -l bcm_host
 else
-  OBJ_DIR := $(OBJ_DIR)/obj
   OBJ_DIR := $(OBJ_DIR)/emu
 endif
 
@@ -127,13 +123,9 @@ endif
 
 LIB = $(patsubst %,$(OBJ_DIR)/Lib/%,$(OBJ))
 
-EXAMPLE_TARGETS = $(patsubst %,$(OBJ_DIR)/bin/%,$(EXAMPLES))
-#TESTS_OBJ = $(patsubst %,$(OBJ_DIR)/%,$(TESTS_FILES))
-EXAMPLES_OBJ = $(patsubst %,$(OBJ_DIR)/%,$(EXAMPLES_EXTRA))
-
-KERNEL_TARGETS = $(patsubst %,$(OBJ_DIR)/bin/%,$(KERNELS))
+KERNELS_OUTSIDE_TARGETS = $(patsubst %,$(OBJ_DIR)/bin/%,$(KERNELS_OUTSIDE))
 TESTS_OBJ = $(patsubst %,$(OBJ_DIR)/%,$(TESTS_FILES))
-KERNELS_OBJ = $(patsubst %,$(OBJ_DIR)/%,$(KERNELS_EXTRA))
+KERNELS_OUTSIDE_OBJ = $(patsubst %,$(OBJ_DIR)/%,$(KERNELS_OUTSIDE_EXTRA))
 
 #$(info $(EXAMPLES_OBJ))
 
@@ -141,18 +133,17 @@ KERNELS_OBJ = $(patsubst %,$(OBJ_DIR)/%,$(KERNELS_EXTRA))
 # Dependencies from list of object files
 #
 -include $(LIB:.o=.d)
--include $(KERNELS_OBJ:.o=.d)
--include $(EXAMPLES_OBJ:.o=.d)
+-include $(KERNELS_OUTSIDE_OBJ:.o=.d)
 -include $(TESTS_OBJ:.o=.d)
 
 
 V3DLIB=$(OBJ_DIR)/libv3dlib.a
-MESA_LIB = V3DLib/obj/mesa/bin/libmesa.a
+MESA_LIB = obj/mesa/bin/libmesa.a
 
 
 # Top-level targets
 
-.PHONY: help clean all lib test $(KERNELS) $(EXAMPLES) init
+.PHONY: help clean all lib test $(KERNELS_OUTSIDE) init
 
 # Following prevents deletion of object files after linking
 # Otherwise, deletion happens for targets of the form '%.o'
@@ -179,15 +170,15 @@ help:
 	@echo '    DEBUG=1       - If specified, the source code and target code is shown on stdout when running a test'
 	@echo
 
-all: $(V3DLIB) $(KERNELS) $(EXAMPLES)
+all: $(V3DLIB) $(KERNELS_OUTSIDE)
 
 clean:
-	rm -rf V3DLib/obj/emu V3DLib/obj/emu-debug V3DLib/obj/qpu V3DLib/obj/qpu-debug V3DLib/obj/test
+	rm -rf obj/emu obj/emu-debug obj/qpu obj/qpu-debug obj/test obj/out_kernels ../target/emu-debug ../target/out_kernels
 
 init:
-	@./V3DLib/script/install.sh
-	@./V3DLib/script/detect_tabs.sh
-	@mkdir -p ./V3DLib/obj/test
+	@./script/install.sh
+	@./script/detect_tabs.sh
+	@mkdir -p ./obj/test
 
 
 #
@@ -199,7 +190,6 @@ $(V3DLIB): $(LIB) $(MESA_LIB)
 	@ar rcs $@ $^
 
 $(MESA_LIB):
-	cd V3DLib
 	cd mesa && make compile
 
 
@@ -215,13 +205,7 @@ $(OBJ_DIR)/%.o: %.c | init
 	@mkdir -p $(@D)
 	@$(CXX) -x c -c -o $@ $< $(CXX_FLAGS)
 
-
-$(OBJ_DIR)/bin/%: $(OBJ_DIR)/kernels/%.o $(KERNELS_OBJ) $(V3DLIB) $(LIB_DEPEND)
-	@echo Linking $@...
-	@mkdir -p $(@D)
-	@$(LINK) $^ $(LIBS) -o $@
-
-$(OBJ_DIR)/bin/%: $(OBJ_DIR)/Examples/%.o $(EXAMPLES_OBJ) $(V3DLIB) $(LIB_DEPEND)
+$(OBJ_DIR)/bin/%: $(OBJ_DIR)/../kernels/%.o $(KERNELS_OUTSIDE_OBJ) $(V3DLIB) $(LIB_DEPEND)
 	@echo Linking $@...
 	@mkdir -p $(@D)
 	@$(LINK) $^ $(LIBS) -o $@
@@ -231,11 +215,7 @@ $(OBJ_DIR)/bin/%: $(OBJ_DIR)/Tools/%.o $(V3DLIB) $(LIB_DEPEND)
 	@mkdir -p $(@D)
 	@$(LINK) $^ $(LIBS) -o $@
 
-
-$(EXAMPLES) :% : $(OBJ_DIR)/bin/%
-
-
-$(KERNELS)  :% : $(OBJ_DIR)/bin/%
+$(KERNELS_OUTSIDE)  :% : $(OBJ_DIR)/bin/%
 
 #
 # Targets for Unit Tests
@@ -250,27 +230,11 @@ else
 	SUDO :=
 endif
 
-
-$(UNIT_TESTS): $(TESTS_OBJ) $(KERNELS_OBJ) $(V3DLIB) $(LIB_DEPEND)
-	@echo Linking unit tests
-	@mkdir -p $(@D)
-	@$(CXX) $(CXX_FLAGS) $(TESTS_OBJ) $(EXAMPLES_OBJ) -L$(OBJ_DIR) -lv3dlib $(LIBS) -o $@
-
-runTests: $(UNIT_TESTS)
-
-
-make_test: runTests ID Hello Rot3D ReqRecv GCD Tri detectPlatform OET
-
 #
 # Running unit test [fft][test2] in combination with the rest *sometimes* results in IO timeouts (Pi4 64bit).
 # Running it separately appears to work fine.
 # The infuriating bit is 'sometimes'.
 #
-test : make_test
-	@echo Running unit tests with \'$(SUDO) $(UNIT_TESTS)\'
-	@$(SUDO) $(UNIT_TESTS) -tce=*[fft][test2]*
-	@$(SUDO) $(UNIT_TESTS) -tc=*[fft][test2]*
-
 
 ###############################
 # Gen stuff
