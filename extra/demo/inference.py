@@ -1,4 +1,4 @@
-#%% mnist_cnn test
+#%% mnist_cnn test                   Load the .ckpt
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -27,7 +27,7 @@ class Net(nn.Module):
 
 # Load the saved model weights
 model = Net()
-model.load_state_dict(torch.load('MNIST_CNN.ckpt'))
+model.load_state_dict(torch.load('../../models/mnist_cnn/MNIST_CNN.ckpt'))
 model.eval()
 
 # Preprocess the test image
@@ -38,7 +38,7 @@ transform = transforms.Compose([
     transforms.Normalize((0.1307,), (0.3081,))
     ])
 
-test_image_path = 'testimg2.png'
+test_image_path = '../../../../testSample/img_11.jpg'
 test_image = Image.open(test_image_path)
 test_image = transform(test_image).unsqueeze(0)
 
@@ -54,7 +54,7 @@ print(f"Predicted Label: {predicted_label}")
 
 
 
-#%% Mnist Fully connected Test
+#%% Mnist Fully connected Test            Load the .ckpt
 import torch
 import torch.nn as nn
 import torchvision.transforms as transforms
@@ -87,11 +87,11 @@ class NeuralNet(nn.Module):
 model = NeuralNet(input_size, hidden_size, num_classes).to(device)
 
 # Load the saved model parameters
-model.load_state_dict(torch.load('model.ckpt'))
+model.load_state_dict(torch.load('../../models/mnist_fully_connected/model.ckpt'))
 print("Model parameters loaded successfully.")
 
 # Load the custom image
-custom_image = Image.open('testimg2.webp')  # Replace 'path_to_your_image.jpg' with the actual path to your image
+custom_image = Image.open('../../../../testSample/img_11.jpg')  # Replace 'path_to_your_image.jpg' with the actual path to your image
 custom_image = custom_image.convert('L')  # Convert the image to grayscale
 custom_image = custom_image.resize((28, 28))  # Resize the image to 28x28 pixels
 
@@ -114,3 +114,8 @@ _, predicted = torch.max(output.data, 1)
 predicted_label = predicted.item()
 
 print('Predicted label:', predicted_label)
+
+
+
+
+#%% ResNet18 Model Test
