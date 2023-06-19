@@ -92,4 +92,40 @@ print(a.concat(b))
 
 # %%
 
+# padding 
 
+a = tensor.ones(4, 4)
+print(a, "\n\n")
+
+print(a.pad2d(2))
+
+# %%
+
+# transpose
+a = tensor.ones(64, 128)
+print(f"shape: {a.shape}")
+print(f"transposed shape: {a.transpose().shape}")
+
+# implement the rest
+
+# %%
+
+# operations that will be accelerated in the GPU (currently running on CPU)
+
+a = tensor.ones(8, 8)
+b = tensor.ones(8, 8)
+
+print(f"add: {a + b}\n")
+print(f"sub: {a - b}\n")
+print(f"mul: {a * b}\n")
+
+
+# %%
+
+print(f"div: {a / b}\n")
+print(f"pow: {a ** b}\n")
+print(f"dot: {a @ b}\n")
+print(f"sum: {a.sum()}\n")
+print(f"max: {a.max()}\n")
+
+# %%
