@@ -46,7 +46,7 @@ $C_OBJ_TEST_TMP
 ")
 OBJ_TEST=$(echo "$OBJ_TEST_TMP" | sed "s/^/  /g")
 
-OUTSIDE_KERNELS_SUPPORT=$(find ../kernels/support -name '*.cpp')
+OUTSIDE_KERNELS_SUPPORT=$(find ../kernels/Support -name '*.cpp')
 
 # TODO remove final line with two spaces (need bash equivalent of 'chomp')
 OUTSIDE_KERNELS_EXTRA=$(echo "$OUTSIDE_KERNELS_SUPPORT" |sed "s/\\.cpp$/\\.o\\\\/g" |sed "s/^/ /")
