@@ -71,4 +71,25 @@ print(f"g [idenitiy matrix of s given size]: {g.data}")
 
 # %%
 
+# tensor reshape
+
+# creating a tensor of shape (4, 2, 2, 4)
+a = tensor.ones(4, 2, 2, 4)
+print(a.shape)
+
+# reshaping it to be in shape (4, 4)
+print(a.reshape(4, 16).shape)
+
+# %%
+
+# tensor concatenation
+
+# creating two tesnors to be concatenated
+a = tensor.zeros(4, 4)
+b = tensor.ones(4, 4)
+
+print(a.concat(b))
+
+# %%
+
 
