@@ -51,12 +51,10 @@ int main(int argc, const char *argv[]) {
   
   std::chrono::duration<double> duration = end - start;
   
-  printf(".......... GPU output ..........\n");
+/*  printf(".......... GPU output ..........\n");
   for (int i = 0; i < size; i++){           // Display the result
     printf("GPU: add(%i, %i) = %i\n", a[i], b[i], r[i]);
-  }  
-  
-  printf("Execution time for GPU: %f seconds\n", duration.count());
+  } */
   
   //from this point cpu code
   
@@ -73,12 +71,13 @@ int main(int argc, const char *argv[]) {
   
   std::chrono::duration<double> duration_cpu = end - start;
   
-  printf(".......... CPU output ..........\n");  
+/*  printf(".......... CPU output ..........\n");  
   for (int i = 0; i < size; i++) {
    printf("CPU: add(%i, %i) = %i\n", array1[i], array2[i], result[i]);
-  } 
+  } */
   printf(".........Execution Time.........\n");
   printf("Execution time for CPU: %f seconds\n", duration_cpu.count());
+  printf("Execution time for GPU: %f seconds\n", duration.count());
   
   
   return 0;
