@@ -5,10 +5,6 @@ def neg(x:'tensor') -> 'tensor':
   from waffle import tensor
   return tensor(cpu_ops.neg(x.data))
 
-def relu(x:'tensor') -> 'tensor':
-  from waffle import tensor
-  return tensor(cpu_ops.relu(x.data))
-
 def exp(x:'tensor') -> 'tensor':
   from waffle import tensor
   return tensor(cpu_ops.exp(x.data))
@@ -16,6 +12,10 @@ def exp(x:'tensor') -> 'tensor':
 def log(x:'tensor') -> 'tensor':
   from waffle import tensor
   return tensor(cpu_ops.log(x.data))
+
+def relu(x:'tensor') -> 'tensor':
+  from waffle import tensor
+  return tensor(cpu_ops.relu(x.data))
 
 def add(x:'tensor', y:'tensor') -> 'tensor':
   from waffle import tensor
