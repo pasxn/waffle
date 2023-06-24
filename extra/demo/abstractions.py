@@ -1,5 +1,7 @@
 # %%
 
+# Tensor Computation Module
+
 # importing our package and other helper packages for the demo
 from waffle import tensor
 import numpy as np
@@ -63,7 +65,7 @@ e = tensor.uniform(4, 4)
 f = tensor.glorot_uniform(4, 4)
 
 # idenitiy matrix of s given size
-g = tensor.eye(10)
+g = tensor.eye(5)
 
 print(f"e [unifrom distribution of numbers within-1 and 1 in a given shape]: {e.data}\n")
 print(f"f [glorot unifrom distribution of numbers within-1 and 1 in a given shape]: {f.data}\n")
@@ -106,7 +108,27 @@ a = tensor.ones(64, 128)
 print(f"shape: {a.shape}")
 print(f"transposed shape: {a.transpose().shape}")
 
-# implement the rest
+# %%
+
+# flatten
+
+a = tensor.randn(2, 4, 4, 2)
+print("shape a: ", a.shape); print("shape a[flattened]: ",a.flatten().shape)
+
+# slice
+
+a = tensor.randn(64, 64)
+print(a.slice((1, 4), (5, 6)))
+
+# expand
+
+a = tensor.randn(2, 2)
+print(a.expand(1).shape)
+
+# flip
+
+a = tensor.eye(4)
+print(a.data); print(a.flip(axis=1).data)
 
 # %%
 
@@ -129,3 +151,5 @@ print(f"sum: {a.sum()}\n")
 print(f"max: {a.max()}\n")
 
 # %%
+
+# Base Operation Mapper
