@@ -16,7 +16,7 @@ class tensor:
     else:
       raise RuntimeError(f"can't create Tensor from {data}")
     
-  def __repr__(self):
+  def __repr__(self) -> str:
     return f"<tensor {self.data!r}>"
 
 
