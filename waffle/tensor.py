@@ -45,8 +45,8 @@ class tensor:
     return tensor(np.random.randn(*shape).astype(np.float32), **kwargs)
     
   @staticmethod
-  def arange(stop:int, start=0, **kwargs) -> 'tensor':
-    return tensor(np.arange(start=start, stop=stop).astype(np.float32), **kwargs)
+  def arange(start:int, stop:int, step: int, **kwargs) -> 'tensor':
+    return tensor(np.arange(start, stop, step, dtype=np.float32).astype(np.float32), **kwargs)
 
   @staticmethod
   def uniform(*shape, **kwargs) -> 'tensor':

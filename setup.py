@@ -35,7 +35,7 @@ with open(os.path.join(directory, 'requirements.txt'), encoding='utf-8') as r:
 
 processor = platform.processor()
 if "armv7l" in processor and "BCM2711" in processor:
-  clone_build_v3dlib()
+  clone_build_v3dlib()  # V3DLib also can run on x86
 
 setup(name='waffle',
   version=__version__,
