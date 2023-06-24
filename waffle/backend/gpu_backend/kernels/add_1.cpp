@@ -26,35 +26,34 @@ void addArrays(int size, const int* array1, const int* array2, int* result) {
 
 int main(int argc, const char *argv[]) {
   
-  int size = 50;
+  int size = 400000;
 //GPU CODE
 
   Int::Array a(size);
   Int::Array b(size);
-  Int::Array r(size);        // Allocate and initialise the arrays shared between ARM and GPU
-  srand(0);
+  Int::Array r(size);   // Allocate and initialise the arrays shared between ARM and GPU
   for (int i = 0; i < size; i++) {
     a[i] = 1;
     b[i] = 1;
   }
-  
-  auto start = std::chrono::high_resolution_clock::now();  //time starts here
+
  
   settings.init(argc, argv);
-
-  auto k = compile(add);                 // Construct the kernel
-
-  k.load(size, &a, &b, &r);                    // Invoke the kernel
+  auto start = std::chrono::high_resolution_clock::now();  //time starts here
+  auto k = compile(add); 
+  for(int y=0; y<1000 ; y++){
+   // auto k = compile(add);                 // Construct the kernel
+    k.load(size, &a, &b, &r);
+  //  settings.process(k);
+  }  
   settings.process(k);
-  
-  auto end = std::chrono::high_resolution_clock::now(); //time ends here 
-  
+  auto end = std::chrono::high_resolution_clock::now();
   std::chrono::duration<double> duration = end - start;
   
-/*  printf(".......... GPU output ..........\n");
+ /* printf(".......... GPU output ..........\n");
   for (int i = 0; i < size; i++){           // Display the result
     printf("GPU: add(%i, %i) = %i\n", a[i], b[i], r[i]);
-  } */
+  }*/
   
   //from this point cpu code
   
@@ -65,11 +64,14 @@ int main(int argc, const char *argv[]) {
     array1[i]=1;
     array2[i]=1;
   }
-  auto start_cpu = std::chrono::high_resolution_clock::now();  //time start
-  addArrays(size, array1, array2,result);
+  auto start_cpu = std::chrono::high_resolution_clock::now();  //time start  
+  for(int y=0; y<1000 ; y++){
+    addArrays(size, array1, array2,result);
+  }  
+
   auto end_cpu = std::chrono::high_resolution_clock::now(); //time end 
   
-  std::chrono::duration<double> duration_cpu = end - start;
+  std::chrono::duration<double> duration_cpu = end_cpu - start_cpu;
   
 /*  printf(".......... CPU output ..........\n");  
   for (int i = 0; i < size; i++) {
@@ -82,3 +84,4 @@ int main(int argc, const char *argv[]) {
   
   return 0;
 }
+
