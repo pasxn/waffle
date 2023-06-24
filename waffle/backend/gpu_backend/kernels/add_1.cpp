@@ -24,64 +24,69 @@ void addArrays(int size, const int* array1, const int* array2, int* result) {
     }
 }
 
+
 int main(int argc, const char *argv[]) {
   
   int size = 400000;
-//GPU CODE
+  int iterations = 1000;
 
+  // GPU arrays
   Int::Array a(size);
   Int::Array b(size);
-  Int::Array r(size);   // Allocate and initialise the arrays shared between ARM and GPU
+  Int::Array r(size);
+
   for (int i = 0; i < size; i++) {
     a[i] = 1;
     b[i] = 1;
   }
 
- 
-  settings.init(argc, argv);
-  auto start = std::chrono::high_resolution_clock::now();  //time starts here
-  auto k = compile(add); 
-  for(int y=0; y<1000 ; y++){
-   // auto k = compile(add);                 // Construct the kernel
-    k.load(size, &a, &b, &r);
-  //  settings.process(k);
-  }  
-  settings.process(k);
-  auto end = std::chrono::high_resolution_clock::now();
-  std::chrono::duration<double> duration = end - start;
-  
- /* printf(".......... GPU output ..........\n");
-  for (int i = 0; i < size; i++){           // Display the result
-    printf("GPU: add(%i, %i) = %i\n", a[i], b[i], r[i]);
-  }*/
-  
-  //from this point cpu code
-  
-  int array1[size];
-  int array2[size];
-  int result[size];
-  for(int i=0; i<size; i++){
-    array1[i]=1;
-    array2[i]=1;
+  // CPU arrays
+  int aa[size];
+  int bb[size];
+  int rr[size];
+
+  for(int i = 0; i < size; i++) {
+    aa[i]=1;
+    bb[i]=1;
   }
-  auto start_cpu = std::chrono::high_resolution_clock::now();  //time start  
-  for(int y=0; y<1000 ; y++){
-    addArrays(size, array1, array2,result);
+
+  // GPU ececution
+  settings.init(argc, argv);
+  auto k = compile(add);
+
+  std::chrono::duration<double> accumilated_duration_gpu = 0;
+
+  for(int y = 0; y < iterations ; y++) {
+    auto start_gpu = std::chrono::high_resolution_clock::now();
+    k.load(size, &a, &b, &r);
+    settings.process(k);
+    auto end_gpu = std::chrono::high_resolution_clock::now();
+
+    std::chrono::duration<double> duration_gpu = end_gpu - start_gpu;
+    accumilated_duration_gpu += duration_gpu;
+  }
+
+  // CPU ececution
+  std::chrono::duration<double> accumilated_duration_cpu = 0;
+
+  for(int y = 0; y < iterations ; y++) {
+    auto start_cpu = std::chrono::high_resolution_clock::now();
+    addArrays(size, aa, bb,rr);
+    auto end_cpu = std::chrono::high_resolution_clock::now();
+
+    std::chrono::duration<double> duration_cpu = end_cpu - start_cpu;
+    accumilated_duration_cpu += duration_cpu;
+  }
+
+  // functional verification
+  for(int j = 0; j < size; j++) {
+    if(r[j] != rr[j])
+      printf("CPU output and GPU output is not equal at j = %d", j)
   }  
 
-  auto end_cpu = std::chrono::high_resolution_clock::now(); //time end 
-  
-  std::chrono::duration<double> duration_cpu = end_cpu - start_cpu;
-  
-/*  printf(".......... CPU output ..........\n");  
-  for (int i = 0; i < size; i++) {
-   printf("CPU: add(%i, %i) = %i\n", array1[i], array2[i], result[i]);
-  } */
+  // time log
   printf(".........Execution Time.........\n");
-  printf("Execution time for CPU: %f seconds\n", duration_cpu.count());
-  printf("Execution time for GPU: %f seconds\n", duration.count());
-  
-  
-  return 0;
+  printf("Execution time for CPU: %f seconds\n", accumilated_duration_cpu.count());
+  printf("Execution time for GPU: %f seconds\n", accumilated_duration_gpu.count());
 }
 
