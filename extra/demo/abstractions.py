@@ -134,8 +134,8 @@ print(a.data); print(a.flip(axis=1).data)
 
 # operations that will be accelerated in the GPU (currently running on CPU)
 
-a = tensor.ones(8, 8)
-b = tensor.ones(8, 8)
+a = tensor.ones(4, 4)
+b = tensor.ones(4, 4)
 
 print(f"add: {a + b}\n")
 print(f"sub: {a - b}\n")
@@ -153,3 +153,30 @@ print(f"max: {a.max()}\n")
 # %%
 
 # Base Operation Mapper
+
+from waffle import ops
+
+a = tensor.randn(2, 2)
+b = tensor.randn(2, 2)
+
+
+print("NEG", ops.neg(a))
+print("RELU", ops.relu(a))
+print("EXP", ops.exp(a))
+print("LOG", ops.log(a))
+
+# %%
+
+print("ADD", ops.add(a, b))
+print("SUB", ops.sub(a,b))
+print("MUL", ops.mul(a, b))
+print("DIV", ops.div(a, b))
+
+# %%
+
+print("POW", ops.pow(a,b))
+print("SUM", ops.sum(a))
+print("MAX", ops.max(a))
+print("GEMM", ops.gemm(a, b))
+
+# %%
