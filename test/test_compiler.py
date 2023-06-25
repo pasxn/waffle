@@ -6,7 +6,8 @@ from waffle import ops
 from waffle.backend import shapetracker
 
 class test_compiler(unittest.TestCase):
-    
+
+  @unittest.skip("There may not be a compiler")
   def test_shapetracker(self):
     
     ops.compile = True
