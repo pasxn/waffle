@@ -8,7 +8,8 @@ using namespace V3DLib;
 
 V3DLib::Settings settings;
 
-void mul(Int n, Int::Ptr x, Int::Ptr y, Int::Ptr z) {
+//kernel
+void div(Int n, Int::Ptr x, Int::Ptr y, Int::Ptr z) {
   For (Int i = 0, i<n, i+=16)
     Int a = x[i];
     Int b = y[i];
@@ -16,11 +17,12 @@ void mul(Int n, Int::Ptr x, Int::Ptr y, Int::Ptr z) {
   End
 }
 
-void mulArrays(int size, const int* array1, const int* array2, int* result) {
+//cpp function
+void divArrays(int size, const int* aa, const int* bb, int* rr) {
     for (int i = 0; i < size; i++) {
-    	int ca = array1[i];
-    	int cb = array2[i];
-    	result[i] = ca/cb;
+    	int ca = aa[i];
+    	int cb = bb[i];
+    	rr[i] = ca/cb;
     }
 }
 
@@ -28,6 +30,7 @@ int main(int argc, const char *argv[]) {
   
   int size = 400000;
   int iterations = 1000;
+  
 //GPU arrays
   Int::Array a(size);
   Int::Array b(size);
@@ -48,7 +51,7 @@ int main(int argc, const char *argv[]) {
   
   //GPU execution
   settings.init(argc, argv);
-  auto k = compile(mul);
+  auto k = compile(div);
   
   auto start = std::chrono::high_resolution_clock::now();
   for(int y=0; y<iterations ;y++){            
@@ -62,7 +65,7 @@ int main(int argc, const char *argv[]) {
   //CPU execution
   auto start_cpu = std::chrono::high_resolution_clock::now();  //time start  
   for(int y=0; y<iterations; y++){
-    mulArrays(size, aa, bb,rr);
+    divArrays(size, aa, bb,rr);
   }
   auto end_cpu = std::chrono::high_resolution_clock::now(); //time end 
   

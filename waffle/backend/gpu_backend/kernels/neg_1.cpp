@@ -8,6 +8,7 @@ using namespace V3DLib;
 
 V3DLib::Settings settings;
 
+//kernel
 void neg(Int n, Int::Ptr x , Int::Ptr y) {
   For (Int i = 0, i<n, i+=16)
     Int a = x[i];
@@ -15,9 +16,10 @@ void neg(Int n, Int::Ptr x , Int::Ptr y) {
   End
 }
 
-void negArrays(int size, const int* array1, int* result) {
+//cpp function
+void negArrays(int size, const int* aa, int* rr) {
     for (int i = 0; i < size; i++) {
-    	result[i] = -array1[i];
+    	aa[i] = 0-rr[i];
     }
 }
 
@@ -61,6 +63,12 @@ int main(int argc, const char *argv[]) {
   auto end_cpu = std::chrono::high_resolution_clock::now(); //time end 
   
   std::chrono::duration<double> duration_cpu = end_cpu - start_cpu;
+  
+  // functional verification
+  for(int j = 0; j < size; j++) {
+    if(r[j] != rr[j])
+      printf("CPU output and GPU output is not equal at j = %d \n", j);
+  }  
   
   printf(".........Execution Time.........\n");
   printf("Execution time for CPU: %f seconds\n", duration_cpu.count());

@@ -8,6 +8,7 @@ using namespace V3DLib;
 
 V3DLib::Settings settings;
 
+//kernel
 void sub(Int n, Int::Ptr x, Int::Ptr y, Int::Ptr z) {
   For (Int i = 0, i<n, i+=16)
     Int a = x[i];
@@ -16,11 +17,12 @@ void sub(Int n, Int::Ptr x, Int::Ptr y, Int::Ptr z) {
   End
 }
 
-void subArrays(int size, const int* array1, const int* array2, int* result) {
+//cpp function
+void subArrays(int size, const int* aa, const int* bb, int* rr) {
     for (int i = 0; i < size; i++) {
-    	int ca = array1[i];
-    	int cb = array2[i];
-    	result[i] = ca - cb;
+    	int ca = aa[i];
+    	int cb = bb[i];
+    	rr[i] = ca - cb;
     }
 }
 
