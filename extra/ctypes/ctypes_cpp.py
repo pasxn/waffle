@@ -2,7 +2,8 @@ import ctypes
 import os
 import numpy as np
 
-os.system("g++ -shared -o add.so -fPIC add.cpp")
+os.system("g++ -c add.cpp -fPIC -o add.o")
+os.system("g++ -shared -o add.so -fPIC add.o")
 
 # Load the shared library
 add_lib = ctypes.CDLL('./add.so')
