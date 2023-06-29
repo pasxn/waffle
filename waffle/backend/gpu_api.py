@@ -1,14 +1,14 @@
-import ctypes
-from enum import Enum
+from waffle.backend.gpu_backend import gpu_ops
 
-KERNEL_TYPES = Enum("KERNEL_TYPES", ["CPU", "HET"])
-
-class kernel:
-  def __init__(self, obj_path:str, kernel_type:'enum'):
-    lib = ctypes.CDLL(obj_path)
-    
 
 class gpu:
+
+  add:gpu_ops.kernels = gpu_ops.add_kernels()
+
   @staticmethod
   def compile():
     print(1)
+
+  @staticmethod
+  def add():
+    pass
