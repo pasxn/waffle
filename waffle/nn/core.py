@@ -8,12 +8,6 @@ class Module:
   def load_onnx(self):
     pass
 
-  def kernel_search(self):
-    pass
-
-  def compile(self):
-    pass
-
   def run(self, x:tensor) -> tensor:
     return self.forward(x)
   

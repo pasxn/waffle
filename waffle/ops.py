@@ -1,4 +1,4 @@
-from waffle.backend import cpu, gpu_api
+from waffle.backend import cpu, gpu
 from enum import Enum
 from waffle import tensor
 
@@ -8,6 +8,9 @@ OPS = Enum("OPS", ["NEG", "EXP", "LOG", "RELU", "ADD", "SUB", "MUL", "DIV", "POW
 LAYERS = Enum("LAYERS", ["LINEAR", "BATCHNORM2D", "CONV2D", "MAXPOOL2D"])
 
 device = DEVICES.HET
+
+def compile():
+  if device is DEVICES.HET: gpu.compile()
 
 def neg(x:tensor) -> tensor : return cpu.neg(x) if device is DEVICES.HET else cpu.neg(x)
 def exp(x:tensor) -> tensor : return cpu.exp(x) if device is DEVICES.HET else cpu.exp(x)
