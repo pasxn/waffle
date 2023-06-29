@@ -3,11 +3,11 @@ from waffle.backend.gpu_backend import gpu_ops
 
 class gpu:
 
-  add:gpu_ops.kernels = gpu_ops.add_kernels()
+  add_lib:gpu_ops.add_kernels = gpu_ops.add_kernels()
 
   @staticmethod
   def compile():
-    print(1)
+    gpu.add_lib.compile()
 
   @staticmethod
   def add():
