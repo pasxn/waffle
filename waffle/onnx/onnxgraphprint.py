@@ -2,8 +2,10 @@
 import onnx
 import numpy as np
 
+
 # Load the ONNX model
 model_path = 'models/resnet18/resnet18.onnx'
+
 model = onnx.load(model_path)
 
 # Print node details
