@@ -1,18 +1,18 @@
 from waffle import tensor
+from waffle import ops
 
 
 class Module:
   def __init__(self, *args, **kwargs):
     pass
 
-  def load_onnx(self):
+  def load(self):
     pass
-
-  def kernel_search(self):
-    pass
+    # get the linearized shit as a list of dicts
 
   def compile(self):
-    pass
+    ops.compile()
+    # create the in memory graph
 
   def run(self, x:tensor) -> tensor:
     return self.forward(x)

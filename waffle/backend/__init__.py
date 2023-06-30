@@ -1,1 +1,1 @@
-from waffle.backend.compiler import shapetracker
+from waffle.backend.gpu_api import gpu

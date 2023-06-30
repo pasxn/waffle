@@ -9,6 +9,9 @@ LAYERS = Enum("LAYERS", ["LINEAR", "BATCHNORM2D", "CONV2D", "MAXPOOL2D"])
 
 device = DEVICES.HET
 
+def compile():
+  if device is DEVICES.HET: gpu.compile()
+
 def neg(x:tensor) -> tensor : return cpu.neg(x) if device is DEVICES.HET else cpu.neg(x)
 def exp(x:tensor) -> tensor : return cpu.exp(x) if device is DEVICES.HET else cpu.exp(x)
 def log(x:tensor) -> tensor : return cpu.log(x) if device is DEVICES.HET else cpu.log(x)
