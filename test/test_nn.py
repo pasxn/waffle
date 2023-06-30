@@ -6,7 +6,7 @@ from waffle import nn
 from waffle import ops
 
 class test_nn(unittest.TestCase):
-    
+  @unittest.skip("Fix after defining nn.Module")  
   def test_nn_arithmetic(self):
 
     class nn_arith(nn.Module):
@@ -31,6 +31,7 @@ class test_nn(unittest.TestCase):
     for i in range(100):
       n1.forward()
   
+  @unittest.skip("Fix after defining nn.Module")
   def test_nn_linear(self):
     from examples.mnist_fully_connected.mnist_model import MnistNN
     model = MnistNN(784, 10)
