@@ -3,9 +3,10 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torchvision.transforms as transforms
-from PIL import Image
+import matplotlib.pyplot as plt
+import matplotlib.image as mpimg
 
-# Define the CNN architecture
+#Define the CNN architecture
 class Net(nn.Module):
   def __init__(self):
     super(Net, self).__init__()
@@ -38,9 +39,15 @@ transform = transforms.Compose([
     transforms.Normalize((0.1307,), (0.3081,))
     ])
 
-test_image_path = '../../../../testSample/img_11.jpg'
+test_image_path = '../../../../testSample/img_13.jpg'
 test_image = Image.open(test_image_path)
 test_image = transform(test_image).unsqueeze(0)
+
+#plot image
+image = mpimg.imread(test_image_path)
+plt.imshow(image)
+plt.axis('off')  # Remove axis ticks
+plt.show()
 
 # Make a prediction
 with torch.no_grad():
@@ -91,7 +98,7 @@ model.load_state_dict(torch.load('../../models/mnist_fully_connected/model.ckpt'
 print("Model parameters loaded successfully.")
 
 # Load the custom image
-custom_image = Image.open('../../../../testSample/img_11.jpg')  # Replace 'path_to_your_image.jpg' with the actual path to your image
+custom_image = Image.open('../../../../testSample/img_10.jpg')  # Replace 'path_to_your_image.jpg' with the actual path to your image
 custom_image = custom_image.convert('L')  # Convert the image to grayscale
 custom_image = custom_image.resize((28, 28))  # Resize the image to 28x28 pixels
 
@@ -115,7 +122,3 @@ predicted_label = predicted.item()
 
 print('Predicted label:', predicted_label)
 
-
-
-
-#%% ResNet18 Model Test
