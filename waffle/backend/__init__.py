@@ -1,1 +1,1 @@
-from waffle.backend.gpu_api import gpu
+from waffle.backend.gpu import gpu
