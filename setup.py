@@ -8,7 +8,7 @@ from waffle import __version__
 
 def get_kernels(soc):
   current_dir = os.getcwd(); kernels = []
-  directory = current_dir + 'target/emu-debug/bin' if soc == 'X86' else current_dir + 'arget/qpu/bin'
+  directory = current_dir + 'target/emu-debug/bin' if soc == 'X86' else current_dir + 'target/qpu/bin'
   
   for files in os.walk(directory):
     for file in files:
