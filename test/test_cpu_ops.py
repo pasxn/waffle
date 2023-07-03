@@ -22,5 +22,10 @@ class test_cpu_ops(unittest.TestCase):
     np.testing.assert_allclose(np.array(  [2.0]                 ), cpu.sum(t1).data)
     np.testing.assert_allclose(np.array(  [1.0]                 ), cpu.max(t1).data)
 
+    t1 = tensor.uniform(512, 1024)
+    t2 = tensor.uniform(1024, 512)
+
+    np.testing.assert_allclose(tensor(t1.data @ t2.data).data, cpu.gemm(t1,t2).data)
+
 if __name__ == '__main__':
   unittest.main()
