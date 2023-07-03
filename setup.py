@@ -55,7 +55,7 @@ processor = platform.processor()
 soc = 'QPU' if "armv7l" in processor and "BCM2711" in processor else 'X86'
 
 kernels = get_kernels(soc)
-clone_build_v3dlib(kernels)
+clone_build_v3dlib(kernels, soc)
 
 setup(name='waffle',
   version=__version__,
