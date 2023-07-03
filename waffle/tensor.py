@@ -5,7 +5,7 @@ from typing import Tuple, List, Union, Callable
 from waffle import ops
 
 class tensor:
-  def __init__(self, data:Union[List, Tuple, int, np.ndarray]):
+  def __init__(self, data:Union[int, float, List, Tuple, np.ndarray]):
     if isinstance(data, list):
       self.data = np.array(data, dtype=np.float32)
     elif isinstance(data, int) or isinstance(data, float) or isinstance(data, np.float32):
