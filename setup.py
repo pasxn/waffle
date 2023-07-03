@@ -6,7 +6,10 @@ from setuptools import setup
 from waffle import __version__
 
 
-def clone_build_v3dlib():
+def get_kernels():
+  pass
+
+def clone_build_v3dlib(kernels):
   current_dir = os.getcwd()
   os.chdir('waffle/backend/gpu_backend')
   os.system('git clone https://github.com/wimrijnders/V3DLib.git')
@@ -22,6 +25,12 @@ def clone_build_v3dlib():
   os.chdir('V3DLib')
   os.system('./script/generate.sh')
   os.system('ls') # change to the build command
+
+  # add the command to make the kernels here
+  
+  # difine the file/dir names in the shell scripts as well
+  os.chdir('..')
+  os.system('/shared.sh')
   
   os.chdir(current_dir)
 
@@ -33,9 +42,11 @@ with open(os.path.join(directory, 'README.md'), encoding='utf-8') as f:
 with open(os.path.join(directory, 'requirements.txt'), encoding='utf-8') as r:
   requirements = [req.strip() for req in r.readlines()]
 
+kernels = get_kernels()
+
 processor = platform.processor()
 if "armv7l" in processor and "BCM2711" in processor:
-  clone_build_v3dlib()  # V3DLib also can run on x86
+  clone_build_v3dlib(kernels)  # V3DLib also can run on x86
 
 setup(name='waffle',
   version=__version__,
