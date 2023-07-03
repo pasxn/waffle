@@ -8,7 +8,7 @@ from waffle import __version__
 
 def get_kernels(soc):
   current_dir = os.getcwd(); kernels = []
-  directory = current_dir + 'target/emu-debug/bin' if soc is 'X86' else current_dir + 'arget/qpu/bin'
+  directory = current_dir + 'target/emu-debug/bin' if soc == 'X86' else current_dir + 'arget/qpu/bin'
   
   for files in os.walk(directory):
     for file in files:
@@ -24,7 +24,7 @@ def clone_build_v3dlib(kernels, soc):
   os.system('git clone https://github.com/wimrijnders/CmdParameter.git')
 
   os.chdir('CmdParameter')
-  os.system('make DEBUG=1 all' if soc is 'X86' else 'make DEBUG=0 all')
+  os.system('make DEBUG=1 all' if soc == 'X86' else 'make DEBUG=0 all')
   os.chdir('..')
 
   os.system('cp generate.sh V3DLib/script')
@@ -32,11 +32,11 @@ def clone_build_v3dlib(kernels, soc):
   
   os.chdir('V3DLib')
   os.system('./script/generate.sh') # V3DLib error
-  os.system('make DEBUG=1 QPU=0 all' if soc is 'X86' else 'make DEBUG=0 QPU=1 all')
-  os.system('make DEBUG=1 QPU=0 all' if soc is 'X86' else 'make DEBUG=0 QPU=1 all')
+  os.system('make DEBUG=1 QPU=0 all' if soc == 'X86' else 'make DEBUG=0 QPU=1 all')
+  os.system('make DEBUG=1 QPU=0 all' if soc == 'X86' else 'make DEBUG=0 QPU=1 all')
 
   for kernel in kernels:
-    os.system('make DEBUG=1 QPU=0 ' + kernel if soc is 'X86' else 'make DEBUG=0 QPU=1 ' + kernel)
+    os.system('make DEBUG=1 QPU=0 ' + kernel if soc == 'X86' else 'make DEBUG=0 QPU=1 ' + kernel)
   
   os.chdir('..')
   os.system('/shared.sh')
