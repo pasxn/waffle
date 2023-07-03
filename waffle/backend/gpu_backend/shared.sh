@@ -1,6 +1,12 @@
 #!/bin/bash
 
-cd . # part to directory should be here
+machine_arch=$(uname -m)
+
+if [[ $machine_arch == "x86_64" ]]; then
+  cd target/emu-debug/bin
+else
+  cd target/qpu/bin
+fi
 
 file_list=$(find . -type f -name "*.o")
 
