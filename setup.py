@@ -6,10 +6,9 @@ from setuptools import setup
 from waffle import __version__
 
 
-def get_kernels(soc):
-  current_dir = os.getcwd(); kernels = []
-  directory = current_dir + 'target/emu-debug/bin' if soc == 'X86' else current_dir + 'target/qpu/bin'
-  
+def get_kernels():
+  kernels = []; directory = os.path.dirname(os.path.abspath(__file__)) + 'waffle/backend/gpu_backend/kernels'
+
   for files in os.walk(directory):
     for file in files:
       if file.endswith(".cpp"):
@@ -31,8 +30,7 @@ def clone_build_v3dlib(kernels, soc):
   os.system('cp make_kernels V3DLib')
   
   os.chdir('V3DLib')
-  os.system('./script/generate.sh') # V3DLib error
-  os.system('make --file=make_kernels DEBUG=1 QPU=0 all' if soc == 'X86' else 'make DEBUG=0 QPU=1 all')
+  os.system('./script/generate.sh')
   os.system('make --file=make_kernels DEBUG=1 QPU=0 all' if soc == 'X86' else 'make DEBUG=0 QPU=1 all')
 
   for kernel in kernels:
@@ -54,7 +52,7 @@ with open(os.path.join(directory, 'requirements.txt'), encoding='utf-8') as r:
 processor = platform.processor()
 soc = 'QPU' if "armv7l" in processor and "BCM2711" in processor else 'X86'
 
-kernels = get_kernels(soc)
+kernels = get_kernels()
 clone_build_v3dlib(kernels, soc)
 
 setup(name='waffle',

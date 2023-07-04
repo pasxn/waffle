@@ -1,12 +1,6 @@
 #!/bin/bash
 
-machine_arch=$(uname -m)
-
-if [[ $machine_arch == "x86_64" ]]; then
-  cd target/emu-debug/bin
-else
-  cd target/qpu/bin
-fi
+cd target/kernels
 
 file_list=$(find . -type f -name "*.o")
 
