@@ -6,22 +6,40 @@ from setuptools import setup
 from waffle import __version__
 
 
-def clone_build_v3dlib():
+def get_kernels(soc):
+  current_dir = os.getcwd(); kernels = []
+  directory = current_dir + 'target/emu-debug/bin' if soc == 'X86' else current_dir + 'target/qpu/bin'
+  
+  for files in os.walk(directory):
+    for file in files:
+      if file.endswith(".cpp"):
+        kernels.append(file.split('.')[0])
+  
+  return kernels
+
+def clone_build_v3dlib(kernels, soc):
   current_dir = os.getcwd()
   os.chdir('waffle/backend/gpu_backend')
   os.system('git clone https://github.com/wimrijnders/V3DLib.git')
   os.system('git clone https://github.com/wimrijnders/CmdParameter.git')
 
   os.chdir('CmdParameter')
-  os.system('ls') # change to the build command
+  os.system('make DEBUG=1 all' if soc == 'X86' else 'make DEBUG=0 all')
   os.chdir('..')
 
   os.system('cp generate.sh V3DLib/script')
   os.system('cp make_kernels V3DLib')
   
   os.chdir('V3DLib')
-  os.system('./script/generate.sh')
-  os.system('ls') # change to the build command
+  os.system('./script/generate.sh') # V3DLib error
+  os.system('make --file=make_kernels DEBUG=1 QPU=0 all' if soc == 'X86' else 'make DEBUG=0 QPU=1 all')
+  os.system('make --file=make_kernels DEBUG=1 QPU=0 all' if soc == 'X86' else 'make DEBUG=0 QPU=1 all')
+
+  for kernel in kernels:
+    os.system('make --file=make_kernels DEBUG=1 QPU=0 ' + kernel if soc == 'X86' else 'make DEBUG=0 QPU=1 ' + kernel)
+  
+  os.chdir('..')
+  os.system('/shared.sh')
   
   os.chdir(current_dir)
 
@@ -34,8 +52,10 @@ with open(os.path.join(directory, 'requirements.txt'), encoding='utf-8') as r:
   requirements = [req.strip() for req in r.readlines()]
 
 processor = platform.processor()
-if "armv7l" in processor and "BCM2711" in processor:
-  clone_build_v3dlib()  # V3DLib also can run on x86
+soc = 'QPU' if "armv7l" in processor and "BCM2711" in processor else 'X86'
+
+kernels = get_kernels(soc)
+clone_build_v3dlib(kernels, soc)
 
 setup(name='waffle',
   version=__version__,
