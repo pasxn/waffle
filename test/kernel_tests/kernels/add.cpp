@@ -30,8 +30,8 @@ void addArrays(int size, const int* aa, const int* bb, int* rr) {
 
 int main(int argc, const char *argv[]) {
   
-  int size = 400000;
-  int iterations = 1000;
+  int size = 900000;
+  int iterations = 1;
 
 //gpu input
   Int::Array a(size);
