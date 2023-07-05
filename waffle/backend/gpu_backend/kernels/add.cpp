@@ -21,7 +21,7 @@ void compile_kernel() {
   kernel = compile(add);
 }
 
-void run_kernel(int size) {
+void run_kernel(int size, float* x, float* y, float* z) {
   Int::Array a(size);
   Int::Array b(size);
   Int::Array r(size);
@@ -36,8 +36,8 @@ extern "C" {
     compile_kernel();
   }
 
-  void run(int size, int* ret) {
-    run_kernel(val);
+  void run(int size, float* x, float* y, float* z) {
+    run_kernel(size, x, y, z);
   }
   
 }
