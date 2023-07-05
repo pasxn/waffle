@@ -10,11 +10,12 @@ public:
   }
 
   void compilee() {
-    data = data + 10;
+    data = data + 5;
   }
 
-  int run(int value) {
-    return data + value;
+  void run(int size, float *input, float *output) {
+    for(size_t i=0; i<size; i++)
+      output[i] = input[i] + (float)(data);
   }
 };
 
@@ -25,8 +26,8 @@ void compile_kernel() {
   kernel->compilee();
 }
 
-int run_kernel(int val) {
-  return kernel->run(val);
+void run_kernel(int size, float *input, float *output) {
+  kernel->run(size, input, output);
 }
 
 // C code
@@ -35,8 +36,8 @@ extern "C" {
     compile_kernel();
   }
 
-  void run(int val, int* ret) {
-    *ret = run_kernel(val);
+  void run(int size, float *input, float *output) {
+    run_kernel(size, input, output);
   }
   
 }
