@@ -10,8 +10,8 @@ def get_kernels():
   kernels = []; directory = os.path.dirname(os.path.abspath(__file__)) + '/waffle/backend/gpu_backend/kernels'
 
   for files in os.walk(directory):
-    for file in files:
-      if file.endswith(".cpp"):
+    for file in files[2]:
+      if file.endswith(".cpp") and not any(char.isupper() for char in file):
         kernels.append(file.split('.')[0])
   
   return kernels
