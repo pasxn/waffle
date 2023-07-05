@@ -26,9 +26,13 @@ void run_kernel(int size, float* x, float* y, float* z) {
   Int::Array b(size);
   Int::Array r(size);
 
+  for(int i = 0; i < size; i++) a[i] = x[i]; b[i] = y[i];
+
   kernel.setNumQPUs(settings.num_qpus);
   kernel.load(size, &a, &b, &r);
   settings.process(kernel);
+
+  for(int i = 0; i < size; i++) z[i] = r[i];
 }
 
 extern "C" {

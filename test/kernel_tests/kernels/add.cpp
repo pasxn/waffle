@@ -33,7 +33,7 @@ int main(int argc, const char *argv[]) {
   int size = 900000;
   int iterations = 1;
 
-//gpu input
+  //gpu inpute
   Int::Array a(size);
   Int::Array b(size);
   Int::Array r(size);
@@ -43,8 +43,7 @@ int main(int argc, const char *argv[]) {
     b[i] = 1;
   }
 
-
-//cpu input
+  //cpu input
   int aa[size];
   int bb[size];
   int rr[size];
@@ -54,8 +53,7 @@ int main(int argc, const char *argv[]) {
     bb[i]=1;
   }
 
-
-//gpu execution
+  //gpu execution
   settings.init(argc, argv);
   auto k = compile(add);
   k.setNumQPUs(settings.num_qpus);
