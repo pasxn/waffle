@@ -14,7 +14,7 @@ class add_kernel:
     # self.lib.add.argtypes = (ctypes.c_int, ctypes.POINTER(ctypes.c_float), ctypes.POINTER(ctypes.c_float), ctypes.POINTER(ctypes.c_float))
 
   def compile(self):
-    self.lib.compile()
+    self.lib._compile()
     
   def __call__(self, x:np.ndarray, y:np.ndarray) -> np.ndarray:
     dim = len(x.shape) if len(x.shape) is len(y.shape) else 0
@@ -26,4 +26,3 @@ class add_kernel:
     self.lib(size, x, y, z)
 
     return z
-    

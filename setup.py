@@ -7,7 +7,7 @@ from waffle import __version__
 
 
 def get_kernels():
-  kernels = []; directory = os.path.dirname(os.path.abspath(__file__)) + 'waffle/backend/gpu_backend/kernels'
+  kernels = []; directory = os.path.dirname(os.path.abspath(__file__)) + '/waffle/backend/gpu_backend/kernels'
 
   for files in os.walk(directory):
     for file in files:

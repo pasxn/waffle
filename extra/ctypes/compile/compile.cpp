@@ -1,19 +1,3 @@
-// C code
-extern "C" {
-  void compile_kernel();
-  int run_kernel(int val);
-
-  void compile() {
-    compile_kernel();
-  }
-
-  void run(int val, int* ret) {
-    *ret = run_kernel(val);
-  }
-  
-}
-
-
 // C++ code
 #include <stdio.h>
 
@@ -34,12 +18,25 @@ public:
   }
 };
 
-foo* kernel = new foo(5);
+foo* kernel = NULL;
 
 void compile_kernel() {
+  kernel = new foo(5);
   kernel->compilee();
 }
 
 int run_kernel(int val) {
   return kernel->run(val);
+}
+
+// C code
+extern "C" {
+  void compile() {
+    compile_kernel();
+  }
+
+  void run(int val, int* ret) {
+    *ret = run_kernel(val);
+  }
+  
 }
