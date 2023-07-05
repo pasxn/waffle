@@ -31,13 +31,13 @@ def clone_build_v3dlib(kernels, soc):
   
   os.chdir('V3DLib')
   os.system('./script/generate.sh')
-  os.system('make --file=make_kernels DEBUG=1 QPU=0 all' if soc == 'X86' else 'make DEBUG=0 QPU=1 all')
+  os.system('make --file=make_kernels DEBUG=1 QPU=0 all' if soc == 'X86' else 'make --file=make_kernels DEBUG=0 QPU=1 all')
 
   for kernel in kernels:
-    os.system('make --file=make_kernels DEBUG=1 QPU=0 ' + kernel if soc == 'X86' else 'make DEBUG=0 QPU=1 ' + kernel)
+    os.system('make --file=make_kernels DEBUG=1 QPU=0 ' + kernel if soc == 'X86' else 'make --file=make_kernels DEBUG=0 QPU=1 ' + kernel)
   
   os.chdir('..')
-  os.system('/shared.sh')
+  os.system('./shared.sh')
   
   os.chdir(current_dir)
 
