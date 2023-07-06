@@ -5,9 +5,5 @@ class gpu:
   add_lib:gpu_ops.add_kernel = gpu_ops.add_kernel()
 
   @staticmethod
-  def compile():
-    gpu.add_lib.compile()
-
-  @staticmethod
   def add(x:tensor, y:tensor) -> tensor:
     return tensor(gpu.add_lib(x, y))

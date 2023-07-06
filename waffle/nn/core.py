@@ -13,7 +13,7 @@ class Module:
     self.graph_obj = graph(linearized_model)
 
   def compile(self):
-    ops.compile()
+    pass
     # create the in memory graph
 
   def run(self, x:tensor) -> tensor:
