@@ -79,10 +79,10 @@ LIBS := $(LIB_EXTERN)
 #    It is benign: https://stackoverflow.com/a/48149400 
 #
 CXX_FLAGS = \
- -fPIC \
  -Wall \
  -Wconversion \
  -Wno-psabi \
+ -fPIC \
  -I $(ROOT) $(INCLUDE_EXTERN) -MMD -MP -MF"$(@:%.o=%.d)"
 
 # Object directory

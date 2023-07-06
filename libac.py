@@ -2,9 +2,6 @@
 
 import os
 import platform
-from setuptools import setup
-
-__version__ = '0.0.3'
 
 
 def get_kernels():
@@ -55,20 +52,3 @@ soc = 'QPU' if "armv7l" in processor and "BCM2711" in processor else 'X86'
 
 kernels = get_kernels()
 clone_build_v3dlib(kernels, soc)
-
-setup(name='waffle',
-  version=__version__,
-  description='A hardware accelerated machine learning inference framework for Raspberry Pi',
-  author='Pasan Perera, Kavin Amantha, Afkar Ahamed',
-  license='MIT',
-  long_description=long_description,
-  long_description_content_type='text/markdown',
-  packages = ['waffle'],
-  classifiers=[
-    "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: MIT License"
-  ],
-  install_requires=requirements,
-  python_requires='>=3.8',
-  include_package_data=True
-)

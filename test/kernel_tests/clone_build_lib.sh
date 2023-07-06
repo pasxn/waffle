@@ -13,6 +13,5 @@ cp make_kernels V3DLib
 cd V3DLib
 ./script/generate.sh
 make --file=make_kernels QPU=0 DEBUG=1 all  
-make --file=make_kernels QPU=0 DEBUG=1 all
 
 cd ..

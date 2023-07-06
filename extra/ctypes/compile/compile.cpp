@@ -1,19 +1,3 @@
-// C code
-extern "C" {
-  void compile_kernel();
-  int run_kernel(int val);
-
-  void compile() {
-    compile_kernel();
-  }
-
-  void run(int val, int* ret) {
-    *ret = run_kernel(val);
-  }
-  
-}
-
-
 // C++ code
 #include <stdio.h>
 
@@ -26,20 +10,34 @@ public:
   }
 
   void compilee() {
-    data = data + 10;
+    data = data + 5;
   }
 
-  int run(int value) {
-    return data + value;
+  void run(int size, float *input, float *output) {
+    for(size_t i=0; i<size; i++)
+      output[i] = input[i] + (float)(data);
   }
 };
 
-foo* kernel = new foo(5);
+foo* kernel = NULL;
 
 void compile_kernel() {
+  kernel = new foo(5);
   kernel->compilee();
 }
 
-int run_kernel(int val) {
-  return kernel->run(val);
+void run_kernel(int size, float *input, float *output) {
+  kernel->run(size, input, output);
+}
+
+// C code
+extern "C" {
+  void compile() {
+    compile_kernel();
+  }
+
+  void run(int size, float *input, float *output) {
+    run_kernel(size, input, output);
+  }
+  
 }

@@ -24,8 +24,8 @@ void negArrays(int size, const int* aa, int* rr) {
 }
 
 int main(int argc, const char *argv[]) {
-  int size = 400000;
-  int iterations = 1000;
+  int size = 900000;
+  int iterations = 1;
 //GPU arrays
   Int::Array a(size);
   Int::Array r(size);
