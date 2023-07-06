@@ -8,7 +8,7 @@ OPS = Enum("OPS", ["NEG", "EXP", "LOG", "RELU", "ADD", "SUB", "MUL", "DIV", "POW
 current_dir = os.path.dirname(os.path.abspath(__file__))
 
 class add_kernel:
-  def __init__(self):
+  def __init__(self): pass
     # self.lib = ctypes.CDLL(current_dir + '/target/kernels/add.so')
     # self.lib.add.restype = None
     # self.lib.add.argtypes = (ctypes.c_int, ctypes.POINTER(ctypes.c_float), ctypes.POINTER(ctypes.c_float), ctypes.POINTER(ctypes.c_float))
