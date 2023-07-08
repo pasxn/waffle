@@ -5,7 +5,7 @@
 #include <string.h>
 #include <dlfcn.h>
 
-float* add_run(float num) {
+void add_run(float num, float* result) {
   void *handle;
   float* (*plus_one)(float);
   char *error;
@@ -16,24 +16,22 @@ float* add_run(float num) {
 
   plus_one = (float* (*)(float)) dlsym(handle, "plus_one");
 
-  float* result = (*plus_one)(num);
+  result = (*plus_one)(num);
   dlclose(handle);
 
-  printf("%f\n", *result);
-
-  return result;
+  printf("result: %f\n", *result);
 }
 
 extern "C" {
-  void run(float num) {
-    add_run(num);
+  void run(float num, float* result) {
+    add_run(num, result);
   }
 }
 
 int main() {
   float* z = (float*)malloc(sizeof(float));
   
-  z = add_run(1.0f);
+  add_run(1.0f, z);
 
   printf("%f\n", *z);
 
