@@ -14,8 +14,8 @@ with open(os.path.join(directory, 'README.md'), encoding='utf-8') as f:
 with open(os.path.join(directory, 'requirements.txt'), encoding='utf-8') as r:
   requirements = [req.strip() for req in r.readlines()]
 
-kernels = get_kernels()
-clone_build_v3dlib(kernels, soc)
+# kernels = get_kernels()
+# clone_build_v3dlib(kernels, soc)
 
 setup(name='waffle',
   version=__version__,
