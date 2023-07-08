@@ -54,8 +54,8 @@ with open(os.path.join(directory, 'requirements.txt'), encoding='utf-8') as r:
 processor = platform.processor()
 soc = 'QPU' if "armv7l" in processor and "BCM2711" in processor else 'X86'
 
-kernels = get_kernels()
-clone_build_v3dlib(kernels, soc)
+# kernels = get_kernels()
+# clone_build_v3dlib(kernels, soc)
 
 setup(name='waffle',
   version=__version__,
