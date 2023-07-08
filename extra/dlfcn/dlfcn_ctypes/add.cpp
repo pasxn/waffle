@@ -25,7 +25,7 @@ void add_run(float num, float* result) {
 
 extern "C" {
   void run(float num, float* result) {
-    //add_run(num);
+    add_run(num, result);
   }
 }
 
