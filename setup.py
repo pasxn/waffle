@@ -29,6 +29,7 @@ def clone_build_v3dlib(kernels, soc):
 
   os.system('cp generate.sh V3DLib/script')
   os.system('cp make_kernels V3DLib')
+  os.system('cp makefile V3DLib/mesa')
   
   os.chdir('V3DLib')
   os.system('./script/generate.sh')
@@ -69,6 +70,6 @@ setup(name='waffle',
     "License :: OSI Approved :: MIT License"
   ],
   install_requires=requirements,
-  python_requires='>=3.8',
+  python_requires='>=3.7',
   include_package_data=True
 )
