@@ -209,12 +209,12 @@ $(OBJ_DIR)/%.o: %.c | init
 $(OBJ_DIR)/bin/%: $(OBJ_DIR)/../kernels/%.o $(KERNELS_OUTSIDE_OBJ) $(V3DLIB) $(LIB_DEPEND)
 	@echo Linking $@...
 	@mkdir -p $(@D)
-	@$(LINK) $^ $(LIBS) -shared -fPIC -o $@
+	@$(LINK) $^ $(LIBS) -shared -fPIC -o $@.so
 
 $(OBJ_DIR)/bin/%: $(OBJ_DIR)/Tools/%.o $(V3DLIB) $(LIB_DEPEND)
 	@echo Linking $@...
 	@mkdir -p $(@D)
-	@$(LINK) $^ $(LIBS) -o $@.so
+	@$(LINK) $^ $(LIBS) -o $@
 
 $(KERNELS_OUTSIDE)  :% : $(OBJ_DIR)/bin/%
 
