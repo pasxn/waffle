@@ -2,7 +2,7 @@
 
 import os
 from setuptools import setup
-from libac import soc, get_kernels, clone_build_v3dlib
+from libv3dac import soc, get_kernels, clone_build_v3dlib
 
 __version__ = '0.0.3'
 
