@@ -2,7 +2,6 @@
 
 import os
 from setuptools import setup
-from libv3dac import soc, get_kernels, clone_build_v3dlib
 
 __version__ = '0.0.3'
 
@@ -13,9 +12,6 @@ with open(os.path.join(directory, 'README.md'), encoding='utf-8') as f:
 
 with open(os.path.join(directory, 'requirements.txt'), encoding='utf-8') as r:
   requirements = [req.strip() for req in r.readlines()]
-
-# kernels = get_kernels()
-# clone_build_v3dlib(kernels, soc)
 
 setup(name='waffle',
   version=__version__,
@@ -30,6 +26,6 @@ setup(name='waffle',
     "License :: OSI Approved :: MIT License"
   ],
   install_requires=requirements,
-  python_requires='>=3.7',
+  python_requires='>=3.8',
   include_package_data=True
 )
