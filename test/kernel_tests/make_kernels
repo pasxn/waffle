@@ -79,10 +79,10 @@ LIBS := $(LIB_EXTERN)
 #    It is benign: https://stackoverflow.com/a/48149400 
 #
 CXX_FLAGS = \
+ -fPIC \
  -Wall \
  -Wconversion \
  -Wno-psabi \
- -fPIC \
  -I $(ROOT) $(INCLUDE_EXTERN) -MMD -MP -MF"$(@:%.o=%.d)"
 
 # Object directory
@@ -209,7 +209,7 @@ $(OBJ_DIR)/%.o: %.c | init
 $(OBJ_DIR)/bin/%: $(OBJ_DIR)/../kernels/%.o $(KERNELS_OUTSIDE_OBJ) $(V3DLIB) $(LIB_DEPEND)
 	@echo Linking $@...
 	@mkdir -p $(@D)
-	@$(LINK) $^ $(LIBS) -shared -fPIC -o $@.so
+	@$(LINK) $^ $(LIBS) -o $@
 
 $(OBJ_DIR)/bin/%: $(OBJ_DIR)/Tools/%.o $(V3DLIB) $(LIB_DEPEND)
 	@echo Linking $@...
