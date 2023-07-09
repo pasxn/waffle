@@ -1,1 +1,0 @@
-## An experiment only. waffle GPU backend is not under active development. CPU backend works!
