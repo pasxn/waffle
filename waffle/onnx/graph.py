@@ -1,15 +1,18 @@
 
 
 class Node:
-  def __init__(self):
-    self.node_name = None
-    self.callable = None
-    self.weights = None
-    self.biases = None
+  def __init__(self, name, input, output, op_type, attributes, weight, bias):
+    self.name = name
+    self.input = input
+    self.output = output
+    self.op_type = op_type
 
-  def load_callable(self):
-    callable.set_weights(self.weights)
-    callable.set_weights(self.biases)
+    self.attributes = attributes
+
+    self.weight = weight
+    self.bias = bias
+
+    self.callable = None
 
 class Graph:
   def __init__(self, graph):
