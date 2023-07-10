@@ -1,5 +1,3 @@
-
-
 class Node:
   def __init__(self, name, input, output, op_type, attributes, weight, bias):
     self.name = name
@@ -17,3 +15,12 @@ class Node:
 class Graph:
   def __init__(self, graph):
     self.liniearized_graph = graph
+
+  def search_layer_node(self):
+    pass
+
+  def construct_graph(self):
+    pass
+
+  def traverse_graph(self):
+    pass
