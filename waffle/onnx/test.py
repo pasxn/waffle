@@ -10,8 +10,3 @@ print()
 print(len(graph_nodes))
 print()
 print()
-
-for i in range(len(graph_nodes)):
-  print(f'Node: {i} | Lengt: {len(graph_nodes[i].weight)}')
-print()
-print()
