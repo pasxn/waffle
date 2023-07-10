@@ -21,11 +21,6 @@ if __name__ == '__main__':
   end_time = time.perf_counter_ns()
   execution_time_gpu = end_time - start_time
 
-  print(' a '.center(80, '='))
-  print(a)
-  print(' b '.center(80, '='))
-  print(b)
-  print(' a+b '.center(80, '='))
-  print(out_gpu)
-  print(' error '.center(80, '='))
-  print(np.abs(a+b-out))
+  print(f"CPU Time: {execution_time_cpu}")
+  print(f"GPU Time: {execution_time_gpu}")
+  print(f"Error: {np.abs(out_cpu-out_gpu)}")

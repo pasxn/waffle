@@ -42,8 +42,12 @@ def add(a, b):
   pad = 16-(len(a)%16)
   a_mod = np.concatenate((a, np.zeros(pad)))
   b_mod = np.concatenate((b, np.zeros(pad)))
+
+  result = np.array([])
   
-  for i in range(len(a_mod), 16):
-    pass
+  for i in range(16, len(a_mod), 16):
+    result = np.concatenate((result, excec_add(a_mod[i-16:i], b_mod[i-16:i])))
 
   result = result[:-pad]
+
+  return result
