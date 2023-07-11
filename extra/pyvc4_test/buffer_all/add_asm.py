@@ -44,12 +44,7 @@ def add(a, b):
   a_mod = np.concatenate((a, np.zeros(pad).astype('float32')))
   b_mod = np.concatenate((b, np.zeros(pad).astype('float32')))
 
-  result = np.array([])
-
-  for i in range(16, len(a_mod)+16, 16):
-    result = np.concatenate((result, excec_add(a_mod[i-16:i], b_mod[i-16:i])))
-    time.sleep(5)
-
+  result = excec_add(a_mod, b_mod)
   result = result[:-pad]
 
   assert len(result) == len(a), "padding algorithm is innacurate!"
