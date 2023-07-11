@@ -8,8 +8,8 @@ def cpu(a, b):
 
 if __name__ == '__main__':
   # Input vectors
-  a = np.random.random(100).astype('float32')
-  b = np.random.random(100).astype('float32')
+  a = np.random.random(100000).astype('float32')
+  b = np.random.random(100000).astype('float32')
 
   start_time = time.perf_counter_ns()
   out_cpu = cpu(a, b)
