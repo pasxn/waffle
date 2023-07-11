@@ -1,4 +1,5 @@
 import numpy as np
+import time
 
 from videocore.assembler import qpu
 from videocore.driver import Driver
@@ -30,24 +31,29 @@ def add_kernel(asm):
 def excec_add(a, b):
   with Driver() as drv:
     # Copy vectors to shared memory for DMA transfer
+    a = np.random.random(16).astype('float32')
+    b = np.random.random(16).astype('float32')
     inp = drv.copy(np.r_[a, b])
     out = drv.alloc(16, 'float32')
-
+    
     # Run the program
     drv.execute(n_threads=1, program=drv.program(add_kernel), uniforms=[inp.address, out.address])
-  
-  return out
+
+    return np.array(out)
 
 def add(a, b):
   pad = 16-(len(a)%16)
-  a_mod = np.concatenate((a, np.zeros(pad)))
-  b_mod = np.concatenate((b, np.zeros(pad)))
+  a_mod = np.concatenate((a, np.zeros(pad).astype('float32')))
+  b_mod = np.concatenate((b, np.zeros(pad).astype('float32')))
 
   result = np.array([])
-  
-  for i in range(16, len(a_mod), 16):
+
+  for i in range(16, len(a_mod)+16, 16):
     result = np.concatenate((result, excec_add(a_mod[i-16:i], b_mod[i-16:i])))
+    time.sleep(5)
 
   result = result[:-pad]
+
+  assert len(result) == len(a), "padding algorithm is innacurate!"
 
   return result

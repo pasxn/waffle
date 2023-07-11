@@ -8,8 +8,8 @@ def cpu(a, b):
 
 if __name__ == '__main__':
   # Input vectors
-  a = np.random.random(1000000).astype('float32')
-  b = np.random.random(1000000).astype('float32')
+  a = np.random.random(100).astype('float32')
+  b = np.random.random(100).astype('float32')
 
   start_time = time.perf_counter_ns()
   out_cpu = cpu(a, b)
@@ -21,6 +21,6 @@ if __name__ == '__main__':
   end_time = time.perf_counter_ns()
   execution_time_gpu = end_time - start_time
 
-  print(f"CPU Time: {execution_time_cpu}")
-  print(f"GPU Time: {execution_time_gpu}")
-  print(f"Error: {np.abs(out_cpu-out_gpu)}")
+  print(f"CPU Time: {execution_time_cpu/1000} ms")
+  print(f"GPU Time: {execution_time_gpu/1000} ms")
+  print(f"Error: {np.abs(out_cpu-out_gpu).sum()/len(out_cpu)}")
