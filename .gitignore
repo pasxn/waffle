@@ -1,6 +1,7 @@
 # --- Custom ---
 .vscode/
 *.ipynb
+*.out
 
 # --- Python ---
 # Byte-compiled / optimized / DLL files
