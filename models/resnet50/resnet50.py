@@ -1,89 +1,93 @@
-#%%
 import torch
-import torch.nn as nn
-import torchvision.models as models
+import torchvision
 import torchvision.transforms as transforms
-from torch.utils.data import DataLoader
-from torchvision.datasets import ImageFolder
+import torch.nn as nn
+import torch.nn.functional as F
+import torch.optim as optim
+from torchvision.models import resnet50 as ResNet50
 
-#%%
-# Define the data transformation
-data_transform = transforms.Compose([
-    transforms.Resize(256),
-    transforms.CenterCrop(224),
-    transforms.ToTensor(),
-    transforms.Normalize(mean=[0.485, 0.456, 0.406],
-                         std=[0.229, 0.224, 0.225])
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+print(device)
+
+transform_train = transforms.Compose([
+  transforms.RandomHorizontalFlip(),
+  transforms.RandomCrop(32, padding=4),
+  transforms.ToTensor(),
+  transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
+])
+transform_test = transforms.Compose([
+  transforms.ToTensor(),
+  transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
 ])
 
-#%%
-# Load the Tiny ImageNet dataset
-dataset = ImageFolder('tiny-imagenet-200/test', transform=data_transform)
+train = torchvision.datasets.CIFAR10(root='./data', train=True, download=True, transform=transform_train)
+trainloader = torch.utils.data.DataLoader(train, batch_size=128, shuffle=True, num_workers=2)
+test = torchvision.datasets.CIFAR10(root='./data', train=False, download=True, transform=transform_test)
+testloader = torch.utils.data.DataLoader(test, batch_size=128,shuffle=False, num_workers=2)
 
-#%%
-# Create a data loader for the dataset
-data_loader = DataLoader(dataset, batch_size=64, shuffle=False, num_workers=4)
+classes = ['plane', 'car', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck']
 
-#%%
-# Load the pre-trained ResNet-50 model
-#model = models.resnet50(pretrained=True)
-weights = models.ResNet50_Weights.DEFAULT
-model = models.resnet50(weights=weights)
+net = ResNet50(10).to(device)
 
-#%%
-# Set the model to evaluation mode
-model.eval()
-
-#%%
-# Create a loss criterion 
 criterion = nn.CrossEntropyLoss()
+optimizer = optim.SGD(net.parameters(), lr=0.1, momentum=0.9, weight_decay=0.0001)
+scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, factor = 0.1, patience=5)
 
-#%%
-# variables for tracking accuracy and loss
-total_correct = 0
-total_loss = 0
-total_images = 0
+EPOCHS = 50
+for epoch in range(EPOCHS):
+  losses = []
+  running_loss = 0
+  correct = 0
+  total = 0
+  for i, inp in enumerate(trainloader):
+    inputs, labels = inp
+    inputs, labels = inputs.to(device), labels.to(device)
+    optimizer.zero_grad()
+    
+    outputs = net(inputs)
+    loss = criterion(outputs, labels)
+    losses.append(loss.item())
 
-#%%
-# Evaluate the model on the dataset
+    loss.backward()
+    optimizer.step()
+        
+    running_loss += loss.item()
+        
+    _, predicted = outputs.max(1)
+    total += labels.size(0)
+    correct += predicted.eq(labels).sum().item()
+
+    train_acc = 100 * correct / total
+
+    if i%100 == 0 and i > 0:
+      print(f'Loss [{epoch+1},Accuracy = {train_acc:.2f}, {i}](epoch, minibatch): ', running_loss / 100)
+      running_loss = 0.0
+
+  avg_loss = sum(losses)/len(losses)
+  scheduler.step(avg_loss)
+            
+print('Training Done')
+
+net.eval()
+correct = 0
+total = 0
+
 with torch.no_grad():
-    for images, labels in data_loader:
-        # Move the data to GPU (available)
-        #if torch.cuda.is_available():
-        #   images = images.cuda()
-        #  labels = labels.cuda()
+  for data in testloader:
+    images, labels = data
+    images, labels = images.to(device), labels.to(device)
+    outputs = net(images)
+        
+    _, predicted = torch.max(outputs.data, 1)
+    total += labels.size(0)
+    correct += (predicted == labels).sum().item()
+print('Accuracy on 10,000 test images: ', 100*(correct/total), '%')
 
-        # Forward pass
-        outputs = model(images)
-        loss = criterion(outputs, labels)
+input_shape = torch.randn(128, 3, 32, 32).to(device)
+torch.onnx.export(net, input_shape, 'resnet50.onnx')
 
-        # Update total loss
-        total_loss += loss.item()
+import torch
 
-        # Get predicted labels
-        _, predicted = torch.max(outputs, 1)
-
-        # Update total correct predictions
-        total_correct += (predicted == labels).sum().item()
-
-        # Update total images
-        total_images += labels.size(0)
-        print("Total number of evaluated images: ", total_images)
-
-#%%
-# Calculate accuracy and average loss
-accuracy = total_correct / total_images
-avg_loss = total_loss / len(data_loader)
-
-# Print results
-print('Accuracy: {:.2%}'.format(accuracy))
-print('Average Loss: {:.4f}'.format(avg_loss))
-
-# %%
-# Export the model to ONNX format
-input_tensor = torch.randn(1, 3, 224, 224)  # Assumes input images of size 224x224 with 3 channels
-onnx_file_path = "resnet50.onnx"
-torch.onnx.export(model, input_tensor, onnx_file_path, export_params=True, opset_version=11)
-
-print(f"ResNet50 model has been saved to '{onnx_file_path}' in ONNX format.")
-# %%
+cuda_version = torch.version.cuda
+print("PyTorch CUDA version:", cuda_version)
+print('device = ',device)
