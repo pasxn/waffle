@@ -1,11 +1,11 @@
+# add description
+
 from waffle.backend import cpu
 from enum import Enum
 from waffle import tensor
 
 OPS = Enum("OPS", ["NEG", "EXP", "LOG", "RELU", "ADD", "SUB", "MUL", "DIV", "POW", "SUM", "MAX", "GEMM"])
 LAYERS = Enum("LAYERS", ["LINEAR", "BATCHNORM2D", "CONV2D", "MAXPOOL2D"])
-
-# add description
 
 def neg  (x:tensor)            -> tensor : return cpu.neg  (x)
 def exp  (x:tensor)            -> tensor : return cpu.exp  (x)
