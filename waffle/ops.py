@@ -1,4 +1,17 @@
-# add description
+"""
+This layer of abstraction was designed to add heterogeneous hardware support to the framework.
+
+An attemp was taken to accelerate the operations on the Raspberry Pi 4 GPU (VideoCore Vi),
+which was the target hardware at the design phase of the project. Later, due to technical complexities
+that component (GPU backend) was then transferred to https://github.com/pasxn/v3dBLAS.git.
+
+The method to add new hardware is to implement the backend and the API similar to the interface available
+at waffle/backend. The CPU backend is already available at waffle/backend/cpu_backend and the CPU backend
+API is aialable at waffle/backend/cpu.py!
+
+Then the hardware which the operations are supposed to be executed can be mapped in the dedicated function
+for the each operation below in this file.
+"""
 
 from waffle.backend import cpu
 from enum import Enum
