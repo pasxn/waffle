@@ -11,7 +11,7 @@ python -m pip install -e .
 ```
 or if you wanna run tests,
 ```bash
-python3 -m pip install -e '.[testing]
+python3 -m pip install -e '.[testing]'
 ```
 
 ### Running tests
