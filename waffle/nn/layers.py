@@ -4,8 +4,9 @@ from waffle import ops
 
 # ***** nn ops ****
 class Linear:
-  def __init__(self, in_features: tensor, out_features:tensor, bias=True):
-    self.in_features = in_features; self.out_features = out_features
+  def __init__(self, in_features:tensor, out_features:tensor, bias=True):
+    self.in_features = in_features
+    self.out_features = out_features
     self.weight = tensor.glorot_uniform(self.out_features, self.in_features)
     self.bias = tensor.zeros(out_features, 1) if bias else None
 
@@ -21,9 +22,17 @@ class Linear:
     return x.add(self.bias) if self.bias is not None else x
     
 
-class Batchnorm2D:
-  def __init__(self):
-    pass
+class Batchnorm:
+  def __init__(self, input_mean:tensor, input_var:tensor, epsilon:tensor, scale:tensor, B:tensor):
+    self.input_mean = input_mean
+    self.input_var = input_var
+    self.epsilon = epsilon
+    self.scale = scale
+    self.B = B
+
+  def __call__(self, x):
+    return (x - self.input_mean)/((self.input_var + self.epsilon)**0.5) * self.scale + self.B
+
 
 class Conv2D:
   def __init__(self):
