@@ -2,7 +2,7 @@ from waffle import tensor
 from waffle import ops
 
 
-# ***** nn ops ****
+# ***** nn ops *****
 class Linear:
   def __init__(self, in_features:tensor, out_features:tensor, bias=True):
     self.in_features = in_features
@@ -43,7 +43,7 @@ class MaxPool2D:
     pass
 
 
-# ***** nonLeniarities ****
+# ***** nonleniarities *****
 class ReLU:
   def __call__(self, x:tensor) -> tensor:
     return ops.relu(x)
