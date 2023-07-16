@@ -16,7 +16,7 @@ class Linear:
     self.bias = bias
 
   def __call__(self, x:tensor) -> tensor:
-    assert x.shape == (self.in_features, 1), f'The inputa shape is should be ({self.in_features}. {1})'
+    assert x.shape == (self.in_features, 1), f'The inputa shape is should be ({self.in_features}, {1})'
     x = self.weight@x
     return x.add(self.bias) if self.bias is not None else x
     
