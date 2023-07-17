@@ -20,23 +20,29 @@ filtr_2 = np.array([[1, 2, 3],
 image = image_1; filtr = filtr_1
 
 # method 1
-output = []
+output_1 = []
 
 for i in range(image.shape[0]-filtr.shape[0]+1):
   for j in range(image.shape[1]-filtr.shape[1]+1):
-    output.append(image[i:i+filtr.shape[0], j:j+filtr.shape[1]].flatten().tolist())
+    output_1.append(image[i:i+filtr.shape[0], j:j+filtr.shape[1]].flatten().tolist())
 
 # method 2
-output = []
+output_2 = []
 
 for i in range((image.shape[0]-filtr.shape[0]+1) * (image.shape[1]-filtr.shape[1]+1)):
   row = i // (image.shape[1]-filtr.shape[1]+1)
   col = i % (image.shape[1]-filtr.shape[1]+1)
-  output.append(image[row:row+filtr.shape[0], col:col+filtr.shape[1]].flatten().tolist())
+  output_2.append(image[row:row+filtr.shape[0], col:col+filtr.shape[1]].flatten().tolist())
 
 
-output = np.array(output).transpose()
+output_1 = np.array(output_1).transpose()
+output_2 = np.array(output_2).transpose()
 
 print(f"\nimage :\n{image}")
-print(f"\nmasked output :\n{output}")
-print(f"\nconvolution result :\n{filtr.flatten()@output}\n")
+print(f"\nmasked output :\n{output_2}")
+print(f"\nconvolution result :\n{filtr.flatten()@output_2}\n")
+
+output_1 = output_1.flatten(); output_2 = output_2.flatten()
+
+for i in range (len(output_1)):
+  assert output_1[i] == output_2[i], f"Not matching at {i}!"
