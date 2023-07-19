@@ -37,9 +37,18 @@ for i in range((image.shape[0]-filtr.shape[0]+1) * (image.shape[1]-filtr.shape[1
 output_1 = np.array(output_1).transpose()
 output_2 = np.array(output_2).transpose()
 
+conv_result = filtr.flatten()@output_2
+
+height = int(((image.shape[0] - filtr.shape[0] + 2*(0))/1) + 1) # 0: number of padding, 1: stride
+width = int(((image.shape[1] - filtr.shape[1] + 2*(0))/1) + 1) # 0: number of padding, 1: stride
+
+kernel_size = 1
+
+conv_result = conv_result.reshape(height, width, kernel_size)
+
 print(f"\nimage :\n{image}")
 print(f"\nmasked output :\n{output_2}")
-print(f"\nconvolution result :\n{filtr.flatten()@output_2}\n")
+print(f"\nconvolution result :\n{conv_result}\n")
 
 output_1 = output_1.flatten(); output_2 = output_2.flatten()
 
