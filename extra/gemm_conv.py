@@ -34,7 +34,6 @@ for i in range((image.shape[0]-filtr.shape[0]+1) * (image.shape[1]-filtr.shape[1
   col = i % (image.shape[1]-filtr.shape[1]+1)
   output_2.append(image[row:row+filtr.shape[0], col:col+filtr.shape[1]].flatten().tolist())
 
-
 output_1 = np.array(output_1).transpose()
 output_2 = np.array(output_2).transpose()
 
