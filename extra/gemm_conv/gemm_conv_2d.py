@@ -15,7 +15,7 @@ num_channels  = filtr.shape[1]
 filter_height = filtr.shape[2]
 filter_width  = filtr.shape[3]
 
-reshaped_x = []
+intermediate_x = []
 for h in range(num_channels):
   filter_out = []
   for i in range(image_height-filter_height+1):
@@ -23,18 +23,21 @@ for h in range(num_channels):
       filter_out.append(image[h][i:i+filter_height, j:j+filter_width].flatten())
 
   filter_out = np.array(filter_out).transpose()
-  reshaped_x.append(filter_out)
+  intermediate_x.append(filter_out)
 
-reshaped_x = np.array(reshaped_x).reshape(reshaped_x[0].shape[0]*num_channels, reshaped_x[0].shape[1])
+reshaped_x_height = filter_out.shape[0]*num_channels
+reshaped_x_width  = filter_out.shape[1]
 
-reshaped_w = filtr.reshape(num_kernels, reshaped_x.shape[0])
+reshaped_x = np.array(intermediate_x).reshape(reshaped_x_height, reshaped_x_width)
+
+reshaped_w = filtr.reshape(num_kernels, reshaped_x_height)
 
 conv_result = reshaped_w@reshaped_x
 
-height = int(((image_height - filter_height + 2*(0))/1) + 1)  # 0: number of padding, 1: stride
-width  = int(((image_width - filter_width + 2*(0))/1) + 1)    # 0: number of padding, 1: stride
+conv_result_height = int(((image_height - filter_height + 2*(0))/1) + 1)  # 0: number of padding, 1: stride
+conv_result_width  = int(((image_width - filter_width + 2*(0))/1) + 1)    # 0: number of padding, 1: stride
 
-conv_result = conv_result.reshape(num_kernels, height, width)
+conv_result = conv_result.reshape(num_kernels, conv_result_height, conv_result_width)
 
 print(f"\nimage :\n{image}")
 print(f"\nfilter :\n{filtr}")
