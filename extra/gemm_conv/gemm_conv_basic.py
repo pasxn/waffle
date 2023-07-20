@@ -44,7 +44,7 @@ width = int(((image.shape[1] - filtr.shape[1] + 2*(0))/1) + 1) # 0: number of pa
 
 kernel_size = 1
 
-conv_result = conv_result.reshape(kernel_size, height, width)
+conv_result = conv_result.reshape(height, width, kernel_size)
 
 print(f"\n  image               \n{image}")
 print(f"\n  masked output       \n{output_2}")

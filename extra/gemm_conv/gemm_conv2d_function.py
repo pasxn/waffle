@@ -46,9 +46,12 @@ def conv2d(image, filter_size, num_kernels):
 
 if __name__ == '__main__':
   img = Image.open('./mnist.jpg')
-  img_arr = np.array(img)
+  img_arr = np.array(img).reshape(28, 28, 1)
 
-  output = conv2d(img_arr, 4, 2)
+  #output = conv2d(img_arr, 4, 2)
 
-  print(img_arr.shape) 
+  print(img_arr.shape)
+
+  img = Image.fromarray(img_arr)
+  img.show()
   
