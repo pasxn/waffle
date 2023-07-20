@@ -39,8 +39,8 @@ conv_result_width  = int(((image_width - filter_width + 2*(0))/1) + 1)    # 0: n
 
 conv_result = conv_result.reshape(num_kernels, conv_result_height, conv_result_width)
 
-print(f"\nimage :\n{image}")
-print(f"\nfilter :\n{filtr}")
-print(f"\nmasked output :\n{reshaped_x}")
-print(f"\nreshaped filters :\n{reshaped_w}")
-print(f"\nconvolution result :\n{conv_result}\n")
+print(f"\n  image               \n{image}")
+print(f"\n  filter              \n{filtr}")
+print(f"\n  masked output       \n{reshaped_x}")
+print(f"\n  reshaped filters    \n{reshaped_w}")
+print(f"\n  convolution result  \n{conv_result}\n")

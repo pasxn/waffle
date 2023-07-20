@@ -46,9 +46,9 @@ kernel_size = 1
 
 conv_result = conv_result.reshape(kernel_size, height, width)
 
-print(f"\nimage :\n{image}")
-print(f"\nmasked output :\n{output_2}")
-print(f"\nconvolution result :\n{conv_result}\n")
+print(f"\n  image               \n{image}")
+print(f"\n  masked output       \n{output_2}")
+print(f"\n  convolution result  \n{conv_result}\n")
 
 output_1 = output_1.flatten(); output_2 = output_2.flatten()
 
