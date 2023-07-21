@@ -14,9 +14,9 @@ def conv2d(image, filter_size, num_kernels):
     num_channels = image.shape[0]
 
   if isinstance(filter_size, int): # a filter has x kernels of y channels
-    filtr = np.random.randn(num_kernels, num_channels, filter_size, filter_size)
+    filtr = np.random.randn(num_kernels, num_channels, filter_size, filter_size).astype(np.float32)
   elif isinstance(filter_size, tuple):
-    filtr = np.random.randn(num_kernels, num_channels, filter_size[0], filter_size[1])
+    filtr = np.random.randn(num_kernels, num_channels, filter_size[0], filter_size[1]).astype(np.float32)
   
   filter_height = filtr.shape[2]; filter_width  = filtr.shape[3]
 
@@ -49,35 +49,37 @@ def conv2d(image, filter_size, num_kernels):
 
 
 def conv_torch(img, channels, num_kernels, kernel_size):
+  img = img.permute(0, 3, 1, 2)
   conv_layer = nn.Conv2d(in_channels=channels, out_channels=num_kernels, kernel_size=kernel_size, stride=1, padding=0)
-  return conv_layer(img)
+  output_torch =  conv_layer(img)
+
+  return  output_torch.clone().detach().squeeze(0).numpy().transpose((1, 2, 0))
 
 
 if __name__ == '__main__':
-  np.set_printoptions(threshold=np.inf)
+  # image
+  img = Image.open('./imagenet.jpeg')
+  img.show()
 
-  img = Image.open('./cfar.jpg')
   img = np.array(img).astype(np.float32)
 
-  # print(img.shape)
-
-  # output = conv2d(img, 4, 2)
-
-  # print(output.shape)
 
   # torch
   img_torch = torch.tensor(img).unsqueeze(0)
-  # img_torch = torch.tensor(img).squeeze(0)
 
-  print(img_torch.shape)
+  output_torch  = conv_torch(img_torch, 3, 2, 4)
+  print(f"torch output shape: {output_torch.shape}")
+  mean_output_torch = np.mean(output_torch , axis=2)
 
-  output = conv_torch(img_torch, 3, 2, 4)
+  mean_output_torch_img = Image.fromarray(mean_output_torch)
+  mean_output_torch_img.show()
 
-  # mean_output = np.mean(img_torch.numpy(), axis=2)
 
-  # mean_output = Image.fromarray(mean_output)
-  # mean_output.show()
-
-  #img = Image.fromarray(img)
-  #img.show()
+  # waffle
+  output_waffle = conv2d(img, 4, 2)
+  print(f"waffle output shape: {output_waffle.shape}")
+  mean_output_waffle = np.mean(output_waffle , axis=2)
+  
+  mean_output_waffle_img = Image.fromarray(output_waffle)
+  mean_output_waffle_img.show()
   
