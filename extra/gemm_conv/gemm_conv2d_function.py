@@ -3,12 +3,12 @@ from PIL import Image
 
 
 def conv2d(image, filter_size, num_kernels):
-  image_height = image.shape[0]; image_width  = image.shape[1]
+  image_height = image.shape[1]; image_width = image.shape[2]
   
   if len(image.shape) <= 2:
-    num_channels = 1; image = image.reshape(image.shape[0], image.shape[1], num_channels)
+    num_channels = 1; image = image.reshape(num_channels, image.shape[0], image.shape[1])
   else:
-    num_channels = image.shape[3]
+    num_channels = image.shape[0]
 
   if isinstance(filter_size, int): # a filter has x kernels of y channels
     filtr = np.random.randn(num_kernels, num_channels, filter_size, filter_size)
