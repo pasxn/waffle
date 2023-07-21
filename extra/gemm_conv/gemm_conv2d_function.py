@@ -1,7 +1,8 @@
-import numpy as np
-from PIL import Image
 import torch
 import torch.nn as nn
+import numpy as np
+from PIL import Image
+from matplotlib import pyplot as plt
 
 
 def conv2d(image, filter_size, num_kernels):
@@ -58,11 +59,10 @@ def conv_torch(img, channels, num_kernels, kernel_size):
 
 if __name__ == '__main__':
   # image
-  img = Image.open('./imagenet.jpeg')
-  img.show()
-
+  img = Image.open('./big.jpg')
   img = np.array(img).astype(np.float32)
 
+  plt.imshow(img.astype('uint8')); plt.show()
 
   # torch
   img_torch = torch.tensor(img).unsqueeze(0)
@@ -71,15 +71,15 @@ if __name__ == '__main__':
   print(f"torch output shape: {output_torch.shape}")
   mean_output_torch = np.mean(output_torch , axis=2)
 
-  mean_output_torch_img = Image.fromarray(mean_output_torch)
-  mean_output_torch_img.show()
+  plt.imshow(mean_output_torch.astype('uint8')); plt.show()
 
 
   # waffle
   output_waffle = conv2d(img, 4, 2)
   print(f"waffle output shape: {output_waffle.shape}")
   mean_output_waffle = np.mean(output_waffle , axis=2)
-  
-  mean_output_waffle_img = Image.fromarray(output_waffle)
-  mean_output_waffle_img.show()
+
+  plt.imshow(mean_output_waffle.astype('uint8')); plt.show()
+
+  assert output_waffle.shape == output_torch.shape, 'Error in conv output shape'
   
