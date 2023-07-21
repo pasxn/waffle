@@ -1,8 +1,11 @@
 import numpy as np
 from PIL import Image
+import torch
+import torch.nn as nn
 
 
 def conv2d(image, filter_size, num_kernels):
+  image = np.transpose(image, (2, 0, 1))
   image_height = image.shape[1]; image_width = image.shape[2]
   
   if len(image.shape) <= 2:
@@ -40,18 +43,41 @@ def conv2d(image, filter_size, num_kernels):
   output_width  = int(((image_width - filter_width + 2*(0))/1) + 1)    # 0: number of padding, 1: stride
 
   output = output.reshape(num_kernels, output_height, output_width)
+  output = np.transpose(output, (1, 2, 0))
 
   return output
 
 
+def conv_torch(img, channels, num_kernels, kernel_size):
+  conv_layer = nn.Conv2d(in_channels=channels, out_channels=num_kernels, kernel_size=kernel_size, stride=1, padding=0)
+  return conv_layer(img)
+
+
 if __name__ == '__main__':
-  img = Image.open('./mnist.jpg')
-  img_arr = np.array(img).reshape(28, 28, 1)
+  np.set_printoptions(threshold=np.inf)
 
-  #output = conv2d(img_arr, 4, 2)
+  img = Image.open('./cfar.jpg')
+  img = np.array(img).astype(np.float32)
 
-  print(img_arr.shape)
+  # print(img.shape)
 
-  img = Image.fromarray(img_arr)
-  img.show()
+  # output = conv2d(img, 4, 2)
+
+  # print(output.shape)
+
+  # torch
+  img_torch = torch.tensor(img).unsqueeze(0)
+  # img_torch = torch.tensor(img).squeeze(0)
+
+  print(img_torch.shape)
+
+  output = conv_torch(img_torch, 3, 2, 4)
+
+  # mean_output = np.mean(img_torch.numpy(), axis=2)
+
+  # mean_output = Image.fromarray(mean_output)
+  # mean_output.show()
+
+  #img = Image.fromarray(img)
+  #img.show()
   
