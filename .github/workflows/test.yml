@@ -25,4 +25,3 @@ jobs:
         python3 -m pip install -e '.[testing]' --extra-index-url https://download.pytorch.org/whl/cpu
     - name: Run Pytest
       run: python3 -m pytest -s -v
-      

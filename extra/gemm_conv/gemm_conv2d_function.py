@@ -1,3 +1,4 @@
+import sys
 import torch
 import torch.nn as nn
 import numpy as np
@@ -6,15 +7,13 @@ from matplotlib import pyplot as plt
 
 
 def conv2d(image, filter_size, num_kernels):
-  image = np.transpose(image, (2, 0, 1))
-  image_height = image.shape[1]; image_width = image.shape[2]
-  
-  if len(image.shape) <= 2:
-    num_channels = 1; image = image.reshape(num_channels, image.shape[0], image.shape[1])
-  else:
-    num_channels = image.shape[0]
+  image = np.expand_dims(image, axis=-1) if len(image.shape) < 3 else image
 
-  if isinstance(filter_size, int): # a filter has x kernels of y channels
+  image = np.transpose(image, (2, 0, 1))
+  num_channels = image.shape[0]; image_height = image.shape[1]; image_width = image.shape[2]
+
+  # a filter has x kernels of y channels
+  if isinstance(filter_size, int):
     filtr = np.random.randn(num_kernels, num_channels, filter_size, filter_size).astype(np.float32)
   elif isinstance(filter_size, tuple):
     filtr = np.random.randn(num_kernels, num_channels, filter_size[0], filter_size[1]).astype(np.float32)
@@ -35,7 +34,6 @@ def conv2d(image, filter_size, num_kernels):
   reshaped_x_width  = filter_out.shape[1]
 
   reshaped_x = np.array(intermediate_x).reshape(reshaped_x_height, reshaped_x_width)
-
   reshaped_w = filtr.reshape(num_kernels, reshaped_x_height)
 
   output = reshaped_w@reshaped_x
@@ -49,8 +47,15 @@ def conv2d(image, filter_size, num_kernels):
   return output
 
 
-def conv_torch(img, channels, num_kernels, kernel_size):
-  img = img.permute(0, 3, 1, 2)
+def conv_torch(img, num_kernels, kernel_size):
+  if len(img.shape) > 3:
+    channels = img.shape[-1]
+    img = img.permute(0, 3, 1, 2)
+  else:
+    img = img.unsqueeze(-1)
+    channels = img.shape[-1]
+    img = img.permute(0, 3, 1, 2)  
+  
   conv_layer = nn.Conv2d(in_channels=channels, out_channels=num_kernels, kernel_size=kernel_size, stride=1, padding=0)
   output_torch =  conv_layer(img)
 
@@ -59,7 +64,7 @@ def conv_torch(img, channels, num_kernels, kernel_size):
 
 if __name__ == '__main__':
   # image
-  img = Image.open('./big.jpg')
+  img = Image.open('./' + sys.argv[1])
   img = np.array(img).astype(np.float32)
 
   plt.imshow(img.astype('uint8')); plt.show()
@@ -67,8 +72,7 @@ if __name__ == '__main__':
   # torch
   img_torch = torch.tensor(img).unsqueeze(0)
 
-  output_torch  = conv_torch(img_torch, 3, 2, 4)
-  print(f"torch output shape: {output_torch.shape}")
+  output_torch  = conv_torch(img_torch, 2, 4)
   mean_output_torch = np.mean(output_torch , axis=2)
 
   plt.imshow(mean_output_torch.astype('uint8')); plt.show()
@@ -76,10 +80,11 @@ if __name__ == '__main__':
 
   # waffle
   output_waffle = conv2d(img, 4, 2)
-  print(f"waffle output shape: {output_waffle.shape}")
   mean_output_waffle = np.mean(output_waffle , axis=2)
 
   plt.imshow(mean_output_waffle.astype('uint8')); plt.show()
 
   assert output_waffle.shape == output_torch.shape, 'Error in conv output shape'
+  print(f"torch output shape  : {output_torch.shape}")
+  print(f"waffle output shape : {output_waffle.shape}")
   
