@@ -1,8 +1,8 @@
 import sys
+import time
 import torch
 import torch.nn as nn
 import numpy as np
-from PIL import Image
 from matplotlib import pyplot as plt
 
 
@@ -34,6 +34,7 @@ def conv2d(image, filter_size, num_kernels):
   reshaped_x_width  = filter_out.shape[1]
 
   reshaped_x = np.array(intermediate_x).reshape(reshaped_x_height, reshaped_x_width)
+
   reshaped_w = filtr.reshape(num_kernels, reshaped_x_height)
 
   output = reshaped_w@reshaped_x
@@ -72,19 +73,25 @@ if __name__ == '__main__':
   # torch
   img_torch = torch.tensor(img).unsqueeze(0)
 
+  start_time_torch = time.time()
   output_torch  = conv_torch(img_torch, 2, 4)
   mean_output_torch = np.mean(output_torch , axis=2)
+  end_time_torch = time.time()
 
   plt.imshow(mean_output_torch.astype('uint8')); plt.show()
 
 
   # waffle
+  start_time_waffle = time.time()
   output_waffle = conv2d(img, 4, 2)
   mean_output_waffle = np.mean(output_waffle , axis=2)
+  end_time_waffle = time.time()
 
   plt.imshow(mean_output_waffle.astype('uint8')); plt.show()
 
   assert output_waffle.shape == output_torch.shape, 'Error in conv output shape'
-  print(f"torch output shape  : {output_torch.shape}")
-  print(f"waffle output shape : {output_waffle.shape}")
+  print(f"torch output shape    : {output_torch.shape}")
+  print(f"waffle output shape   : {output_waffle.shape}")
+  print(f"torch execution time  : {(end_time_torch - start_time_torch)*1000:.5f} ms")
+  print(f"waffle execution time : {(end_time_waffle - start_time_waffle)*1000:.5f} ms")
   
