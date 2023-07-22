@@ -3,10 +3,11 @@ import time
 import torch
 import torch.nn as nn
 import numpy as np
+from PIL import Image
 from matplotlib import pyplot as plt
 
 
-def conv2d(image, filter_size, num_kernels):
+def conv2d(image, filter_size, num_kernels, padding, stride):
   image = np.expand_dims(image, axis=-1) if len(image.shape) < 3 else image
 
   image = np.transpose(image, (2, 0, 1))
@@ -34,13 +35,12 @@ def conv2d(image, filter_size, num_kernels):
   reshaped_x_width  = filter_out.shape[1]
 
   reshaped_x = np.array(intermediate_x).reshape(reshaped_x_height, reshaped_x_width)
-
   reshaped_w = filtr.reshape(num_kernels, reshaped_x_height)
 
   output = reshaped_w@reshaped_x
 
-  output_height = int(((image_height - filter_height + 2*(0))/1) + 1)  # 0: number of padding, 1: stride
-  output_width  = int(((image_width - filter_width + 2*(0))/1) + 1)    # 0: number of padding, 1: stride
+  output_height = int(((image_height - filter_height + 2*padding)/stride) + 1)
+  output_width  = int(((image_width - filter_width + 2*padding)/stride) + 1)
 
   output = output.reshape(num_kernels, output_height, output_width)
   output = np.transpose(output, (1, 2, 0))
@@ -48,7 +48,7 @@ def conv2d(image, filter_size, num_kernels):
   return output
 
 
-def conv_torch(img, num_kernels, kernel_size):
+def conv_torch(img, kernel_size, num_kernels, padding, stride):
   if len(img.shape) > 3:
     channels = img.shape[-1]
     img = img.permute(0, 3, 1, 2)
@@ -57,7 +57,7 @@ def conv_torch(img, num_kernels, kernel_size):
     channels = img.shape[-1]
     img = img.permute(0, 3, 1, 2)  
   
-  conv_layer = nn.Conv2d(in_channels=channels, out_channels=num_kernels, kernel_size=kernel_size, stride=1, padding=0)
+  conv_layer = nn.Conv2d(in_channels=channels, out_channels=num_kernels, kernel_size=kernel_size, stride=stride, padding=padding)
   output_torch =  conv_layer(img)
 
   return  output_torch.clone().detach().squeeze(0).numpy().transpose((1, 2, 0))
@@ -74,7 +74,7 @@ if __name__ == '__main__':
   img_torch = torch.tensor(img).unsqueeze(0)
 
   start_time_torch = time.time()
-  output_torch  = conv_torch(img_torch, 2, 4)
+  output_torch  = conv_torch(img_torch, 4, 2, 0, 1)
   mean_output_torch = np.mean(output_torch , axis=2)
   end_time_torch = time.time()
 
@@ -83,7 +83,7 @@ if __name__ == '__main__':
 
   # waffle
   start_time_waffle = time.time()
-  output_waffle = conv2d(img, 4, 2)
+  output_waffle = conv2d(img, 4, 2, 0, 1)
   mean_output_waffle = np.mean(output_waffle , axis=2)
   end_time_waffle = time.time()
 
