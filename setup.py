@@ -3,7 +3,7 @@
 import os
 from setuptools import setup
 
-__version__ = '0.0.3'
+__version__ = '0.0.4'
 
 directory = os.path.abspath(os.path.dirname(__file__))
 
@@ -15,7 +15,7 @@ with open(os.path.join(directory, 'requirements.txt'), encoding='utf-8') as r:
 
 setup(name='waffle',
   version=__version__,
-  description='A hardware accelerated machine learning inference framework for Raspberry Pi',
+  description='A simple machine learning inference framework for the edge',
   author='Pasan Perera, Kavin Amantha, Afkar Ahamed',
   license='MIT',
   long_description=long_description,
@@ -26,6 +26,7 @@ setup(name='waffle',
     "License :: OSI Approved :: MIT License"
   ],
   install_requires=requirements,
+  extras_require={'testing':['torch', 'pytest']},
   python_requires='>=3.8',
   include_package_data=True
 )

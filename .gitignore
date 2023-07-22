@@ -2,6 +2,12 @@
 .vscode/
 *.ipynb
 *.out
+*.jpeg
+*.jpg
+*.png
+*.pdf
+*.bin
+*.gz
 
 # --- Python ---
 # Byte-compiled / optimized / DLL files
