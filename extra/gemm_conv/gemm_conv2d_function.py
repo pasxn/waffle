@@ -24,8 +24,8 @@ def conv2d(image, filter_size, num_kernels, padding, stride):
   intermediate_x = []
   for h in range(num_channels):
     filter_out = []
-    for i in range(image_height-filter_height+1):
-      for j in range(image_width-filter_width+1):
+    for i in range(0, image_height-filter_height+1, stride):
+      for j in range(0, image_width-filter_width+1, stride):
         filter_out.append(image[h][i:i+filter_height, j:j+filter_width].flatten())
 
     filter_out = np.array(filter_out).transpose()
