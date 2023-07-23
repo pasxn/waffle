@@ -26,7 +26,7 @@ setup(name='waffle',
     "License :: OSI Approved :: MIT License"
   ],
   install_requires=requirements,
-  extras_require={'testing':['torch', 'pytest']},
+  extras_require={'testing':['pytest', 'torch']},
   python_requires='>=3.8',
   include_package_data=True
 )
