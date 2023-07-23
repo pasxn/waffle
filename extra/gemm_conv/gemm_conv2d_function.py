@@ -9,9 +9,31 @@ from matplotlib import pyplot as plt
 
 def conv2d(image, filter_size, num_kernels, padding, stride):
   image = np.expand_dims(image, axis=-1) if len(image.shape) < 3 else image
-
   image = np.transpose(image, (2, 0, 1))
+
   num_channels = image.shape[0]; image_height = image.shape[1]; image_width = image.shape[2]
+
+  # check stride
+  # check padding + filter size combination
+  if isinstance(padding, tuple) and isinstance(filter_size, tuple):
+    new_height = image_height + padding[0][0] + padding[0][1]; div_height = new_height/filter_size # what if filter_size is a tuple
+    new_width  = image_width + padding[1][0] + padding[1][1]; div_width = new_width/filter_size
+    if div_height != int(div_height) or div_width != int(div_width): RuntimeError("convolution cannot be performed with given parameters")
+  elif isinstance(padding, int) and isinstance(filter_size, tuple):
+    pass
+  elif isinstance(padding, tuple) and isinstance(filter_size, int):
+    pass
+  elif isinstance(padding, int) and isinstance(filter_size, int):
+    pass
+
+  # add padding
+  for i in range(num_channels):
+    if isinstance(padding, tuple):
+      image = np.pad(image[i], padding, mode='constant', constant_values=0)
+    elif isinstance(padding, int):
+      image = np.pad(image[i], pad_width=padding, mode='constant', constant_values=0)
+
+  image_height = image.shape[1]; image_width = image.shape[2]
 
   # a filter has x kernels of y channels
   if isinstance(filter_size, int):
@@ -90,6 +112,7 @@ if __name__ == '__main__':
   plt.imshow(mean_output_waffle.astype('uint8')); plt.show()
 
   assert output_waffle.shape == output_torch.shape, 'Error in conv output shape'
+  
   print(f"torch output shape    : {output_torch.shape}")
   print(f"waffle output shape   : {output_waffle.shape}")
   print(f"torch execution time  : {(end_time_torch - start_time_torch)*1000:.5f} ms")

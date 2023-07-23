@@ -79,11 +79,11 @@ class tensor:
         
   def pad2d(self, arg:Union[Tuple[int, ...], int], mode='constant') -> 'tensor':
     if isinstance(arg, tuple):
-      return tensor(np.pad(self.data, arg, mode=mode))
+      return tensor(np.pad(self.data, arg, mode=mode, constant_values=0))
     elif isinstance(arg, int):
-      return tensor(np.pad(self.data, pad_width=arg, mode=mode))
+      return tensor(np.pad(self.data, pad_width=arg, mode=mode, constant_values=0))
     else:
-      raise RuntimeError("argument must be an int ora tuple ((top, bottom), (left, right))")
+      raise RuntimeError("argument must be an int or a tuple ((top, bottom), (left, right))")
         
   def transpose(self) -> 'tensor':
     return tensor(self.data.transpose())
