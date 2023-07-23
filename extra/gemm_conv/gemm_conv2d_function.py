@@ -11,32 +11,34 @@ def conv2d(image, filter_size, num_kernels, padding, stride):
   image = np.expand_dims(image, axis=-1) if len(image.shape) < 3 else image
   image = np.transpose(image, (2, 0, 1))
 
-  num_channels = image.shape[0]; image_height = image.shape[1]; image_width = image.shape[2]
+  num_channels = image.shape[0]; image_height_original = image.shape[1]; image_width_original = image.shape[2]
 
   # check padding + filter size combination
   if isinstance(padding, tuple) and isinstance(filter_size, tuple):
-    new_height = image_height + padding[0][0] + padding[0][1]; div_height = new_height/filter_size[0]
-    new_width  = image_width + padding[1][0] + padding[1][1]; div_width = new_width/filter_size[1]
+    new_height = image_height_original + padding[0][0] + padding[0][1]; div_height = new_height/filter_size[0]
+    new_width  = image_width_original + padding[1][0] + padding[1][1]; div_width = new_width/filter_size[1]
   elif isinstance(padding, int) and isinstance(filter_size, tuple):
-    new_height = image_height + padding*2; div_height = new_height/filter_size[0]
-    new_width  = image_width + padding*2; div_width = new_width/filter_size[1]
+    new_height = image_height_original + padding*2; div_height = new_height/filter_size[0]
+    new_width  = image_width_original + padding*2; div_width = new_width/filter_size[1]
   elif isinstance(padding, tuple) and isinstance(filter_size, int):
-    new_height = image_height + padding[0][0] + padding[0][1]; div_height = new_height/filter_size
-    new_width  = image_width + padding[1][0] + padding[1][1]; div_width = new_width/filter_size
+    new_height = image_height_original + padding[0][0] + padding[0][1]; div_height = new_height/filter_size
+    new_width  = image_width_original + padding[1][0] + padding[1][1]; div_width = new_width/filter_size
   elif isinstance(padding, int) and isinstance(filter_size, int):
-    new_height = image_height + padding*2; div_height = new_height/filter_size
-    new_width  = image_width + padding*2; div_width = new_width/filter_size
+    new_height = image_height_original + padding*2; div_height = new_height/filter_size
+    new_width  = image_width_original + padding*2; div_width = new_width/filter_size
 
   if div_height != int(div_height) or div_width != int(div_width):
     RuntimeError("convolution cannot be performed with given parameters")
 
   # add padding
+  padded_image = []
   for i in range(num_channels):
     if isinstance(padding, tuple):
-      image[i] = np.pad(image[i], padding, mode='constant', constant_values=0)
+      padded_image.append(np.pad(image[i], padding, mode='constant', constant_values=0))
     elif isinstance(padding, int):
-      image[i] = np.pad(image[i], pad_width=padding, mode='constant', constant_values=0)
+      padded_image.append(np.pad(image[i], pad_width=padding, mode='constant', constant_values=0))
 
+  image = np.array(padded_image)
   image_height = image.shape[1]; image_width = image.shape[2]
 
   # check stride
@@ -70,8 +72,12 @@ def conv2d(image, filter_size, num_kernels, padding, stride):
 
   output = reshaped_w@reshaped_x
 
-  output_height = int(((image_height - filter_height + 2*padding)/stride) + 1)
-  output_width  = int(((image_width - filter_width + 2*padding)/stride) + 1)
+  if isinstance(padding, tuple):
+    output_height = int(((image_height_original - filter_height + padding[0][0]+padding[0][1])/stride) + 1)
+    output_width  = int(((image_width_original - filter_width + padding[1][0]+padding[1][1])/stride) + 1)
+  elif isinstance(padding, int):
+    output_height = int(((image_height_original - filter_height + 2*padding)/stride) + 1)
+    output_width  = int(((image_width_original - filter_width + 2*padding)/stride) + 1)
 
   output = output.reshape(num_kernels, output_height, output_width)
   output = np.transpose(output, (1, 2, 0))
@@ -95,6 +101,12 @@ def conv_torch(img, kernel_size, num_kernels, padding, stride):
 
 
 if __name__ == '__main__':
+
+  KERNEL_SIZE = 4
+  NUM_KERNELS = 2
+  PADDING     = 0
+  STRIDE      = 1
+
   # image
   img = Image.open('./' + sys.argv[1])
   img = np.array(img).astype(np.float32)
@@ -105,7 +117,7 @@ if __name__ == '__main__':
   img_torch = torch.tensor(img).unsqueeze(0)
 
   start_time_torch = time.time()
-  output_torch  = conv_torch(img_torch, 4, 2, 0, 1)
+  output_torch  = conv_torch(img_torch, KERNEL_SIZE, NUM_KERNELS, PADDING, STRIDE)
   mean_output_torch = np.mean(output_torch , axis=2)
   end_time_torch = time.time()
 
@@ -114,7 +126,7 @@ if __name__ == '__main__':
 
   # waffle
   start_time_waffle = time.time()
-  output_waffle = conv2d(img, 4, 2, 0, 1)
+  output_waffle = conv2d(img, KERNEL_SIZE, NUM_KERNELS, PADDING, STRIDE)
   mean_output_waffle = np.mean(output_waffle , axis=2)
   end_time_waffle = time.time()
 
