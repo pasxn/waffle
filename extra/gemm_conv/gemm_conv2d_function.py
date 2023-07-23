@@ -13,7 +13,6 @@ def conv2d(image, filter_size, num_kernels, padding, stride):
 
   num_channels = image.shape[0]; image_height = image.shape[1]; image_width = image.shape[2]
 
-  # check stride
   # check padding + filter size combination
   if isinstance(padding, tuple) and isinstance(filter_size, tuple):
     new_height = image_height + padding[0][0] + padding[0][1]; div_height = new_height/filter_size[0]
@@ -39,6 +38,11 @@ def conv2d(image, filter_size, num_kernels, padding, stride):
       image[i] = np.pad(image[i], pad_width=padding, mode='constant', constant_values=0)
 
   image_height = image.shape[1]; image_width = image.shape[2]
+
+  # check stride
+  oh = ((image_height-filter_size)/stride) + 1; ow = ((image_width-filter_size)/stride) + 1
+  if ((oh != int(oh)) or (ow != int(ow))) or (ow < 0 or oh < 0):
+    RuntimeError("convolution cannot be performed with given parameters")
 
   # a filter has x kernels of y channels
   if isinstance(filter_size, int):
