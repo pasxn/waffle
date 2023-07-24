@@ -97,7 +97,7 @@ class Conv2D:
     reshaped_x_height = filter_out.shape[0]*self.num_channels
     reshaped_x_width  = filter_out.shape[1]
 
-    reshaped_x = np.array(intermediate_x).reshape(reshaped_x_height, reshaped_x_width)
+    reshaped_x = tensor(intermediate_x).reshape(reshaped_x_height, reshaped_x_width)
     reshaped_w = self.filtr.reshape(self.num_kernels, reshaped_x_height)
 
     output = reshaped_w@reshaped_x
@@ -110,7 +110,7 @@ class Conv2D:
       output_width  = int(((image_width_original - filter_width + 2*self.padding)/self.stride) + 1)
 
     output = output.reshape(self.num_kernels, output_height, output_width) + self.bias
-    output = np.transpose(output, (1, 2, 0))
+    output = output.permute((1, 2, 0))
 
     return output
 

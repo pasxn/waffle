@@ -24,6 +24,8 @@ class test_layers(unittest.TestCase):
 
     np.testing.assert_allclose(torch_output.transpose().shape, waffle_output.shape)
 
+  # conv
+
 class test_nonlinearities(unittest.TestCase):
   
   def test_relu(self):
