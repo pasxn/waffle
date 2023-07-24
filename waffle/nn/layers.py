@@ -72,9 +72,11 @@ class Conv2D:
     # add self.padding
     padded_image = []
     for i in range(self.num_channels):
-      padded_image.append(image[i].pad2d(self.padding))
+      padded_image.append(image[i].pad2d(self.padding).data)
 
-    image = tensor(padded_image)
+    # NOTE: numpy exposed
+    import numpy as np
+    image = tensor(np.array(padded_image))
     image_height = image.shape[1]; image_width = image.shape[2]
 
     # check stride
@@ -89,15 +91,17 @@ class Conv2D:
       filter_out = []
       for i in range(0, image_height-filter_height+1, self.stride):
         for j in range(0, image_width-filter_width+1, self.stride):
-          filter_out.append(tensor(image.data[h][i:i+filter_height, j:j+filter_width].flatten()))
+          filter_out.append(image.data[h][i:i+filter_height, j:j+filter_width].flatten())
 
-      filter_out = tensor(filter_out).transpose()
-      intermediate_x.append(filter_out)
+      # NOTE: numpy exposed
+      filter_out = tensor(np.array(filter_out)).transpose()
+      intermediate_x.append(filter_out.data)
 
     reshaped_x_height = filter_out.shape[0]*self.num_channels
     reshaped_x_width  = filter_out.shape[1]
 
-    reshaped_x = tensor(intermediate_x).reshape(reshaped_x_height, reshaped_x_width)
+    # NOTE: numpy exposed
+    reshaped_x = tensor(np.array(intermediate_x)).reshape(reshaped_x_height, reshaped_x_width)
     reshaped_w = self.filtr.reshape(self.num_kernels, reshaped_x_height)
 
     output = reshaped_w@reshaped_x
@@ -135,17 +139,22 @@ class MaxPool2D:
     elif isinstance(self.filter_size, int):
       filter_height = self.filter_size; filter_width  = self.filter_size
 
+    # NOTE: numpy exposed
+    import numpy as np
     intermediate_x = []
     for h in range(num_channels):
       filter_out = []
       for i in range(0, image_height-filter_height+1, self.stride):
         for j in range(0, image_width-filter_width+1, self.stride):
-          filter_out.append(tensor(image.data[h][i:i+filter_height, j:j+filter_width].flatten()).max())
+          # NOTE: numpy exposed
+          filter_out.append(np.max(image.data[h][i:i+filter_height, j:j+filter_width].flatten()))
 
-      filter_out = tensor(filter_out)
+      # NOTE: numpy exposed
+      filter_out = np.array(filter_out)
       intermediate_x.append(filter_out)
 
-    intermediate_x = tensor(intermediate_x)
+    # NOTE: numpy exposed
+    intermediate_x = tensor(np.array(intermediate_x))
 
     output_height = int(((image_height - filter_height)/self.stride) + 1)
     output_width  = int(((image_width - filter_width)/self.stride) + 1)

@@ -94,7 +94,7 @@ class tensor:
   def reval(self):
     self.data = self.data.flatten()
 
-  def premute(self, dim:Tuple[int, ...]) -> 'tensor':
+  def permute(self, dim:Tuple[int, ...]) -> 'tensor':
     # dim (1, 0, 2): numbers refer to the dimensions of the original array assuming it's a 3 dimensional array
     return tensor(self.data.transpose(dim))
 
