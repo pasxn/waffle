@@ -7,7 +7,7 @@ import torchvision.datasets as datasets  #to import MNist
 import torchvision.transforms as transforms
 import torch.onnx
 
-from models.mnist_fully_connected.mnist_model import NN
+from models.mnist_mlp.mlp_model import NN
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
@@ -51,9 +51,9 @@ for epoch in range(num_epochs):
     optimizer.step()
 
 #save the model  Checkpoint
-torch.save(model.state_dict(), 'models/mnist_fully_connected/MNist.ckpt')
+torch.save(model.state_dict(), 'models/mnist_fully_connected/mnist_mlp.ckpt')
 
 #save in onnx format
 ex_input = torch.randn(1, input_size)   #onnx require size and shape of a input
-onnx_path = 'models/mnist_fully_connected/MNist.onnx'
+onnx_path = 'models/mnist_fully_connected/mnist_mlp.onnx'
 torch.onnx.export(model,ex_input, onnx_path)
