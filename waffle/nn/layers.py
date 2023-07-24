@@ -5,16 +5,16 @@ from typing import Tuple, List, Union, Callable
 
 # ***** nn ops *****
 class Linear:
-  def __init__(self, in_features:int, out_features:int, weight:tensor, bias:tensor, isweight:bool=False, isbias:bool=False):
+  def __init__(self, in_features:int, out_features:int, weight:tensor=None, bias:tensor=None):
     self.in_features = in_features
     self.out_features = out_features
-    self.weight = tensor.glorot_uniform(self.out_features, self.in_features) if isweight is False else weight
-    self.bias = tensor.zeros(out_features, 1) if isbias is False else bias
+    self.weight = tensor.glorot_uniform(self.out_features, self.in_features) if weight is None else weight
+    self.bias = tensor.zeros(out_features, 1) if bias is None else bias
 
   def __call__(self, x:tensor) -> tensor:
     assert x.shape == (self.in_features, 1), f'The inputa shape is should be ({self.in_features}, {1})'
     x = self.weight@x
-    return x.add(self.bias) if self.bias is not None else x
+    return x.add(self.bias)
     
 
 class Batchnorm:
@@ -30,7 +30,7 @@ class Batchnorm:
 
 
 class Conv2D:
-  def __init__(self, filter_size:Union[Tuple[int, ...], int], num_kernels:int, padding:Union[Tuple[int, ...], int], stride:int, weight:tensor, bias:tensor, isweight:bool=False, isbias:bool=False):
+  def __init__(self, filter_size:Union[Tuple[int, ...], int], num_kernels:int, padding:Union[Tuple[int, ...], int], stride:int, weight:tensor=None, bias:tensor=None):
     self.filter_size = filter_size
     self.num_kernels = num_kernels
     self.padding = padding
@@ -86,10 +86,9 @@ class Conv2D:
       filter_out = []
       for i in range(0, image_height-filter_height+1, self.stride):
         for j in range(0, image_width-filter_width+1, self.stride):
-          #NOTE: numpy exposed
-          filter_out.append(image.data[h][i:i+filter_height, j:j+filter_width].flatten())
+          filter_out.append(tensor(image.data[h][i:i+filter_height, j:j+filter_width].flatten()))
 
-      filter_out = np.array(filter_out).transpose()
+      filter_out = tensor(filter_out).transpose()
       intermediate_x.append(filter_out)
 
     reshaped_x_height = filter_out.shape[0]*num_channels
