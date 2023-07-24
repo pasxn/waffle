@@ -1,6 +1,6 @@
 from waffle import tensor
 from waffle import ops
-from typing import Tuple, List, Union, Callable
+from typing import Tuple, Union
 
 
 # ***** nn ops *****
@@ -116,8 +116,45 @@ class Conv2D:
 
 
 class MaxPool2D:
-  def __init__(self):
-    pass
+  def __init__(self, filter_size:Union[Tuple[int, ...], int], stride:int):
+    self.filter_size = filter_size
+    self.stride = stride
+
+  def __call__(self, image:tensor) -> tensor:
+    image = image.expand(axis=-1) if len(image.shape) < 3 else image
+    image = image.permute((2, 0, 1))
+
+    num_channels = image.shape[0]; image_height = image.shape[1]; image_width = image.shape[2]
+
+    oh = ((image_height-self.filter_size)/self.stride) + 1; ow = ((image_width-self.filter_size)/self.stride) + 1
+    if ((oh != int(oh)) or (ow != int(ow))) or (ow < 0 or oh < 0):
+      RuntimeError("max pooling cannot be performed with given parameters")
+
+    if isinstance(self.filter_size, tuple):
+      filter_height = self.filter_size[0]; filter_width  = self.filter_size[1]
+    elif isinstance(self.filter_size, int):
+      filter_height = self.filter_size; filter_width  = self.filter_size
+
+    intermediate_x = []
+    for h in range(num_channels):
+      filter_out = []
+      for i in range(0, image_height-filter_height+1, self.stride):
+        for j in range(0, image_width-filter_width+1, self.stride):
+          filter_out.append(tensor(image.data[h][i:i+filter_height, j:j+filter_width].flatten()).max())
+
+      filter_out = tensor(filter_out)
+      intermediate_x.append(filter_out)
+
+    intermediate_x = np.array(intermediate_x)
+
+    output_height = int(((image_height - filter_height)/stride) + 1)
+    output_width  = int(((image_width - filter_width)/stride) + 1)
+
+    output = intermediate_x.reshape(num_channels, output_height, output_width)
+    output = output.permute((1, 2, 0))
+
+    return output
+
 
 
 # ***** nonleniarities *****
