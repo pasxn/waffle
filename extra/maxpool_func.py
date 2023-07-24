@@ -44,7 +44,7 @@ def maxpool2d(image, filter_size, stride):
   return output
 
 
-def maxpool_torch(img, kernel_size, num_kernels, padding, stride):
+def maxpool_torch(img, kernel_size, stride):
   if len(img.shape) > 3:
     channels = img.shape[-1]
     img = img.permute(0, 3, 1, 2)
@@ -53,8 +53,8 @@ def maxpool_torch(img, kernel_size, num_kernels, padding, stride):
     channels = img.shape[-1]
     img = img.permute(0, 3, 1, 2)  
   
-  conv_layer = nn.Conv2d(in_channels=channels, out_channels=num_kernels, kernel_size=kernel_size, stride=stride, padding=padding)
-  output_torch =  conv_layer(img)
+  pool_layer = nn.MaxPool2d(kernel_size=kernel_size, stride=stride)
+  output_torch =  pool_layer(img)
 
   return  output_torch.clone().detach().squeeze(0).numpy().transpose((1, 2, 0))
 
@@ -70,15 +70,15 @@ if __name__ == '__main__':
 
   plt.imshow(img.astype('uint8')); plt.show()
 
-  # torch
-  # img_torch = torch.tensor(img).unsqueeze(0)
+  torch
+  img_torch = torch.tensor(img).unsqueeze(0)
 
-  # start_time_torch = time.time()
-  # output_torch  = conv_torch(img_torch, KERNEL_SIZE, NUM_KERNELS, PADDING, STRIDE)
-  # mean_output_torch = np.mean(output_torch , axis=2)
-  # end_time_torch = time.time()
+  start_time_torch = time.time()
+  output_torch  = maxpool_torch(img_torch, KERNEL_SIZE, STRIDE)
+  mean_output_torch = np.mean(output_torch , axis=2)
+  end_time_torch = time.time()
 
-  # plt.imshow(mean_output_torch.astype('uint8')); plt.show()
+  plt.imshow(mean_output_torch.astype('uint8')); plt.show()
 
 
   # waffle
@@ -89,10 +89,16 @@ if __name__ == '__main__':
 
   plt.imshow(mean_output_waffle.astype('uint8')); plt.show()
 
-  # assert output_waffle.shape == output_torch.shape, 'Error in conv output shape'
+  assert output_waffle.shape == output_torch.shape, 'Error in pool output shape'
   
-  # print(f"torch output shape    : {output_torch.shape}")
-  # print(f"waffle output shape   : {output_waffle.shape}")
-  # print(f"torch execution time  : {(end_time_torch - start_time_torch)*1000:.5f} ms")
-  # print(f"waffle execution time : {(end_time_waffle - start_time_waffle)*1000:.5f} ms")
+  print(f"torch output shape    : {output_torch.shape}")
+  print(f"waffle output shape   : {output_waffle.shape}")
+  print(f"torch execution time  : {(end_time_torch - start_time_torch)*1000:.5f} ms")
+  print(f"waffle execution time : {(end_time_waffle - start_time_waffle)*1000:.5f} ms")
+
+output_torch = output_torch.flatten()
+output_waffle = output_waffle.flatten()
+
+for i in range(len(output_torch)):
+  assert output_waffle[i] == output_torch[i], 'Error in pool output'
   
