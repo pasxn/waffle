@@ -2,7 +2,7 @@ from mnist_model import MnistNN
 from waffle import tensor
 
 import torch
-from models.mnist_fully_connected.mnist_model import NN
+from models.mnist_mlp.mlp_model import NN
 
 print("waffle engine->\n")
 model = MnistNN(784, 10)

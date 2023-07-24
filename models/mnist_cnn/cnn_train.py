@@ -51,7 +51,7 @@ for epoch in range(1):
   test()
 
 #save the model  Checkpoint
-torch.save(model.state_dict(), 'MNIST_CNN.ckpt')
+torch.save(model.state_dict(), 'mnist_cnn.ckpt')
 
 #save in onnx format
 input_shape = (1, 1, 28, 28)

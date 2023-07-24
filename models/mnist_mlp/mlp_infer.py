@@ -4,8 +4,8 @@ import torchvision.datasets as datasets  #to import MNist
 import torchvision.transforms as transforms 
 import torch.onnx
 
-from models.mnist_fully_connected.mnist_model import NN
-from models.mnist_fully_connected.mnist_util import input_size, num_classes, device, train_loader, test_loader
+from models.mnist_mlp.mlp_model import NN
+from models.mnist_mlp.mlp_util import input_size, num_classes, device, train_loader, test_loader
 
 
 model = NN(input_size=input_size, num_classes=num_classes).to(device)

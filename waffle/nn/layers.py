@@ -30,17 +30,27 @@ class Batchnorm:
 
 
 class Conv2D:
-  def __init__(self, filter_size:Union[Tuple[int, ...], int], num_kernels:int, padding:Union[Tuple[int, ...], int], stride:int, weight:tensor=None, bias:tensor=None):
+  def __init__(self, filter_size:Union[Tuple[int, ...], int], num_kernels:int, num_channels:int, padding:Union[Tuple[int, ...], int], stride:int, weight:tensor=None, bias:tensor=None):
     self.filter_size = filter_size
     self.num_kernels = num_kernels
+    self.num_channels = num_channels
     self.padding = padding
     self.stride = stride
+
+    self.filtr = None
+    # a filter has x kernels of y channels
+    if isinstance(self.filter_size, int):
+      self.filtr = tensor.glorot_uniform(self.num_kernels, self.num_channels, self.filter_size, self.filter_size) if weight is None else weight
+    elif isinstance(self.filter_size, tuple):
+      self.filtr = tensor.glorot_uniform(self.num_kernels, self.num_channels, self.filter_size[0], self.filter_size[1]) if weight is None else weight
+
+    self.bias = tensor.glorot_uniform(self.num_kernels) if weight is None else weight
 
   def __call__(self, image:tensor) -> tensor:
     image = image.expand(axis=-1) if len(image.shape) < 3 else image
     image = image.permute((2, 0, 1))
 
-    num_channels = image.shape[0]; image_height_original = image.shape[1]; image_width_original = image.shape[2]
+    image_height_original = image.shape[1]; image_width_original = image.shape[2]
 
     # check padding + filter size combination
     if isinstance(self.padding, tuple) and isinstance(self.filter_size, tuple):
@@ -61,7 +71,7 @@ class Conv2D:
 
     # add self.padding
     padded_image = []
-    for i in range(num_channels):
+    for i in range(self.num_channels):
       padded_image.append(image[i].pad2d(self.padding))
 
     image = tensor(padded_image)
@@ -71,18 +81,11 @@ class Conv2D:
     oh = ((image_height-self.filter_size)/self.stride) + 1; ow = ((image_width-self.filter_size)/self.stride) + 1
     if ((oh != int(oh)) or (ow != int(ow))) or (ow < 0 or oh < 0):
       RuntimeError("convolution cannot be performed with given parameters")
-
-    #######################################################
-    # a filter has x kernels of y channels
-    if isinstance(self.filter_size, int):
-      filtr = np.random.randn(self.num_kernels, num_channels, self.filter_size, self.filter_size).astype(np.float32)
-    elif isinstance(self.filter_size, tuple):
-      filtr = np.random.randn(self.num_kernels, num_channels, self.filter_size[0], self.filter_size[1]).astype(np.float32)
     
-    filter_height = filtr.shape[2]; filter_width  = filtr.shape[3]
+    filter_height = self.filtr.shape[2]; filter_width  = self.filtr.shape[3]
 
     intermediate_x = []
-    for h in range(num_channels):
+    for h in range(self.num_channels):
       filter_out = []
       for i in range(0, image_height-filter_height+1, self.stride):
         for j in range(0, image_width-filter_width+1, self.stride):
@@ -91,11 +94,11 @@ class Conv2D:
       filter_out = tensor(filter_out).transpose()
       intermediate_x.append(filter_out)
 
-    reshaped_x_height = filter_out.shape[0]*num_channels
+    reshaped_x_height = filter_out.shape[0]*self.num_channels
     reshaped_x_width  = filter_out.shape[1]
 
     reshaped_x = np.array(intermediate_x).reshape(reshaped_x_height, reshaped_x_width)
-    reshaped_w = filtr.reshape(self.num_kernels, reshaped_x_height)
+    reshaped_w = self.filtr.reshape(self.num_kernels, reshaped_x_height)
 
     output = reshaped_w@reshaped_x
 
@@ -106,7 +109,7 @@ class Conv2D:
       output_height = int(((image_height_original - filter_height + 2*self.padding)/self.stride) + 1)
       output_width  = int(((image_width_original - filter_width + 2*self.padding)/self.stride) + 1)
 
-    output = output.reshape(self.num_kernels, output_height, output_width)
+    output = output.reshape(self.num_kernels, output_height, output_width) + self.bias
     output = np.transpose(output, (1, 2, 0))
 
     return output
