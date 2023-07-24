@@ -145,10 +145,10 @@ class MaxPool2D:
       filter_out = tensor(filter_out)
       intermediate_x.append(filter_out)
 
-    intermediate_x = np.array(intermediate_x)
+    intermediate_x = tensor(intermediate_x)
 
-    output_height = int(((image_height - filter_height)/stride) + 1)
-    output_width  = int(((image_width - filter_width)/stride) + 1)
+    output_height = int(((image_height - filter_height)/self.stride) + 1)
+    output_width  = int(((image_width - filter_width)/self.stride) + 1)
 
     output = intermediate_x.reshape(num_channels, output_height, output_width)
     output = output.permute((1, 2, 0))
@@ -156,9 +156,24 @@ class MaxPool2D:
     return output
 
 
-
 # ***** nonleniarities *****
 class ReLU:
   def __call__(self, x:tensor) -> tensor:
     return ops.relu(x)
   
+class LeakyReLU:
+  def __call__(self, x:tensor, neg_slope:float=0.01) -> tensor:
+    return ops.relu(x) - ops.relu(-neg_slope*x)
+
+class Softmax:
+  def __call__(self, x:tensor) -> tensor:
+    exp_x = ops.exp(x - ops.max(x))
+    return exp_x / ops.sum(exp_x, axis=0)
+  
+class Sigmoid:
+  def __call__(self, x:tensor) -> tensor:
+    return 1 / (1 + ops.exp(-x))
+  
+class Tanh:
+  def __call__(self, x:tensor) -> tensor:
+    return (ops.exp(x)-ops.exp(-x)) / (ops.exp(x)+ops.exp(-x))

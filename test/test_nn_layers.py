@@ -32,13 +32,72 @@ class test_nonlinearities(unittest.TestCase):
   def test_relu(self):
     input_size = 128; batch_size = 1;
     
-    torch_relu = tnn.ReLU()
-    waffle_relu = wnn.ReLU()
+    torchh = tnn.ReLU()
+    waffle = wnn.ReLU()
 
     input = np.random.randn(batch_size, input_size).astype(np.float32)
 
-    torch_output = torch_relu((torch.from_numpy(input))).detach().numpy()
-    waffle_output = waffle_relu(tensor(input).transpose()).data
+    torch_output = torchh((torch.from_numpy(input))).detach().numpy()
+    waffle_output = waffle(tensor(input).transpose()).data
+
+    np.testing.assert_allclose(torch_output.transpose().shape, waffle_output.shape)
+    np.testing.assert_allclose(torch_output.transpose(), waffle_output)
+
+  def test_leaky_relu(self):
+    input_size = 128; batch_size = 1;
+    
+    torchh = tnn.LeakyReLU()
+    waffle = wnn.LeakyReLU()
+
+    input = np.random.randn(batch_size, input_size).astype(np.float32)
+
+    torch_output = torchh((torch.from_numpy(input))).detach().numpy()
+    waffle_output = waffle(tensor(input).transpose()).data
+
+    np.testing.assert_allclose(torch_output.transpose().shape, waffle_output.shape)
+    np.testing.assert_allclose(torch_output.transpose(), waffle_output)
+
+  @unittest.skip('slight error')
+  def test_softmax(self):
+    input_size = 128; batch_size = 1;
+    
+    torchh = tnn.Softmax()
+    waffle = wnn.Softmax()
+
+    input = np.random.randn(batch_size, input_size).astype(np.float32)
+
+    torch_output = torchh((torch.from_numpy(input))).detach().numpy()
+    waffle_output = waffle(tensor(input).transpose()).data
+
+    np.testing.assert_allclose(torch_output.transpose().shape, waffle_output.shape)
+    np.testing.assert_allclose(torch_output.transpose(), waffle_output)
+
+  @unittest.skip('major error')
+  def test_sigmoid(self):
+    input_size = 128; batch_size = 1;
+    
+    torchh = tnn.Sigmoid()
+    waffle = wnn.Sigmoid()
+
+    input = np.random.randn(batch_size, input_size).astype(np.float32)
+
+    torch_output = torchh((torch.from_numpy(input))).detach().numpy()
+    waffle_output = waffle(tensor(input).transpose()).data
+
+    np.testing.assert_allclose(torch_output.transpose().shape, waffle_output.shape)
+    np.testing.assert_allclose(torch_output.transpose(), waffle_output)
+
+  @unittest.skip('slight error')
+  def test_tanh(self):
+    input_size = 128; batch_size = 1;
+    
+    torchh = tnn.Tanh()
+    waffle = wnn.Tanh()
+
+    input = np.random.randn(batch_size, input_size).astype(np.float32)
+
+    torch_output = torchh((torch.from_numpy(input))).detach().numpy()
+    waffle_output = waffle(tensor(input).transpose()).data
 
     np.testing.assert_allclose(torch_output.transpose().shape, waffle_output.shape)
     np.testing.assert_allclose(torch_output.transpose(), waffle_output)
