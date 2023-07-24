@@ -24,9 +24,6 @@ class test_layers(unittest.TestCase):
 
     np.testing.assert_allclose(torch_output.transpose().shape, waffle_output.shape)
 
-  def test_batchnorm2d(self):
-    pass
-
   def test_conv2d(self):  
     def torch_conv(img, kernel_size, num_kernels, padding, stride):
       img = img.clone().detach().unsqueeze(0)
