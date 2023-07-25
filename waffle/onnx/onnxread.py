@@ -46,5 +46,5 @@ def read_onnx(model_path:str) -> List[Node]:
 
     nodes.append(Node(node.name, node.input, node.output, node.op_type, attributes, node_weight, node_bias))
 
-    return nodes
+  return nodes
   
