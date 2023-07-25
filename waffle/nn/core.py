@@ -19,3 +19,8 @@ class Module:
   def run(self, x:tensor) -> tensor:
     return self.forward(x)
   
+model_path = './models/resnet18/resnet18.onnx'
+graph_nodes = read_onnx(model_path)
+
+print(graph_nodes)
+print(f"\nnodes length: {len(graph_nodes)}\n")

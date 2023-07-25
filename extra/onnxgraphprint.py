@@ -4,7 +4,7 @@ import numpy as np
 
 
 # Load the ONNX model
-model_path = 'models/resnet18/resnet18.onnx'
+model_path = 'models/resnet50/resnet50.onnx'
 
 model = onnx.load(model_path)
 
@@ -57,4 +57,3 @@ for i, node in enumerate(model.graph.node):
 
 print()
 print()
-

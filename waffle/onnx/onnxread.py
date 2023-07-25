@@ -1,9 +1,9 @@
-
 from waffle.onnx.graph import Node
+from typing import List
 import onnx
 import numpy as np
 
-def read_onnx(model_path:str):
+def read_onnx(model_path:str) -> List[Node]:
   model = onnx.load(model_path); nodes = []
 
   for i, node in enumerate(model.graph.node):
@@ -47,3 +47,4 @@ def read_onnx(model_path:str):
     nodes.append(Node(node.name, node.input, node.output, node.op_type, attributes, node_weight, node_bias))
 
     return nodes
+  
