@@ -38,15 +38,15 @@ def read_onnx(model_path:str) -> List[Node]:
           weight_tensor['shape'] = initializer.dims
 
           weight_array = np.frombuffer(initializer.raw_data, dtype=np.float32)
-          weight_tensor['values'] = weight_array.reshape(initializer.dims)
+          weight_tensor['values'] = tensor(weight_array.reshape(initializer.dims))
 
           weight_tensors.append(weight_tensor)
     print(weight_tensors)
     node_weight = None; node_bias = None
     assert len(weight_tensors) <= 2, 'there are more tan 2 weight tensors!'
     for i in weight_tensors:
-      node_weight = tensor(i) if i['name'] == 'weight' else None
-      node_bias   = tensor(i) if i['name'] == 'bias' else None
+      node_weight = i if i['name'] == 'weight' else None
+      node_bias   = i if i['name'] == 'bias' else None
 
     nodes.append(Node(node.name, node.input, node.output, node.op_type, attributes, node_weight, node_bias))
 
