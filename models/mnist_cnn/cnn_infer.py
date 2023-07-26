@@ -27,7 +27,7 @@ def predict_image(image_path):
     return prediction
 
 # Define the path of the image to be tested
-image_path = '../../images/mnist.jpg'
+image_path = '../../extra/images/mnist.jpg'
 
 # Predict the label of the image
 predicted_label = predict_image(image_path)

@@ -108,7 +108,7 @@ if __name__ == '__main__':
   STRIDE      = 1
 
   # image
-  img = Image.open('../../images/' + sys.argv[1])
+  img = Image.open('../images/' + sys.argv[1])
   img = np.array(img).astype(np.float32)
 
   plt.imshow(img.astype('uint8')); plt.show()
