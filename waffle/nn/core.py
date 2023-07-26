@@ -1,7 +1,8 @@
 from waffle import tensor
 from waffle import ops
 from waffle.onnx.onnxread import read_onnx
-from waffle.onnx.graph import Graph
+from waffle.onnx.onnxgraph import onnxGraph
+from waffle.onnx.onnxlist import onnxList
 
 class Module:
   def __init__(self, name):
@@ -10,7 +11,7 @@ class Module:
 
   def load(self, path):
     linearized_model = read_onnx(path)
-    self.graph_obj = Graph(linearized_model)
+    self.graph_obj = onnxGraph(linearized_model)
 
   def compile(self):
     pass
@@ -25,3 +26,9 @@ if __name__ == '__main__':
 
   print(graph_nodes)
   print(f"\nnodes length: {len(graph_nodes)}\n")
+
+  for i in graph_nodes:
+    print('==========================================')
+    print(i.name)
+    print(i.input)
+    print(i.output)

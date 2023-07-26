@@ -1,4 +1,4 @@
-class Graph:
+class onnxGraph:
   def __init__(self, graph):
     self.liniearized_graph = graph
 

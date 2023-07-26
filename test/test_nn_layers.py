@@ -175,6 +175,7 @@ class test_extra(unittest.TestCase):
     M, N = 64, 128
     t1 = tensor.randn(M, N)
     f = wnn.Flatten()
+
     np.testing.assert_allclose(N*M, f(t1).shape[1])
 
 

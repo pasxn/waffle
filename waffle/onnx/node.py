@@ -13,4 +13,12 @@ class Node:
     self.weight = weight
     self.bias = bias
 
+    self.input_elements = None
     self.callable = None
+    self.output_computed = None
+  
+  def search_layer(self):
+    pass
+
+  def set_input_elements(self, input_elements):
+    self.input_elements = input_elements

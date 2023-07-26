@@ -1,8 +1,11 @@
 from waffle import tensor
 from waffle import ops
 from functools import reduce
+from enum import Enum
 from typing import Tuple, Union
 
+
+LAYERS = Enum("LAYERS", ["Linear", "Batchnorm", "Conv2D", "MaxPool2D", "ReLU", "LeakyReLU", "Softmax", "Sigmoid", "Tanh", "Flatten"])
 
 # ***** nn ops *****
 class Linear:
