@@ -1,7 +1,9 @@
-from waffle.onnx.graph import Node
+from waffle.onnx.node import Node
+from waffle import tensor
 from typing import List
-import onnx
 import numpy as np
+import onnx
+
 
 def read_onnx(model_path:str) -> List[Node]:
   model = onnx.load(model_path); nodes = []
@@ -41,8 +43,8 @@ def read_onnx(model_path:str) -> List[Node]:
     node_weight = None; node_bias = None
     assert len(weight_tensors) <= 2, 'there are more tan 2 weight tensors!'
     for i in weight_tensors:
-      node_weight = i if i['name'] == 'weight' else None
-      node_bias   = i if i['name'] == 'bias' else None
+      node_weight = tensor(i) if i['name'] == 'weight' else None
+      node_bias   = tensor(i) if i['name'] == 'bias' else None
 
     nodes.append(Node(node.name, node.input, node.output, node.op_type, attributes, node_weight, node_bias))
 
