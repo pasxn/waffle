@@ -1,12 +1,13 @@
+from typing import List
+from waffle.onnx.node import Node
+
+
 class onnxGraph:
-  def __init__(self, graph):
-    self.liniearized_graph = graph
+  def __init__(self, list:List[Node]):
+    self.liniearized_graph = list
 
-  def search_layer_node(self):
+  def hard_traverse(self):
     pass
 
-  def construct_graph(self):
-    pass
-
-  def traverse_graph(self):
+  def run(self):
     pass
