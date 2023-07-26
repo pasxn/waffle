@@ -9,7 +9,6 @@ def read_onnx(model_path:str) -> List[Node]:
   model = onnx.load(model_path); nodes = []
 
   for i, node in enumerate(model.graph.node):
-    print(node.name)
     attributes = []
     for attr in node.attribute:
       attribute = {}
@@ -29,26 +28,20 @@ def read_onnx(model_path:str) -> List[Node]:
 
       attributes.append(attribute)
 
-    weight_tensors = []
+    params = []
     for input_name in node.input:
       for initializer in model.graph.initializer:
         if input_name == initializer.name:
-          weight_tensor = {}
-          weight_tensor['name'] = initializer.name
-          weight_tensor['shape'] = initializer.dims
+          parameter = {}
+          parameter['name'] = initializer.name
+          parameter['shape'] = initializer.dims
 
           weight_array = np.frombuffer(initializer.raw_data, dtype=np.float32)
-          weight_tensor['values'] = tensor(weight_array.reshape(initializer.dims))
+          parameter['values'] = tensor(weight_array.reshape(initializer.dims))
 
-          weight_tensors.append(weight_tensor)
-    print(weight_tensors)
-    node_weight = None; node_bias = None
-    assert len(weight_tensors) <= 2, 'there are more tan 2 weight tensors!'
-    for i in weight_tensors:
-      node_weight = i if i['name'] == 'weight' else None
-      node_bias   = i if i['name'] == 'bias' else None
+          params.append(parameter)
 
-    nodes.append(Node(node.name, node.input, node.output, node.op_type, attributes, node_weight, node_bias))
+    nodes.append(Node(node.name, node.input, node.output, node.op_type, attributes, params))
 
   return nodes
   
