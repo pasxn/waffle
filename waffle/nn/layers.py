@@ -182,6 +182,11 @@ class Softmax:
   def __call__(self, x:tensor) -> tensor:
     exp_x = ops.exp(x - ops.max(x))
     return exp_x / ops.sum(exp_x, axis=0)
+
+class LogSoftmax:
+  def __call__(self, x:tensor) -> tensor:
+    exp_x = ops.exp(x - ops.max(x))
+    return ops.log(exp_x / ops.sum(exp_x, axis=0))
   
 class Sigmoid:
   def __call__(self, x:tensor) -> tensor:
