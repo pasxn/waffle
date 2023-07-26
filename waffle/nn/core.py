@@ -20,7 +20,7 @@ class Module:
     return self.forward(x)
 
 if __name__ == '__main__':
-  model_path = './models/resnet18/resnet18.onnx'
+  model_path = './models/mnist_cnn/mnist_cnn.onnx'
   graph_nodes = read_onnx(model_path)
 
   print(graph_nodes)

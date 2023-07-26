@@ -1,5 +1,6 @@
 from waffle import tensor
 from waffle import ops
+from functools import reduce
 from typing import Tuple, Union
 
 
@@ -186,3 +187,10 @@ class Sigmoid:
 class Tanh:
   def __call__(self, x:tensor) -> tensor:
     return (ops.exp(x)-ops.exp(-x)) / (ops.exp(x)+ops.exp(-x))
+  
+
+# ***** extra *****
+class Flatten:
+  def __call__(self, x:tensor) -> tensor:
+    return x.reshape(-1, reduce(lambda x, y: x * y, x.shape, 1))
+  

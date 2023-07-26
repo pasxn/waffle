@@ -9,6 +9,7 @@ def read_onnx(model_path:str) -> List[Node]:
   model = onnx.load(model_path); nodes = []
 
   for i, node in enumerate(model.graph.node):
+    print(node.name)
     attributes = []
     for attr in node.attribute:
       attribute = {}
@@ -23,6 +24,7 @@ def read_onnx(model_path:str) -> List[Node]:
         attribute['values'] = attr.s.decode('utf-8')
       elif attr.type == onnx.AttributeProto.TENSOR:
         tensor_data = np.frombuffer(attr.t.raw_data, dtype=np.float32)
+        tensor_data = tensor_data[~np.isnan(tensor_data)]
         attribute['values'] = tensor_data.reshape(attr.t.dims)
 
       attributes.append(attribute)
@@ -39,7 +41,7 @@ def read_onnx(model_path:str) -> List[Node]:
           weight_tensor['values'] = weight_array.reshape(initializer.dims)
 
           weight_tensors.append(weight_tensor)
-
+    print(weight_tensors)
     node_weight = None; node_bias = None
     assert len(weight_tensors) <= 2, 'there are more tan 2 weight tensors!'
     for i in weight_tensors:

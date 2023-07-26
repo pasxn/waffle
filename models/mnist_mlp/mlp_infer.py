@@ -10,7 +10,7 @@ from models.mnist_mlp.mlp_util import input_size, num_classes, device, train_loa
 
 model = NN(input_size=input_size, num_classes=num_classes).to(device)
 
-state_dict = torch.load('models/mnist_fully_connected/MNist.ckpt')
+state_dict = torch.load('mnist_mlp.ckpt')
 model.load_state_dict(state_dict)
 
 def check_accuracy(loader, model):
@@ -33,7 +33,7 @@ def check_accuracy(loader, model):
    
   model.train()
 
-print("accuracy train set: ")
+print("accuracy train set: ", end='')
 check_accuracy(train_loader, model)
-print("accuracy test set: ")
+print("accuracy test set : ", end='')
 check_accuracy(test_loader, model)
