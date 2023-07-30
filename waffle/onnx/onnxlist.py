@@ -18,8 +18,11 @@ class onnxList:
           if input in self.linearized_list[i].output:
             inputs.append(i)
         
-        node.traverse_input = inputs
+        node.set_traverse_input(inputs)
+      
+      node.search_layer()
 
+    # remove
     for i in range(len(self.linearized_list)):
       print(i, ':', self.linearized_list[i].name ,">>>", self.linearized_list[i].traverse_input)
 

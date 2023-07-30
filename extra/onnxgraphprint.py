@@ -4,7 +4,7 @@ import numpy as np
 
 
 # Load the ONNX model
-model_path = 'models/resnet50/resnet50.onnx'
+model_path = 'models/mnist_cnn/mnist_cnn.onnx'
 
 model = onnx.load(model_path)
 

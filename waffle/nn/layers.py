@@ -202,3 +202,7 @@ class Flatten:
   def __call__(self, x:tensor) -> tensor:
     return x.reshape(-1, reduce(lambda x, y: x * y, x.shape, 1))
   
+class Fake:
+  def __call__(self, x:tensor) -> tensor:
+    return x
+  
