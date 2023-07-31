@@ -13,12 +13,7 @@ class Node:
   def set_traverse_input(self, traverse_input:Union[List[int], int]):
     self.traverse_input = traverse_input
 
-  def search_layer(self):
-    # remove
-    # print(self.attributes)
-    # print()
-    # print(self.name, ">>", self.params[0]['name'] if len(self.params) > 0 else None)
-    # print(self.name, ">>",self.params[1]['name'] if len(self.params) > 0 else None)    
+  def search_layer(self):   
     name_lowercase = self.name.lower()
     if 'gemm' in name_lowercase:
       in_features  = self.params[0]['shape'][1]; out_features = self.params[0]['shape'][0]
@@ -31,7 +26,7 @@ class Node:
       padding = _padding[0] if _padding[0] == _padding[2] else (_padding[0], _padding[2])
       stride = self.attributes[4]['values'][0]; num_kernels = self.params[0]['shape'][0]; num_channels = self.params[0]['shape'][1]
       self.callable = nn.Conv2D(kernel_size, num_kernels, num_channels, padding, stride, weight=self.params[0]['values'], bias=self.params[1]['values'])
-      print(self.params[0]['values'].shape, self.params[1]['values'].shape)
+      
     elif 'maxpool' in name_lowercase:
       _kernel_size = self.attributes[1]['values']; stride = self.attributes[3]['values'][0]
       kernel_size = _kernel_size[0] if _kernel_size[0] == _kernel_size[1] else tuple(_kernel_size)
@@ -47,5 +42,5 @@ class Node:
     else: self.callable = nn.Fake()
 
   def compute_node(self, x:tensor, y:tensor=None, z:tensor=None):
-    print(self.name)
+    # y and z are not used yet
     self.output_computed = self.callable(x)
