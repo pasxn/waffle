@@ -4,7 +4,6 @@ from waffle.nn.layers import Flatten, Fake
 from waffle.nn.layers import LAYERS
 
 from waffle import tensor
-from waffle import ops
 from waffle.onnx.onnxread import read_onnx
 from waffle.onnx.onnxgraph import onnxGraph
 from waffle.onnx.onnxlist import onnxList
@@ -21,7 +20,7 @@ class Module:
   def run(self, x:tensor) -> tensor:
     return self.onnx_obj.run(x)
 
-
+# remove
 if __name__ == '__main__':
   model_path = './models/resnet50/resnet50.onnx'
   graph_nodes = read_onnx(model_path)
