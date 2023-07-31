@@ -19,15 +19,3 @@ class Module:
 
   def run(self, x:tensor) -> tensor:
     return self.onnx_obj.run(x)
-
-# remove
-if __name__ == '__main__':
-  model_path = './models/resnet50/resnet50.onnx'
-  graph_nodes = read_onnx(model_path)
-
-  for i in graph_nodes:
-    print('==========================================')
-    print(i.name)
-    print(i.input)
-    print(i.output)
-    #print(i.params)

@@ -13,10 +13,10 @@ class Linear:
     self.in_features = in_features
     self.out_features = out_features
     self.weight = tensor.glorot_uniform(self.out_features, self.in_features) if weight is None else weight
-    self.bias = tensor.zeros(out_features, 1) if bias is None else bias
+    self.bias = tensor.zeros(out_features, 1) if bias is None else bias.expand(1)
 
   def __call__(self, x:tensor) -> tensor:
-    assert x.shape == (self.in_features, 1), f'The inputa shape is should be ({self.in_features}, {1})'
+    assert x.shape == (self.in_features, 1), f'The input shape is should be ({self.in_features}, {1})'
     x = self.weight@x
     return x.add(self.bias)
     

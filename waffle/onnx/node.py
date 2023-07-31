@@ -17,7 +17,7 @@ class Node:
     name_lowercase = self.name.lower()
     if 'gemm' in name_lowercase:
       in_features  = self.params[0]['shape'][1]; out_features = self.params[0]['shape'][0]
-      self.callable = nn.Linear(in_features, out_features, weight=self.params[0], bias=self.params[1])
+      self.callable = nn.Linear(in_features, out_features, weight=self.params[0]['values'], bias=self.params[1]['values'])
     
     elif 'batchnorm' in name_lowercase: pass #NOTE: Impl later
     elif 'conv' in name_lowercase:
