@@ -48,7 +48,7 @@ class Conv2D:
     elif isinstance(self.filter_size, tuple):
       self.filtr = tensor.glorot_uniform(self.num_kernels, self.num_channels, self.filter_size[0], self.filter_size[1]) if weight is None else weight
 
-    self.bias = tensor.glorot_uniform(self.num_kernels) if weight is None else weight
+    self.bias = tensor.glorot_uniform(self.num_kernels) if bias is None else bias
 
   def __call__(self, image:tensor) -> tensor:
     image = image.expand(axis=-1) if len(image.shape) < 3 else image
