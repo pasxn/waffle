@@ -1,10 +1,9 @@
 # --- Custom ---
 .vscode/
+data/
+dataset/
 *.ipynb
 *.out
-*.jpeg
-*.jpg
-*.png
 *.pdf
 *.bin
 *.gz

@@ -65,7 +65,7 @@ if __name__ == '__main__':
   STRIDE      = 1
 
   # image
-  img = Image.open('./gemm_conv/' + sys.argv[1])
+  img = Image.open('./images/' + sys.argv[1])
   img = np.array(img).astype(np.float32)
 
   plt.imshow(img.astype('uint8')); plt.show()
@@ -96,9 +96,9 @@ if __name__ == '__main__':
   print(f"torch execution time  : {(end_time_torch - start_time_torch)*1000:.5f} ms")
   print(f"waffle execution time : {(end_time_waffle - start_time_waffle)*1000:.5f} ms")
 
-output_torch = output_torch.flatten()
-output_waffle = output_waffle.flatten()
+  output_torch = output_torch.flatten()
+  output_waffle = output_waffle.flatten()
 
-for i in range(len(output_torch)):
-  assert output_waffle[i] == output_torch[i], 'Error in pool output'
+  for i in range(len(output_torch)):
+    assert output_waffle[i] == output_torch[i], 'Error in pool output'
   

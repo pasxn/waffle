@@ -169,5 +169,15 @@ class test_nonlinearities(unittest.TestCase):
     np.testing.assert_allclose(torch_output.transpose(), waffle_output)
 
 
+class test_extra(unittest.TestCase):
+  
+  def test_flatten(self):
+    M, N = 64, 128
+    t1 = tensor.randn(M, N)
+    f = wnn.Flatten()
+
+    np.testing.assert_allclose(N*M, f(t1).shape[1])
+
+
 if __name__ == '__main__':
   unittest.main()

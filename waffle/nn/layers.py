@@ -1,7 +1,11 @@
 from waffle import tensor
 from waffle import ops
+from functools import reduce
+from enum import Enum
 from typing import Tuple, Union
 
+
+LAYERS = Enum("LAYERS", ["Linear", "Batchnorm", "Conv2D", "MaxPool2D", "ReLU", "LeakyReLU", "Softmax", "Sigmoid", "Tanh", "Flatten"])
 
 # ***** nn ops *****
 class Linear:
@@ -9,10 +13,10 @@ class Linear:
     self.in_features = in_features
     self.out_features = out_features
     self.weight = tensor.glorot_uniform(self.out_features, self.in_features) if weight is None else weight
-    self.bias = tensor.zeros(out_features, 1) if bias is None else bias
+    self.bias = tensor.zeros(out_features, 1) if bias is None else bias.expand(1)
 
   def __call__(self, x:tensor) -> tensor:
-    assert x.shape == (self.in_features, 1), f'The inputa shape is should be ({self.in_features}, {1})'
+    assert x.shape == (self.in_features, 1), f'The input shape is should be ({self.in_features}, {1})'
     x = self.weight@x
     return x.add(self.bias)
     
@@ -44,7 +48,7 @@ class Conv2D:
     elif isinstance(self.filter_size, tuple):
       self.filtr = tensor.glorot_uniform(self.num_kernels, self.num_channels, self.filter_size[0], self.filter_size[1]) if weight is None else weight
 
-    self.bias = tensor.glorot_uniform(self.num_kernels) if weight is None else weight
+    self.bias = tensor.glorot_uniform(self.num_kernels) if bias is None else bias
 
   def __call__(self, image:tensor) -> tensor:
     image = image.expand(axis=-1) if len(image.shape) < 3 else image
@@ -178,6 +182,11 @@ class Softmax:
   def __call__(self, x:tensor) -> tensor:
     exp_x = ops.exp(x - ops.max(x))
     return exp_x / ops.sum(exp_x, axis=0)
+
+class LogSoftmax:
+  def __call__(self, x:tensor) -> tensor:
+    exp_x = ops.exp(x - ops.max(x))
+    return ops.log(exp_x / ops.sum(exp_x, axis=0))
   
 class Sigmoid:
   def __call__(self, x:tensor) -> tensor:
@@ -186,3 +195,14 @@ class Sigmoid:
 class Tanh:
   def __call__(self, x:tensor) -> tensor:
     return (ops.exp(x)-ops.exp(-x)) / (ops.exp(x)+ops.exp(-x))
+  
+
+# ***** extra *****
+class Flatten:
+  def __call__(self, x:tensor) -> tensor:
+    return x.reshape(-1, reduce(lambda x, y: x * y, x.shape, 1))
+  
+class Fake:
+  def __call__(self, x:tensor) -> tensor:
+    return x
+  

@@ -1,17 +1,23 @@
 import torch
 from torch.utils.data import DataLoader  #dataset management
 import torchvision.datasets as datasets  #to import MNist 
-import torchvision.transforms as transforms 
 import torch.onnx
 
+import os
 from models.mnist_mlp.mlp_model import NN
 from models.mnist_mlp.mlp_util import input_size, num_classes, device, train_loader, test_loader
 
 
 model = NN(input_size=input_size, num_classes=num_classes).to(device)
+path = os.path.abspath(os.path.dirname(__file__))
 
-state_dict = torch.load('models/mnist_fully_connected/MNist.ckpt')
+state_dict = torch.load(path + '/mnist_mlp.ckpt')
 model.load_state_dict(state_dict)
+
+def predict_image_mlp(image):
+  with torch.no_grad():
+    output = model(image)
+    return output
 
 def check_accuracy(loader, model):
   num_correct = 0
@@ -32,8 +38,8 @@ def check_accuracy(loader, model):
     print(f'Got {num_correct} / {num_samples} with accuracy {float(num_correct)/float(num_samples)*100:.2f} %')
    
   model.train()
-
-print("accuracy train set: ")
-check_accuracy(train_loader, model)
-print("accuracy test set: ")
-check_accuracy(test_loader, model)
+if __name__ == '__main__':
+  print("accuracy train set: ", end='')
+  check_accuracy(train_loader, model)
+  print("accuracy test set : ", end='')
+  check_accuracy(test_loader, model)

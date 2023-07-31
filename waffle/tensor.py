@@ -20,7 +20,7 @@ class tensor:
     return f"<tensor {self.data!r}>"
 
 
-  # ***** data handlers ****
+  # ***** data handlers *****
   @property
   def shape(self) -> Tuple[int, ...]: return self.data.shape
 
