@@ -10,11 +10,10 @@ transform = transforms.Compose([transforms.Resize((1, 28*28)),
                                 transforms.ToTensor(),
                                 transforms.Normalize((0.1307,), (0.3081,))])
 
-image = tensor(transform(image).numpy()).transpose().expand(1)
+image = tensor(transform(image).numpy()).flatten().transpose().expand(1)
 
 model = nn.Module('mnist_mlp', './models/mnist_mlp/mnist_mlp.onnx')
 model.compile()
 
 output = model.run(image)
-
-# print(f"result: {/1000}")
+print(f"result: {output.where(output.max())}")
