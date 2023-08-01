@@ -6,7 +6,7 @@ import time
 from models.mnist_cnn.cnn_infer import predict_image_cnn
 from models.mnist_cnn.cnn_util import test_loader
 
-counter = 0; N = 1
+counter = 0; N = 5
 
 # torch
 start_time = time.perf_counter_ns()
@@ -17,8 +17,9 @@ for xx, _ in test_loader:
   if counter == N: break
 end_time = time.perf_counter_ns()
 execution_time_torch = end_time - start_time
+counter = 0
 
-# # waffle
+# waffle
 model = nn.Module('mnist_cnn', './models/mnist_cnn/mnist_cnn.onnx')
 model.compile()
 
@@ -31,6 +32,7 @@ for xx, _ in test_loader:
   if counter == N: break
 end_time = time.perf_counter_ns()
 execution_time_waffle = end_time - start_time
+counter = 0
 
 # eval
 waffle_output = []; torch_output = []
@@ -45,6 +47,7 @@ for xx, _ in test_loader:
 
   counter +=1
   if counter == N: break
+counter = 0
 
 sum = 0
 for i in range(len(waffle_output)):

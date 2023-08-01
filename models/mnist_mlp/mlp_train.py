@@ -14,7 +14,7 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 input_size = 784
 num_classes = 10
 learning_rate = 0.001
-batch_size = 64 #64 imgs at a time
+batch_size = 64
 num_epochs = 1
 
 #load data using torchvision lib
@@ -43,6 +43,8 @@ for epoch in range(num_epochs):
     #fowarding the data
     scores = model(data)
     loss = criterion(scores, targets)
+
+    print(f"loss: {loss.item()}")
         
     #backword
     optimizer.zero_grad()
@@ -51,9 +53,9 @@ for epoch in range(num_epochs):
     optimizer.step()
 
 #save the model  Checkpoint
-torch.save(model.state_dict(), 'models/mnist_fully_connected/mnist_mlp.ckpt')
+torch.save(model.state_dict(), 'models/mnist_mlp/mnist_mlp.ckpt')
 
 #save in onnx format
 ex_input = torch.randn(1, input_size)   #onnx require size and shape of a input
-onnx_path = 'models/mnist_fully_connected/mnist_mlp.onnx'
+onnx_path = 'models/mnist_mlp/mnist_mlp.onnx'
 torch.onnx.export(model,ex_input, onnx_path)
