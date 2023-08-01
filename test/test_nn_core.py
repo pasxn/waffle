@@ -50,7 +50,7 @@ class test_nn_core(unittest.TestCase):
 
     y_waffle = model.run(image_waffle)
 
-    np.testing.assert_allclose(y_torch.numpy().transpose().shape, y_waffle.data.shape)
+    np.testing.assert_allclose(y_torch.argmax(dim=1, keepdim=True).item(), y_waffle.where(y_waffle.max()))
 
 if __name__ == '__main__':
   unittest.main()

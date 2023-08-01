@@ -80,8 +80,8 @@ class test_tensor(unittest.TestCase):
     np.testing.assert_allclose(tensor([[4, 3], [2, 1]]).data, t1.flip().data)
 
     t1 = tensor([1, 2, 3, 3])
-    np.testing.assert_allclose(0, t1.where(1).data)
-    np.testing.assert_allclose(tensor([2, 3]).data, t1.where(3).data)
+    np.testing.assert_allclose(0, t1.where(tensor(1)).data)
+    np.testing.assert_allclose(tensor([2, 3]).data, t1.where(tensor(3)).data)
 
   def test_broadcasting(self):
     t1 = tensor.ones(2)

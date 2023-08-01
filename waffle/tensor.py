@@ -118,8 +118,9 @@ class tensor:
       raise RuntimeError("axis must be an int or a tuple")
     
   def where(self, val:'tensor') -> Union['tensor', int]:
-    indices = np.where(self.data == val)
+    indices = np.where(self.data == val.data)
     return tensor(indices[0]) if indices[0].shape[0] > 1 else indices[0][0]
+  
   
   # ***** slicing and indexing *****
   def __getitem__(self, val:int) -> Union['tensor', np.float32]:
