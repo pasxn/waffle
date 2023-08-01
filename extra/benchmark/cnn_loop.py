@@ -9,7 +9,7 @@ import os
 from models.mnist_cnn.cnn_infer import predict_image_cnn
 path = os.path.abspath(os.path.dirname(__file__))
 
-def run_loop_mlp(n):
+def run_loop_cnn(n):
   image = Image.open(path + '/../images/mnist.jpg')
   transform = transforms.Compose([transforms.Resize((28, 28)),
                                 transforms.ToTensor(),
@@ -38,9 +38,11 @@ def run_loop_mlp(n):
   return execution_time_torch, execution_time_waffle
 
 if __name__ == '__main__':
-  N = 100000
+  N = 20
 
-  execution_time_torch, execution_time_waffle = run_loop_mlp(N)
+  execution_time_torch, execution_time_waffle = run_loop_cnn(N)
+  speedup = max(execution_time_torch, execution_time_waffle)/min(execution_time_torch, execution_time_waffle)
 
   print(f"torch Time : {execution_time_torch/1000000} ms")
   print(f"waffle Time: {execution_time_waffle/1000000} ms")
+  print(f"waffle is x{speedup:.2f} {'slower' if execution_time_torch < execution_time_waffle else 'faster'} than torch!")

@@ -14,8 +14,8 @@ batch_size = 64 #64 imgs at a time
 num_epochs = 1
 
 #load data using torchvision lib
-train_dataset = datasets.MNIST(root='dataset/', train=True, transform=transforms.ToTensor(), download=True)
+train_dataset = datasets.MNIST(root='data/', train=True, transform=transforms.ToTensor(), download=True)
 train_loader = DataLoader(dataset=train_dataset, batch_size=batch_size, shuffle=True)
 
-test_dataset = datasets.MNIST(root='dataset/', train=False, transform=transforms.ToTensor(), download=True)
+test_dataset = datasets.MNIST(root='data/', train=False, transform=transforms.ToTensor(), download=True)
 test_loader = DataLoader(dataset=train_dataset, batch_size=batch_size, shuffle=True)
