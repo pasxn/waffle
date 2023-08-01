@@ -45,14 +45,6 @@ if __name__ == '__main__':
   print(f"torch Time : {execution_time_torch/1000000} ms")
   print(f"waffle Time: {execution_time_waffle/1000000} ms")
 
-# print(y_waffle)
-# print(y_torch)
-
-# model = nn.Module('mnist_cnn', './models/mnist_cnn/mnist_cnn.onnx')
-# model.compile()
-# y = model.run(img)
-# print(y)
-
 # model = nn.Module('resnet18', './models/resnet18/resnet18.onnx')
 # model.compile()
 # model.run()

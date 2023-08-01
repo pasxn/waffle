@@ -73,11 +73,14 @@ class test_tensor(unittest.TestCase):
     np.testing.assert_allclose((1, 4), t1.expand(0).shape)
     np.testing.assert_allclose((1, 4, 1), t1.expand((0, 2)).shape)
 
+    t1 = tensor.randn(1, 4)
+    np.testing.assert_allclose((4, ), t1.squeeze().shape)
+
     t1 = tensor([[1, 2], [3, 4]])
     np.testing.assert_allclose(tensor([[4, 3], [2, 1]]).data, t1.flip().data)
 
     t1 = tensor([1, 2, 3, 3])
-    np.testing.assert_allclose(0, t1.where(1))
+    np.testing.assert_allclose(0, t1.where(1).data)
     np.testing.assert_allclose(tensor([2, 3]).data, t1.where(3).data)
 
   def test_broadcasting(self):

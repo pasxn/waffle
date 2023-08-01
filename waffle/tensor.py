@@ -107,6 +107,9 @@ class tensor:
       return tensor(np.expand_dims(self.data, axis=axis))
     else:
       raise RuntimeError("axis must be an int or a tuple")
+
+  def squeeze(self) -> 'tensor':
+    return tensor(np.squeeze(self.data))    
     
   def flip(self, axis=None) -> 'tensor':
     if axis is None or isinstance(axis, tuple) or isinstance(axis, int):
@@ -115,7 +118,7 @@ class tensor:
       raise RuntimeError("axis must be an int or a tuple")
     
   def where(self, val:'tensor') -> Union['tensor', int]:
-    indices = np.where(self.data == val.data);print(indices)
+    indices = np.where(self.data == val)
     return tensor(indices[0]) if indices[0].shape[0] > 1 else indices[0][0]
   
   # ***** slicing and indexing *****
