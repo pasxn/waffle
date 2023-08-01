@@ -198,7 +198,7 @@ class LogSoftmax:
   
 class Sigmoid:
   def __call__(self, x:tensor) -> tensor:
-    return 1 / (1 + ops.exp(-x))
+    return (1 / (1 + ops.exp(0-x)))
   
 class Tanh:
   def __call__(self, x:tensor) -> tensor:
