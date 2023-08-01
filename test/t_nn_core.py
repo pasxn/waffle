@@ -3,13 +3,12 @@ from waffle import tensor
 
 import torchvision.transforms as transforms
 from PIL import Image
-import numpy as np
 import time
 
 from models.mnist_mlp.mlp_infer import predict_image_mlp
 
 
-N = 10000
+N = 100000
 
 image = Image.open('./extra/images/mnist.jpg')
 transform = transforms.Compose([transforms.Resize((1, 28*28)),
