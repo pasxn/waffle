@@ -4,13 +4,13 @@ from waffle import tensor
 import torchvision.transforms as transforms
 from PIL import Image
 import time
+import os
 
 from models.mnist_mlp.mlp_infer import predict_image_mlp
-from models.mnist_mlp.mlp_util import test_loader
+path = os.path.abspath(os.path.dirname(__file__))
 
-
-def run_loop(n):
-  image = Image.open('./extra/images/mnist.jpg')
+def run_loop_mlp(n):
+  image = Image.open(path + '/../images/mnist.jpg')
   transform = transforms.Compose([transforms.Resize((1, 28*28)),
                                   transforms.ToTensor(),
                                   transforms.Normalize((0.1307,), (0.3081,))])
@@ -40,7 +40,7 @@ def run_loop(n):
 if __name__ == '__main__':
   N = 100000
 
-  execution_time_torch, execution_time_waffle = run_loop(N)
+  execution_time_torch, execution_time_waffle = run_loop_mlp(N)
 
   print(f"torch Time : {execution_time_torch/1000000} ms")
   print(f"waffle Time: {execution_time_waffle/1000000} ms")
