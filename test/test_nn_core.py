@@ -8,6 +8,7 @@ import torchvision.transforms as transforms
 from PIL import Image
 
 from models.mnist_mlp.mlp_infer import predict_image_mlp
+from models.mnist_cnn.cnn_infer import predict_image_cnn
 
 class test_nn_core(unittest.TestCase):
     
@@ -30,6 +31,26 @@ class test_nn_core(unittest.TestCase):
     y_waffle = model.run(image_waffle)
 
     np.testing.assert_allclose(np.round(y_torch.numpy().flatten(), 2), np.round(y_waffle.data.flatten(), 2))
+
+  def test_cnn(self):
+    image = Image.open('./extra/images/mnist.jpg')
+    transform = transforms.Compose([transforms.Resize((28, 28)),
+                                    transforms.ToTensor(),
+                                    transforms.Normalize((0.1307,), (0.3081,))])
+
+    image_torch = transform(image).unsqueeze(0)
+    image_waffle = tensor(image_torch.numpy()).squeeze()
+
+    # torch
+    y_torch = predict_image_cnn(image_torch)
+
+    # waffle
+    model = nn.Module('mnist_cnn', './models/mnist_cnn/mnist_cnn.onnx')
+    model.compile()
+
+    y_waffle = model.run(image_waffle)
+
+    np.testing.assert_allclose(y_torch.numpy().transpose().shape, y_waffle.data.shape)
 
 if __name__ == '__main__':
   unittest.main()
