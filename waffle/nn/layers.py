@@ -117,10 +117,18 @@ class Conv2D:
       output_height = int(((image_height_original - filter_height + 2*self.padding)/self.stride) + 1)
       output_width  = int(((image_width_original - filter_width + 2*self.padding)/self.stride) + 1)
 
-    output = output.reshape(self.num_kernels, output_height, output_width) + self.bias
-    output = output.permute((1, 2, 0))
+    output = output.reshape(self.num_kernels, output_height, output_width)
+    
+    biased_output = []; self.bias = self.bias.flatten()
+    for i in range(output.len):
+      biased_array = output[i] + self.bias[i]
+      biased_output.append(biased_array.data)
 
-    return output
+    # NOTE: numpy exposed
+    biased_output = tensor(np.array(biased_output))
+    biased_output = biased_output.permute((1, 2, 0))
+
+    return biased_output
 
 
 class MaxPool2D:
@@ -200,7 +208,7 @@ class Tanh:
 # ***** extra *****
 class Flatten:
   def __call__(self, x:tensor) -> tensor:
-    return x.reshape(-1, reduce(lambda x, y: x * y, x.shape, 1))
+    return x.reshape(-1, reduce(lambda x, y: x * y, x.shape, 1)).transpose()
   
 class Fake:
   def __call__(self, x:tensor) -> tensor:

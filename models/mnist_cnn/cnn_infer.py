@@ -1,15 +1,19 @@
+import os
 import torch
-import torch.nn as nn
-import torch.nn.functional as F
-import torch.optim as optim
-from torchvision import datasets, transforms, models
+from torchvision import transforms
 from PIL import Image
 
 from models.mnist_cnn.cnn_model import Net
 model = Net()
+path = os.path.abspath(os.path.dirname(__file__))
 
-state_dict = torch.load('mnist_cnn.ckpt')
+state_dict = torch.load(path + '/mnist_cnn.ckpt')
 model.load_state_dict(state_dict)
+
+def predict_image_cnn(image):
+  with torch.no_grad():
+    output = model(image)
+    return output
 
 # Define a function to load an image from a given path and predict its label
 def predict_image(image_path):
@@ -26,11 +30,12 @@ def predict_image(image_path):
     prediction = output.argmax(dim=1, keepdim=True).item()
     return prediction
 
-# Define the path of the image to be tested
-image_path = '../../extra/images/mnist.jpg'
+if __name__ == '__main__':
+  # Define the path of the image to be tested
+  image_path = '../../extra/images/mnist.jpg'
 
-# Predict the label of the image
-predicted_label = predict_image(image_path)
+  # Predict the label of the image
+  predicted_label = predict_image(image_path)
 
-# Print the predicted label
-print('Predicted label:', predicted_label)
+  # Print the predicted label
+  print('Predicted label:', predicted_label)

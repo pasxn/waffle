@@ -31,7 +31,7 @@ class onnxList:
     i = 0
     if WFLDBG: print('\n------------------ computation ------------------')
     while self.linearized_list[-1].output_computed is None:      
-      current_node_traverse_input_len = len(self.linearized_list[i].traverse_input) if self.linearized_list[i].traverse_input is not None else 1
+      current_node_traverse_input_len = len(self.linearized_list[i].traverse_input) if self.linearized_list[i].traverse_input is not None else 9999
       if current_node_traverse_input_len == 1:
         if self.linearized_list[i].traverse_input[0] == -1:
           self.linearized_list[i].compute_node(input)
@@ -53,6 +53,8 @@ class onnxList:
 
         if current_input_node_0.output_computed is not None and current_input_node_1.output_computed is not None and current_input_node_2.output_computed is not None:
           self.linearized_list[i].compute_node(x=current_input_node_0.output_computed, y=current_input_node_1.output_computed, z=current_input_node_2.output_computed)
+      else:
+        self.linearized_list[i].compute_node(self.linearized_list[i-1].output_computed)
 
       if WFLDBG:
         computed_output = self.linearized_list[i].output_computed
