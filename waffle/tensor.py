@@ -114,10 +114,14 @@ class tensor:
     else:
       raise RuntimeError("axis must be an int or a tuple")
     
+  def where(self, val:np.float32) -> Union['tensor', int]:
+    indices = np.where(self.data == val)
+    return tensor(indices[0]) if indices[0].shape[0] > 1 else indices[0][0]
   
   # ***** slicing and indexing *****
-  def __getitem__(self, val:int) -> 'tensor':
-    return tensor(self.data[val])
+  def __getitem__(self, val:int) -> Union['tensor', np.float32]:
+    sliced = self.data[val]
+    return tensor(sliced) if isinstance(sliced, np.ndarray) else sliced
   
 
   # ***** broadcasting mechanism *****
