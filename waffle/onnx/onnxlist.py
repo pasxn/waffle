@@ -29,7 +29,8 @@ class onnxList:
 
   def run(self, input:tensor) -> tensor:
     i = 0
-    if WFLDBG: print('\n------------------ computation ------------------')
+    if WFLDBG:
+      print('\n------------------ computation ------------------')
     while self.linearized_list[-1].output_computed is None:      
       current_node_traverse_input_len = len(self.linearized_list[i].traverse_input) if self.linearized_list[i].traverse_input is not None else 9999
       if current_node_traverse_input_len == 1:

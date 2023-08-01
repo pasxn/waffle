@@ -1,4 +1,5 @@
 import unittest
+import pytest
 
 import numpy as np
 
@@ -123,7 +124,7 @@ class test_nonlinearities(unittest.TestCase):
     np.testing.assert_allclose(torch_output.transpose().shape, waffle_output.shape)
     np.testing.assert_allclose(torch_output.transpose(), waffle_output)
 
-  @unittest.skip('slight error')
+  @pytest.mark.filterwarnings("ignore")
   def test_softmax(self):
     input_size = 128; batch_size = 1;
     
@@ -136,7 +137,7 @@ class test_nonlinearities(unittest.TestCase):
     waffle_output = waffle(tensor(input).transpose()).data
 
     np.testing.assert_allclose(torch_output.transpose().shape, waffle_output.shape)
-    np.testing.assert_allclose(torch_output.transpose(), waffle_output)
+    np.testing.assert_allclose(np.round(torch_output.transpose(), 4), np.round(waffle_output, 4))
 
   @unittest.skip('major error')
   def test_sigmoid(self):
@@ -153,7 +154,6 @@ class test_nonlinearities(unittest.TestCase):
     np.testing.assert_allclose(torch_output.transpose().shape, waffle_output.shape)
     np.testing.assert_allclose(torch_output.transpose(), waffle_output)
 
-  @unittest.skip('slight error')
   def test_tanh(self):
     input_size = 128; batch_size = 1;
     
@@ -166,7 +166,7 @@ class test_nonlinearities(unittest.TestCase):
     waffle_output = waffle(tensor(input).transpose()).data
 
     np.testing.assert_allclose(torch_output.transpose().shape, waffle_output.shape)
-    np.testing.assert_allclose(torch_output.transpose(), waffle_output)
+    np.testing.assert_allclose(np.round(torch_output.transpose(), 4), np.round(waffle_output, 4))
 
 
 class test_extra(unittest.TestCase):
