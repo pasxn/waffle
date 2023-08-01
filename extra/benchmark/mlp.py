@@ -6,6 +6,7 @@ from PIL import Image
 import time
 
 from models.mnist_mlp.mlp_infer import predict_image_mlp
+from models.mnist_mlp.mlp_util import test_loader
 
 
 N = 100000
