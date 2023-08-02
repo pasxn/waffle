@@ -9,7 +9,7 @@ import os
 from models.mnist_mlp.mlp_infer import predict_image_mlp
 path = os.path.abspath(os.path.dirname(__file__))
 
-def run_loop_mlp(n):
+def run_loop_mlp(n, dpath):
   image = Image.open(path + '/../images/mnist.jpg')
   transform = transforms.Compose([transforms.Resize((1, 28*28)),
                                   transforms.ToTensor(),
@@ -26,7 +26,7 @@ def run_loop_mlp(n):
   execution_time_torch = end_time - start_time
 
   # waffle
-  model = nn.Module('mnist_mlp', './models/mnist_mlp/mnist_mlp.onnx')
+  model = nn.Module('mnist_mlp', dpath)
   model.compile()
 
   start_time = time.perf_counter_ns()
@@ -40,7 +40,7 @@ def run_loop_mlp(n):
 if __name__ == '__main__':
   N = 20
 
-  execution_time_torch, execution_time_waffle = run_loop_mlp(N)
+  execution_time_torch, execution_time_waffle = run_loop_mlp(N, './models/mnist_mlp/mnist_mlp.onnx')
   speedup = max(execution_time_torch, execution_time_waffle)/min(execution_time_torch, execution_time_waffle)
 
   print(f"torch Time : {execution_time_torch/1000000} ms")
