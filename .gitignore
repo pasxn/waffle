@@ -5,6 +5,7 @@ dataset/
 *.ipynb
 *.out
 *.pdf
+*.png
 *.bin
 *.gz
 
