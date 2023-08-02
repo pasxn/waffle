@@ -26,7 +26,7 @@ def get_platform():
 machine = get_platform()
 
 
-M = 101; N = 5
+M = 501; N = 5
 
 torch_times = []; waffle_times = []; torch_times_sum = []; waffle_times_sum = []
 input_times = [i for i in range(1, M, N)];
