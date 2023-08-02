@@ -22,7 +22,7 @@ def get_platform():
 
 machine = get_platform()
 
-M = 1001; N = 10
+M = 101; N = 5
 
 input_times = [i for i in range(1, M, N)];
 torch_times_sum = []; waffle_times_sum = []; torch_times = []; waffle_times = []
