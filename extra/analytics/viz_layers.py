@@ -25,9 +25,8 @@ def get_platform():
 
 machine = get_platform()
 
-if machine == '_x86': M = 1001; N = 10
-if machine == '_pi4': M = 201;  N = 2
-if machine == '_pi4': M = 201;  N = 1
+
+M = 1001; N = 10
 
 torch_times = []; waffle_times = []; torch_times_sum = []; waffle_times_sum = []
 input_times = [i for i in range(1, M, N)];
