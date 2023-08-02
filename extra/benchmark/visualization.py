@@ -2,7 +2,10 @@
 from matplotlib import pyplot as plt
 from extra.benchmark.mlp_loop import run_loop_mlp
 
+# layers, increase tensor size and calculate time, flops for each layer
+
 # %%
+# this also keep time and add flops
 input_times = [i for i in range(0, 1001, 10)]; torch_times = []; waffle_times = []
 for input in input_times:
   time_torch, time_waffle = run_loop_mlp(input, '../../models/mnist_mlp/mnist_mlp.onnx')
