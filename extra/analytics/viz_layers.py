@@ -42,14 +42,14 @@ for input in input_times:
   st = time.perf_counter()
   for i in range(input):
     torch_output = torch_linear((torch.from_numpy(input_img))).detach().numpy()
-  torch_times.append((time.perf_counter() - st)*1e6*input)
+  torch_times.append((time.perf_counter() - st)*1e6/input)
   torch_times_sum.append((time.perf_counter() - st)*1e6)
 
 for input in input_times:
   st = time.perf_counter()
   for i in range(input):
     waffle_output = waffle_linear(tensor(input_img).transpose()).data
-  waffle_times.append((time.perf_counter() - st)*1e6*input)
+  waffle_times.append((time.perf_counter() - st)*1e6/input)
   waffle_times_sum.append((time.perf_counter() - st)*1e6)
 
 # average time taken for each iteration
@@ -101,14 +101,14 @@ for input in input_times:
   st = time.perf_counter()
   for i in range(input):
     output_torch_3d  = torch_conv(image_torch_3d, 4, 2, 2, 4)
-  torch_times.append((time.perf_counter() - st)*1e6*input)
+  torch_times.append((time.perf_counter() - st)*1e6/input)
   torch_times_sum.append((time.perf_counter() - st)*1e6)
 
 for input in input_times:
   st = time.perf_counter()
   for i in range(input):
     output_waffle_3d = waffle_conv(image_waffle_3d, 4, 2, 3, 2, 4)
-  waffle_times.append((time.perf_counter() - st)*1e6*input)
+  waffle_times.append((time.perf_counter() - st)*1e6/input)
   waffle_times_sum.append((time.perf_counter() - st)*1e6)
 
 # average time taken for each iteration
@@ -158,14 +158,14 @@ for input in input_times:
   st = time.perf_counter()
   for i in range(input):
     output_torch_3d  = torch_maxpool(image_torch_3d, 4, 1)
-  torch_times.append((time.perf_counter() - st)*1e6*input)
+  torch_times.append((time.perf_counter() - st)*1e6/input)
   torch_times_sum.append((time.perf_counter() - st)*1e6)
 
 for input in input_times:
   st = time.perf_counter()
   for i in range(input):
     output_waffle_3d = waffle_maxpool(image_waffle_3d, 4, 1)
-  waffle_times.append((time.perf_counter() - st)*1e6*input)
+  waffle_times.append((time.perf_counter() - st)*1e6/input)
   waffle_times_sum.append((time.perf_counter() - st)*1e6)
 
 # average time taken for each iteration
