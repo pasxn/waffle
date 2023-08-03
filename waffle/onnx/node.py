@@ -19,7 +19,8 @@ class Node:
       in_features  = self.params[0]['shape'][1]; out_features = self.params[0]['shape'][0]
       self.callable = nn.Linear(in_features, out_features, weight=self.params[0]['values'], bias=self.params[1]['values'])
     
-    elif 'batchnorm' in name_lowercase: pass #NOTE: Impl later
+    # NOTE: implement later
+    elif 'batchnorm' in name_lowercase: pass
     elif 'conv' in name_lowercase:
       _kernel_size = self.attributes[2]['values']; _padding = self.attributes[3]['values']
       kernel_size = _kernel_size[0] if _kernel_size[0] == _kernel_size[1] else tuple(_kernel_size)

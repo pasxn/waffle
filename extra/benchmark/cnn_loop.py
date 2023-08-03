@@ -38,7 +38,7 @@ def run_loop_cnn(n):
   return execution_time_torch, execution_time_waffle
 
 if __name__ == '__main__':
-  N = 20
+  N = 1
 
   execution_time_torch, execution_time_waffle = run_loop_cnn(N)
   speedup = max(execution_time_torch, execution_time_waffle)/min(execution_time_torch, execution_time_waffle)

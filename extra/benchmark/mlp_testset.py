@@ -6,7 +6,7 @@ import time
 from models.mnist_mlp.mlp_infer import predict_image_mlp
 from models.mnist_mlp.mlp_util import test_loader
 
-counter = 0; N = 20
+counter = 0; N = 1
 
 # torch
 start_time = time.perf_counter_ns()

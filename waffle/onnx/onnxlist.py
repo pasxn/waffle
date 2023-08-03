@@ -63,6 +63,9 @@ class onnxList:
       
       i = i + 1 if i<len(self.linearized_list)-1 else 0
     
-    result = self.linearized_list[-1].output_computed; self.linearized_list[-1].output_computed = None
+    result = self.linearized_list[-1].output_computed
+
+    for i in range(len(self.linearized_list)):
+      self.linearized_list[i].output_computed = None
 
     return result
