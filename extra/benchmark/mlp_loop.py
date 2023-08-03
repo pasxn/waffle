@@ -40,7 +40,7 @@ def run_loop_mlp(n, dpath):
 if __name__ == '__main__':
   N = 1
 
-  execution_time_torch, execution_time_waffle = run_loop_mlp(N, './models/mnist_mlp/mnist_mlp.onnx')
+  execution_time_torch, execution_time_waffle = run_loop_mlp(N, './extra/models/mnist_mlp/mnist_mlp.onnx')
   speedup = max(execution_time_torch, execution_time_waffle)/min(execution_time_torch, execution_time_waffle)
 
   print(f"torch Time : {execution_time_torch/1000000} ms")

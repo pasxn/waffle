@@ -20,7 +20,7 @@ execution_time_torch = end_time - start_time
 counter = 0
 
 # waffle
-model = nn.Module('mnist_cnn', './models/mnist_cnn/mnist_cnn.onnx')
+model = nn.Module('mnist_cnn', './extra/models/mnist_cnn/mnist_cnn.onnx')
 model.compile()
 
 start_time = time.perf_counter_ns()
