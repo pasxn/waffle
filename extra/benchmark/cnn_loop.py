@@ -35,6 +35,9 @@ def run_loop_cnn(n):
   end_time = time.perf_counter_ns()
   execution_time_waffle = end_time - start_time
 
+  # remove
+  print(y_waffle); print(y_torch)
+
   return execution_time_torch, execution_time_waffle
 
 if __name__ == '__main__':

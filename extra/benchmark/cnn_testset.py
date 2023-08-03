@@ -6,7 +6,7 @@ import time
 from models.mnist_cnn.cnn_infer import predict_image_cnn
 from models.mnist_cnn.cnn_util import test_loader
 
-counter = 0; N = 5
+counter = 0; N = 1
 
 # torch
 start_time = time.perf_counter_ns()
