@@ -7,8 +7,8 @@ from waffle import tensor
 import torchvision.transforms as transforms
 from PIL import Image
 
-from models.mnist_mlp.mlp_infer import predict_image_mlp
-from models.mnist_cnn.cnn_infer import predict_image_cnn
+from extra.models.mnist_mlp.mlp_infer import predict_image_mlp
+from extra.models.mnist_cnn.cnn_infer import predict_image_cnn
 
 class test_nn_core(unittest.TestCase):
     
@@ -25,7 +25,7 @@ class test_nn_core(unittest.TestCase):
     y_torch = predict_image_mlp(image_torch)
 
     # waffle
-    model = nn.Module('mnist_mlp', './models/mnist_mlp/mnist_mlp.onnx')
+    model = nn.Module('mnist_mlp', './extra/models/mnist_mlp/mnist_mlp.onnx')
     model.compile()
 
     y_waffle = model.run(image_waffle)
@@ -45,7 +45,7 @@ class test_nn_core(unittest.TestCase):
     y_torch = predict_image_cnn(image_torch)
 
     # waffle
-    model = nn.Module('mnist_cnn', './models/mnist_cnn/mnist_cnn.onnx')
+    model = nn.Module('mnist_cnn', './extra/models/mnist_cnn/mnist_cnn.onnx')
     model.compile()
 
     y_waffle = model.run(image_waffle)

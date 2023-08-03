@@ -6,7 +6,7 @@ from PIL import Image
 import time
 import os
 
-from models.mnist_cnn.cnn_infer import predict_image_cnn
+from extra.models.mnist_cnn.cnn_infer import predict_image_cnn
 path = os.path.abspath(os.path.dirname(__file__))
 
 def run_loop_cnn(n, dpath):

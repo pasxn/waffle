@@ -3,8 +3,8 @@ from waffle import tensor
 
 import time
 
-from models.mnist_cnn.cnn_infer import predict_image_cnn
-from models.mnist_cnn.cnn_util import test_loader
+from extra.models.mnist_cnn.cnn_infer import predict_image_cnn
+from extra.models.mnist_cnn.cnn_util import test_loader
 
 counter = 0; N = 1
 

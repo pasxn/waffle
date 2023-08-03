@@ -6,7 +6,7 @@ from PIL import Image
 import time
 import os
 
-from models.mnist_mlp.mlp_infer import predict_image_mlp
+from extra.models.mnist_mlp.mlp_infer import predict_image_mlp
 path = os.path.abspath(os.path.dirname(__file__))
 
 def run_loop_mlp(n, dpath):

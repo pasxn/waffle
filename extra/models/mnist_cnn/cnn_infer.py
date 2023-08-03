@@ -3,7 +3,7 @@ import torch
 from torchvision import transforms
 from PIL import Image
 
-from models.mnist_cnn.cnn_model import Net
+from extra.models.mnist_cnn.cnn_model import Net
 model = Net()
 path = os.path.abspath(os.path.dirname(__file__))
 

@@ -7,7 +7,7 @@ import torchvision.datasets as datasets  #to import MNist
 import torchvision.transforms as transforms
 import torch.onnx
 
-from models.mnist_mlp.mlp_model import NN
+from extra.models.mnist_mlp.mlp_model import NN
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 

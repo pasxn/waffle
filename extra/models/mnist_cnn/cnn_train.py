@@ -5,8 +5,8 @@ import torch.optim as optim
 from torchvision import datasets, transforms, models
 from PIL import Image
 
-from models.mnist_cnn.cnn_model import Net
-from models.mnist_cnn.cnn_util import train_loader, test_loader 
+from extra.models.mnist_cnn.cnn_model import Net
+from extra.models.mnist_cnn.cnn_util import train_loader, test_loader 
 
 # Instantiate the model and define the optimizer
 model = Net()

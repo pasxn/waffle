@@ -3,8 +3,8 @@ from waffle import tensor
 
 import time
 
-from models.mnist_mlp.mlp_infer import predict_image_mlp
-from models.mnist_mlp.mlp_util import test_loader
+from extra.models.mnist_mlp.mlp_infer import predict_image_mlp
+from extra.models.mnist_mlp.mlp_util import test_loader
 
 counter = 0; N = 1
 
