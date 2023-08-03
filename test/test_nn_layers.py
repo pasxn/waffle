@@ -26,7 +26,7 @@ class test_layers(unittest.TestCase):
     np.testing.assert_allclose(torch_output.transpose().shape, waffle_output.shape)
 
   def test_conv2d(self):  
-    def torch_conv(img, kernel_size, num_kernels, padding, stride):
+    def torch_conv(img, kernel_size, num_kernels, padding, stride, weight, bias):
       img = img.clone().detach().unsqueeze(0)
       if len(img.shape) > 3:
         channels = img.shape[-1]
@@ -37,14 +37,27 @@ class test_layers(unittest.TestCase):
         img = img.permute(0, 3, 1, 2)  
       
       conv_layer = tnn.Conv2d(in_channels=channels, out_channels=num_kernels, kernel_size=kernel_size, stride=stride, padding=padding)
+      
+      conv_layer.weight.data = weight
+      conv_layer.bias.data = bias
+
       output_torch =  conv_layer(img)
 
       return  output_torch.clone().detach().squeeze(0).numpy().transpose((1, 2, 0))
     
-    def waffle_conv(img, kernel_size, num_kernels, channels, padding, stride):
-      conv_layer = wnn.Conv2D(kernel_size, num_kernels, channels, padding, stride)
+    def waffle_conv(img, kernel_size, num_kernels, channels, padding, stride, weight, bias):
+      conv_layer = wnn.Conv2D(kernel_size, num_kernels, channels, padding, stride, weight, bias)
 
       return conv_layer(img)
+    
+    weight_waffle_1d = tensor.randn(2, 1, 4, 4)
+    weight_torch_1d = torch.tensor(weight_waffle_1d.data)
+
+    weight_waffle_3d = tensor.randn(2, 3, 4, 4)
+    weight_torch_3d = torch.tensor(weight_waffle_3d.data)
+
+    bias_waffle = tensor.randn(2)
+    bias_torch  = torch.tensor(bias_waffle.data)
     
     image_waffle_1d = tensor.glorot_uniform(263, 376)
     image_torch_1d  = torch.from_numpy(image_waffle_1d.data)
@@ -52,13 +65,13 @@ class test_layers(unittest.TestCase):
     image_waffle_3d = tensor.glorot_uniform(263, 376, 3)
     image_torch_3d  = torch.from_numpy(image_waffle_3d.data)
 
-    output_waffle_1d = waffle_conv(image_waffle_1d, 4, 2, 1, 0, 1)
-    output_torch_1d  = torch_conv(image_torch_1d, 4, 2, 0, 1)
-    np.testing.assert_allclose(output_torch_1d.shape, output_waffle_1d.shape)
+    output_waffle_1d = waffle_conv(image_waffle_1d, 4, 2, 1, 0, 1, weight_waffle_1d, bias_waffle)
+    output_torch_1d  = torch_conv(image_torch_1d, 4, 2, 0, 1, weight_torch_1d, bias_torch)
+    np.testing.assert_allclose(np.round(output_torch_1d, 2), np.round(output_waffle_1d.data, 2))
 
-    output_waffle_3d = waffle_conv(image_waffle_3d, 4, 2, 3, 2, 4)
-    output_torch_3d  = torch_conv(image_torch_3d, 4, 2, 2, 4)
-    np.testing.assert_allclose(output_torch_3d.shape, output_waffle_3d.shape)  
+    output_waffle_3d = waffle_conv(image_waffle_3d, 4, 2, 3, 2, 4, weight_waffle_3d, bias_waffle)
+    output_torch_3d  = torch_conv(image_torch_3d, 4, 2, 2, 4, weight_torch_3d, bias_torch)
+    np.testing.assert_allclose(np.round(output_torch_3d.shape, 2), np.round(output_waffle_3d.shape, 2))  
 
   def test_maxpool(self):
     def torch_maxpool(img, kernel_size, stride):
