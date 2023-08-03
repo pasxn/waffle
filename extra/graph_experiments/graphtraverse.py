@@ -4,10 +4,15 @@ class Graph:
   def __init__(self, num_nodes):
     self.num_nodes = num_nodes
     self.adj_list = {i: [] for i in range(num_nodes)}
-    self.node_values = [random.randint(0, 10) for _ in range(num_nodes)]
+    self.node_values = [random.randint(1, 10) for _ in range(num_nodes)]
+    self.total_value = sum(self.node_values)
+    self.visited = [False] * num_nodes
+    self.traversal_order = []
+    self.traversal_count = 0
 
   def add_edge(self, u, v):
     self.adj_list[u].append(v)
+    self.adj_list[v].append(u)
 
   def generate_random_connections(self):
     remaining_nodes = list(range(self.num_nodes))
@@ -18,39 +23,27 @@ class Graph:
       for neighbor in neighbors:
         self.add_edge(node, neighbor)
 
-  def dfs(self, node, visited, summation):
-    visited[node] = True
-    summation[0] += self.node_values[node]
+  def dfs(self, node):
+    if not self.visited[node]:
+      self.visited[node] = True
+      self.traversal_order.append(node)
+      self.traversal_count += 1
+      for neighbor in self.adj_list[node]:
+        self.dfs(neighbor)
 
-    for neighbor in self.adj_list[node]:
-      if not visited[neighbor]:
-        self.dfs(neighbor, visited, summation)
+  def traverse(self):
+    self.dfs(0) #(0th node)
+    
+    if all(self.visited) and len(self.traversal_order) == self.num_nodes:
+      print("Traversal successful.")
+    else:
+      print("Traversal failed.")
 
-  def traverse(self, start_node=0, end_node=None):
-    if end_node is None:
-      end_node = self.num_nodes - 1
+    traversal_sum = sum(self.node_values[node] for node in self.traversal_order)
+    print(f"Known value: {self.total_value}, Traversal sum: {traversal_sum}")
+    print(f"Number of traversal nodes: {self.traversal_count}")
 
-    visited = [False] * self.num_nodes
-    summation = [0]
-    self.dfs(start_node, visited, summation)
-
-    return summation[0], sum(visited)
-
-
-# main
+# main:
 graph = Graph(1000)
 graph.generate_random_connections()
-
-# Calculate the known summation of the random values
-known_summation = sum(graph.node_values)
-
-# Traverse the graph and get the summation of random values during traversal
-traversal_summation = graph.traverse()
-
-# Traverse the graph and get the summation of random values during traversal
-traversal_summation, num_traversed_nodes = graph.traverse()
-
-# Compare the results
-print("Known Summation:", known_summation)
-print("Traversed Summation:", traversal_summation)
-print("Number of Nodes Traversed:", num_traversed_nodes)
+graph.traverse()
