@@ -208,7 +208,9 @@ class Tanh:
 # ***** extra *****
 class Flatten:
   def __call__(self, x:tensor) -> tensor:
-    return x.reshape(-1, reduce(lambda x, y: x * y, x.shape, 1)).transpose()
+    target_shape = x.flatten().shape[0]
+    x = x.permute((2, 0, 1)).expand(0)
+    return x.reshape(-1, target_shape).transpose()
   
 class Fake:
   def __call__(self, x:tensor) -> tensor:

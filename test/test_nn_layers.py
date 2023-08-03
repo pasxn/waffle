@@ -152,6 +152,21 @@ class test_nonlinearities(unittest.TestCase):
     np.testing.assert_allclose(torch_output.transpose().shape, waffle_output.shape)
     np.testing.assert_allclose(np.round(torch_output.transpose(), 4), np.round(waffle_output, 4))
 
+  @pytest.mark.filterwarnings("ignore")
+  def test_logsoftmax(self):
+    input_size = 128; batch_size = 1;
+
+    torchh = tnn.LogSoftmax()
+    waffle = wnn.LogSoftmax()
+
+    input = np.random.randn(batch_size, input_size).astype(np.float32)
+
+    torch_output = torchh((torch.from_numpy(input))).detach().numpy()
+    waffle_output = waffle(tensor(input).transpose()).data
+
+    np.testing.assert_allclose(torch_output.transpose().shape, waffle_output.shape)
+    np.testing.assert_allclose(np.round(torch_output.transpose(), 4), np.round(waffle_output, 4))
+
   @unittest.skip('major error')
   def test_sigmoid(self):
     input_size = 128; batch_size = 1;
