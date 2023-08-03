@@ -28,7 +28,7 @@ input_times = [i for i in range(1, M, N)];
 torch_times_sum = []; waffle_times_sum = []; torch_times = []; waffle_times = []
 
 for input in input_times:
-  time_torch, time_waffle = run_loop_mlp(input, '.extra//models/mnist_mlp/mnist_mlp.onnx')
+  time_torch, time_waffle = run_loop_mlp(input, './extra/models/mnist_mlp/mnist_mlp.onnx')
   
   torch_times.append(time_torch/(1000000*input)); waffle_times.append(time_waffle/(1000000*input))
   torch_times_sum.append(time_torch/(1000000)); waffle_times_sum.append(time_waffle/(1000000))
