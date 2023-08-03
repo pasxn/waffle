@@ -200,11 +200,11 @@ class test_nonlinearities(unittest.TestCase):
 class test_extra(unittest.TestCase):
   
   def test_flatten(self):
-    M, N = 64, 128
-    t1 = tensor.randn(M, N)
+    L, M, N = 1, 64, 128
+    t1 = tensor.randn(L, M, N)
     f = wnn.Flatten()
 
-    np.testing.assert_allclose(N*M, f(t1).shape[0])
+    np.testing.assert_allclose(L*N*M, f(t1).shape[0])
 
 
 if __name__ == '__main__':
