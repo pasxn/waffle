@@ -9,7 +9,7 @@ import os
 from models.mnist_cnn.cnn_infer import predict_image_cnn
 path = os.path.abspath(os.path.dirname(__file__))
 
-def run_loop_cnn(n):
+def run_loop_cnn(n, dpath):
   image = Image.open(path + '/../images/mnist.jpg')
   transform = transforms.Compose([transforms.Resize((28, 28)),
                                 transforms.ToTensor(),
@@ -26,7 +26,7 @@ def run_loop_cnn(n):
   execution_time_torch = end_time - start_time
 
   # waffle
-  model = nn.Module('mnist_cnn', './models/mnist_cnn/mnist_cnn.onnx')
+  model = nn.Module('mnist_cnn', dpath)
   model.compile()
 
   start_time = time.perf_counter_ns()
