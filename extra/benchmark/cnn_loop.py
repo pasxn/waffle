@@ -6,7 +6,7 @@ from PIL import Image
 import time
 import os
 
-from models.mnist_cnn.cnn_infer import predict_image_cnn
+from extra.models.mnist_cnn.cnn_infer import predict_image_cnn
 path = os.path.abspath(os.path.dirname(__file__))
 
 def run_loop_cnn(n, dpath):
@@ -40,7 +40,7 @@ def run_loop_cnn(n, dpath):
 if __name__ == '__main__':
   N = 1
 
-  execution_time_torch, execution_time_waffle = run_loop_cnn(N)
+  execution_time_torch, execution_time_waffle = run_loop_cnn(N,'./extra/models/mnist_cnn/mnist_cnn.onnx')
   speedup = max(execution_time_torch, execution_time_waffle)/min(execution_time_torch, execution_time_waffle)
 
   print(f"torch Time : {execution_time_torch/1000000} ms")

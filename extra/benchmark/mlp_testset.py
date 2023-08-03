@@ -3,10 +3,10 @@ from waffle import tensor
 
 import time
 
-from models.mnist_mlp.mlp_infer import predict_image_mlp
-from models.mnist_mlp.mlp_util import test_loader
+from extra.models.mnist_mlp.mlp_infer import predict_image_mlp
+from extra.models.mnist_mlp.mlp_util import test_loader
 
-counter = 0; N = 1
+counter = 0; N = 2
 
 # torch
 start_time = time.perf_counter_ns()
@@ -21,7 +21,7 @@ execution_time_torch = end_time - start_time
 counter = 0
 
 # # waffle
-model = nn.Module('mnist_mlp', './models/mnist_mlp/mnist_mlp.onnx')
+model = nn.Module('mnist_mlp', './extra/models/mnist_mlp/mnist_mlp.onnx')
 model.compile()
 
 start_time = time.perf_counter_ns()

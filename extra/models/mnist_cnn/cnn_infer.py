@@ -3,7 +3,7 @@ import torch
 from torchvision import transforms
 from PIL import Image
 
-from models.mnist_cnn.cnn_model import Net
+from extra.models.mnist_cnn.cnn_model import Net
 model = Net()
 path = os.path.abspath(os.path.dirname(__file__))
 
@@ -32,7 +32,7 @@ def predict_image(image_path):
 
 if __name__ == '__main__':
   # Define the path of the image to be tested
-  image_path = '../../extra/images/mnist.jpg'
+  image_path = './extra/images/mnist.jpg'
 
   # Predict the label of the image
   predicted_label = predict_image(image_path)
