@@ -12,7 +12,7 @@ transform = transforms.Compose([transforms.Resize((1, 28*28)),
 
 image = tensor(transform(image).numpy()).flatten().transpose().expand(1)
 
-model = nn.Module('mnist_mlp', './models/mnist_mlp/mnist_mlp.onnx')
+model = nn.Module('mnist_mlp', './extra/models/mnist_mlp/mnist_mlp.onnx')
 model.compile()
 
 output = model.run(image)
