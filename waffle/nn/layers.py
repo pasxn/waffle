@@ -212,6 +212,10 @@ class Flatten:
     x = x.permute((2, 0, 1)).expand(0)
     return x.reshape(-1, target_shape).transpose()
   
+class Add:
+  def __call__(self, x:tensor, y:tensor) -> tensor:
+    return x + y
+  
 class Fake:
   def __call__(self, x:tensor) -> tensor:
     return x

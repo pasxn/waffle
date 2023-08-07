@@ -54,4 +54,3 @@ class ResNet(nn.Module):
         x = self.fc(x)
         x = F.log_softmax(x, dim=1)
         return x
-    

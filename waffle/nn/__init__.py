@@ -1,6 +1,6 @@
 from waffle.nn.layers import Linear, Batchnorm, MaxPool2D, Conv2D
 from waffle.nn.layers import ReLU, LeakyReLU, Softmax, LogSoftmax, Sigmoid, Tanh
-from waffle.nn.layers import Flatten, Fake
+from waffle.nn.layers import Flatten, Add, Fake
 from waffle.nn.layers import LAYERS
 
 from waffle import tensor

@@ -8,10 +8,10 @@ from extra.models.resnetlike.resnetlike_model import ResNet
 model = ResNet()
 path = os.path.abspath(os.path.dirname(__file__))
 
-state_dict = torch.load(path + '/resnetlike_mnist.ckpt')
+state_dict = torch.load(path + '/resnetlike_mnist.ckpt', map_location=torch.device('cpu'))
 model.load_state_dict(state_dict)
 
-def predict_image_cnn(image):
+def predict_image_resnetlike(image):
   with torch.no_grad():
     output = model(image)
     return output

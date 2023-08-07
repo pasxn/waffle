@@ -206,6 +206,21 @@ class test_extra(unittest.TestCase):
 
     np.testing.assert_allclose(L*N*M, f(t1).shape[0])
 
+  def test_add(self):
+    L, M, N = 1, 64, 128
+    t1 = tensor.randn(L, M, N)
+    t2 = tensor.randn(L, M, N)
+    f = wnn.Add()
+
+    np.testing.assert_allclose((t1+t2).data, f(t1, t2).data)
+
+  def test_fake(self):
+    L, M, N = 1, 64, 128
+    t1 = tensor.randn(L, M, N)
+    f = wnn.Fake()
+
+    np.testing.assert_allclose(t1.data, f(t1).data)
+
 
 if __name__ == '__main__':
   unittest.main()
