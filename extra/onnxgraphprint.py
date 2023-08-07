@@ -1,11 +1,12 @@
 #For Node Details including bias & Weights
+import sys
 import onnx
 import numpy as np
 
 
 # Load the ONNX model
 
-model_path = 'models/mnist_cnn/mnist_cnn.onnx'
+model_path = './extra/models/' + sys.argv[1]
 
 model = onnx.load(model_path)
 

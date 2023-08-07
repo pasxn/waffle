@@ -40,8 +40,13 @@ class Node:
     elif 'sigmoid' in name_lowercase: self.callable = nn.Sigmoid()
     elif 'tanh' in name_lowercase: self.callable = nn.Tanh()
     elif 'reshape' in name_lowercase: self.callable = nn.Flatten()
+    elif 'add' in name_lowercase: self.callable = nn.Add()
     else: self.callable = nn.Fake()
 
   def compute_node(self, x:tensor, y:tensor=None, z:tensor=None):
-    # y and z are not used yet
-    self.output_computed = self.callable(x)
+    if y is None and z is None:
+      self.output_computed = self.callable(x)
+    elif z is None:
+      self.output_computed = self.callable(x) if 'reshape' in self.name.lower() else self.callable(x, y)
+    else:
+      self.output_computed = self.callable(x, y, z)
