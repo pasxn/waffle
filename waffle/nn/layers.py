@@ -207,7 +207,7 @@ class Tanh:
 
 # ***** extra *****
 class Flatten:
-  def __call__(self, x:tensor) -> tensor:
+  def __call__(self, x:tensor, y:tensor=None) -> tensor:
     target_shape = x.flatten().shape[0]
     x = x.permute((2, 0, 1)).expand(0)
     return x.reshape(-1, target_shape).transpose()

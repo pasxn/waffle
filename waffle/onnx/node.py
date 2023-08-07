@@ -44,9 +44,6 @@ class Node:
     else: self.callable = nn.Fake()
 
   def compute_node(self, x:tensor, y:tensor=None, z:tensor=None):
-    if y is None and z is None:
-      self.output_computed = self.callable(x)
-    elif z is None:
-      self.output_computed = self.callable(x) if 'reshape' in self.name.lower() else self.callable(x, y)
-    else:
-      self.output_computed = self.callable(x, y, z)
+    if y is None and z is None: self.output_computed = self.callable(x)
+    elif z is None: self.output_computed = self.callable(x, y)
+    else: self.output_computed = self.callable(x, y, z)
