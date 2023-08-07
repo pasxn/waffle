@@ -1,6 +1,5 @@
 from waffle import tensor
 from waffle import ops
-from functools import reduce
 from enum import Enum
 from typing import Tuple, Union
 

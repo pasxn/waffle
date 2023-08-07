@@ -1,6 +1,5 @@
 from waffle import tensor
 
-
 a = tensor.randn(128, 64, 64, 128)
 b = tensor.randn(128, 64, 64, 128)
 

@@ -1,6 +1,4 @@
 import torch
-from torch.utils.data import DataLoader  #dataset management
-import torchvision.datasets as datasets  #to import MNist 
 import torch.onnx
 
 import os
