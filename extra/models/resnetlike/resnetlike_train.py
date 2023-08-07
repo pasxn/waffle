@@ -48,13 +48,13 @@ with torch.no_grad():
 print(f"Test Accuracy: {100 * correct / total:.2f}%")
 
 #save the model  Checkpoint
-torch.save(model.state_dict(), 'resnetlike.ckpt')
+torch.save(model.state_dict(), 'extra/models/resnetlike/resnetlike_mnist.ckpt')
 print("Model successfully saved in CKPT format!")
 
 # Save the model in ONNX format
 dummy_input = torch.randn(1, 1, 28, 28).to(device)
 input_names = ['input']
 output_names = ['output']
-onnx_path = 'resnetlike_mnist.onnx'
+onnx_path = 'extra/models/resnetlike/resnetlike_mnist.onnx'
 torch.onnx.export(model, dummy_input, onnx_path, input_names=input_names, output_names=output_names)
 print("Model successfully saved in ONNX format!")

@@ -27,6 +27,7 @@ class ResidualBlock(nn.Module):
         x = self.conv1(x)
         x = self.bn1(x)
         x = self.relu(x)
+        x = F.max_pool2d(x, 1)
         x = self.conv2(x)
         x = self.bn2(x)
         x += self.shortcut(residual)
@@ -40,10 +41,6 @@ class ResNet(nn.Module):
         self.bn1 = nn.BatchNorm2d(32)
         self.residual_block1 = ResidualBlock(32, 64, stride=2)
         self.residual_block2 = ResidualBlock(64, 64)
-
-        # Add adaptive average pooling after the last residual block
-        self.adaptive_avg_pool = nn.AdaptiveAvgPool2d((7, 7))
-
         self.fc = nn.Linear(64 * 7 * 7, 10)
 
     def forward(self, x):
@@ -52,7 +49,7 @@ class ResNet(nn.Module):
         x = F.relu(x)
         x = self.residual_block1(x)
         x = self.residual_block2(x)
-        x = F.max_pool2d(x, 2)  # Use adaptive average pooling
+        x = F.max_pool2d(x, 2) 
         x = x.view(x.size(0), -1)
         x = self.fc(x)
         x = F.log_softmax(x, dim=1)
