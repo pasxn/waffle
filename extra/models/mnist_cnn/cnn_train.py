@@ -2,8 +2,6 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
-from torchvision import datasets, transforms, models
-from PIL import Image
 
 from extra.models.mnist_cnn.cnn_model import Net
 from extra.models.mnist_cnn.cnn_util import train_loader, test_loader 

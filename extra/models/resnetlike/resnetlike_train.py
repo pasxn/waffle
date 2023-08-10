@@ -1,7 +1,5 @@
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
-from torchvision import datasets, transforms
 import torch.optim as optim
 
 from extra.models.resnetlike.resnetlike_model import ResNet
