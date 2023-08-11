@@ -3,6 +3,7 @@ from waffle import tensor
 from typing import List
 import os
 
+
 WFLDBG = os.environ.get('WFLDBG')
 
 class onnxList:

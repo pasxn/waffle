@@ -4,6 +4,7 @@ from typing import Tuple, List, Union, Callable
 
 from waffle import ops
 
+
 class tensor:
   def __init__(self, data:Union[int, float, List, Tuple, np.ndarray]):
     if isinstance(data, list):

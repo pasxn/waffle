@@ -2,10 +2,11 @@ from waffle import tensor
 from waffle import nn
 from typing import List, Dict, Union, Any
 
+
 class Node:
   def __init__(self, name:str, input:str, output:str, op_type:str, attributes:List[Dict[Any,Any]], params:tensor):
-    self.name    = name; self.op_type = op_type
-    self.input   = input; self.output  = output
+    self.name = name; self.op_type = op_type
+    self.input = input; self.output  = output
     self.attributes = attributes; self.params = params
     self.traverse_input = None; self.output_computed = None
     self.callable = None

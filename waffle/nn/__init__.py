@@ -1,12 +1,12 @@
 from waffle.nn.layers import Linear, Batchnorm, MaxPool2D, Conv2D
 from waffle.nn.layers import ReLU, LeakyReLU, Softmax, LogSoftmax, Sigmoid, Tanh
 from waffle.nn.layers import Flatten, Add, Fake
-from waffle.nn.layers import LAYERS
 
 from waffle import tensor
 from waffle.onnx.onnxread import read_onnx
 from waffle.onnx.onnxgraph import onnxGraph
 from waffle.onnx.onnxlist import onnxList
+
 
 class Module:
   def __init__(self, name:str, path:str, mode:str='list'):
