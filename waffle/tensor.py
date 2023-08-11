@@ -20,7 +20,7 @@ class tensor:
     return f"<tensor {self.data!r}>"
 
 
-  # ***** data handlers ****
+  # ***** data handlers *****
   @property
   def shape(self) -> Tuple[int, ...]: return self.data.shape
 
@@ -79,11 +79,11 @@ class tensor:
         
   def pad2d(self, arg:Union[Tuple[int, ...], int], mode='constant') -> 'tensor':
     if isinstance(arg, tuple):
-      return tensor(np.pad(self.data, arg, mode=mode))
+      return tensor(np.pad(self.data, arg, mode=mode, constant_values=0))
     elif isinstance(arg, int):
-      return tensor(np.pad(self.data, pad_width=arg, mode=mode))
+      return tensor(np.pad(self.data, pad_width=arg, mode=mode, constant_values=0))
     else:
-      raise RuntimeError("argument must be an int ora tuple ((top, bottom), (left, right))")
+      raise RuntimeError("argument must be an int or a tuple ((top, bottom), (left, right))")
         
   def transpose(self) -> 'tensor':
     return tensor(self.data.transpose())
@@ -94,7 +94,7 @@ class tensor:
   def reval(self):
     self.data = self.data.flatten()
 
-  def premute(self, dim:Tuple[int, ...]) -> 'tensor':
+  def permute(self, dim:Tuple[int, ...]) -> 'tensor':
     # dim (1, 0, 2): numbers refer to the dimensions of the original array assuming it's a 3 dimensional array
     return tensor(self.data.transpose(dim))
 
@@ -107,6 +107,9 @@ class tensor:
       return tensor(np.expand_dims(self.data, axis=axis))
     else:
       raise RuntimeError("axis must be an int or a tuple")
+
+  def squeeze(self) -> 'tensor':
+    return tensor(np.squeeze(self.data))    
     
   def flip(self, axis=None) -> 'tensor':
     if axis is None or isinstance(axis, tuple) or isinstance(axis, int):
@@ -114,10 +117,15 @@ class tensor:
     else:
       raise RuntimeError("axis must be an int or a tuple")
     
+  def where(self, val:'tensor') -> Union['tensor', int]:
+    indices = np.where(self.data == val.data)
+    return tensor(indices[0]) if indices[0].shape[0] > 1 else indices[0][0]
+  
   
   # ***** slicing and indexing *****
-  def __getitem__(self, val:int) -> 'tensor':
-    return tensor(self.data[val])
+  def __getitem__(self, val:int) -> Union['tensor', np.float32]:
+    sliced = self.data[val]
+    return tensor(sliced) if isinstance(sliced, np.ndarray) else sliced
   
 
   # ***** broadcasting mechanism *****

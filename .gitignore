@@ -1,7 +1,13 @@
 # --- Custom ---
 .vscode/
+data/
+dataset/
 *.ipynb
 *.out
+*.pdf
+*.png
+*.bin
+*.gz
 
 # --- Python ---
 # Byte-compiled / optimized / DLL files

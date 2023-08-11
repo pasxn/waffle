@@ -1,3 +1,7 @@
 numpy
+<<<<<<< HEAD
 pytest
 onnx
+=======
+onnx
+>>>>>>> main

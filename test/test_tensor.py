@@ -64,7 +64,7 @@ class test_tensor(unittest.TestCase):
     np.testing.assert_allclose(t2.data.flatten(), t1.data)
 
     t1 = tensor.randn(2, 3, 4)
-    np.testing.assert_allclose(t1.data.transpose((1, 0, 2)), t1.premute((1, 0, 2)).data)
+    np.testing.assert_allclose(t1.data.transpose((1, 0, 2)), t1.permute((1, 0, 2)).data)
 
     t1 = tensor([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
     np.testing.assert_allclose(tensor([[6], [9]]).data, t1.slice((1, 3), (2, 4)).data)
@@ -73,8 +73,15 @@ class test_tensor(unittest.TestCase):
     np.testing.assert_allclose((1, 4), t1.expand(0).shape)
     np.testing.assert_allclose((1, 4, 1), t1.expand((0, 2)).shape)
 
+    t1 = tensor.randn(1, 4)
+    np.testing.assert_allclose((4, ), t1.squeeze().shape)
+
     t1 = tensor([[1, 2], [3, 4]])
     np.testing.assert_allclose(tensor([[4, 3], [2, 1]]).data, t1.flip().data)
+
+    t1 = tensor([1, 2, 3, 3])
+    np.testing.assert_allclose(0, t1.where(tensor(1)).data)
+    np.testing.assert_allclose(tensor([2, 3]).data, t1.where(tensor(3)).data)
 
   def test_broadcasting(self):
     t1 = tensor.ones(2)
