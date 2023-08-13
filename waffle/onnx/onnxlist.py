@@ -3,6 +3,7 @@ from waffle import tensor
 from typing import List
 import os
 
+
 WFLDBG = os.environ.get('WFLDBG')
 
 class onnxList:
@@ -33,27 +34,28 @@ class onnxList:
       print('\n------------------ computation ------------------')
     while self.linearized_list[-1].output_computed is None:      
       current_node_traverse_input_len = len(self.linearized_list[i].traverse_input) if self.linearized_list[i].traverse_input is not None else 9999
+      
       if current_node_traverse_input_len == 1:
         if self.linearized_list[i].traverse_input[0] == -1:
           self.linearized_list[i].compute_node(input)
         else:
           current_input_node = self.linearized_list[self.linearized_list[i].traverse_input[0]]
-
           if current_input_node.output_computed is not None:
             self.linearized_list[i].compute_node(current_input_node.output_computed)
+
       elif current_node_traverse_input_len == 2:
         current_input_node_0 = self.linearized_list[self.linearized_list[i].traverse_input[0]]
         current_input_node_1 = self.linearized_list[self.linearized_list[i].traverse_input[1]]
-
         if current_input_node_0.output_computed is not None and current_input_node_1.output_computed is not None:
           self.linearized_list[i].compute_node(x=current_input_node_0.output_computed, y=current_input_node_1.output_computed)
+
       elif current_node_traverse_input_len == 3:
         current_input_node_0 = self.linearized_list[self.linearized_list[i].traverse_input[0]]
         current_input_node_1 = self.linearized_list[self.linearized_list[i].traverse_input[1]]
         current_input_node_2 = self.linearized_list[self.linearized_list[i].traverse_input[2]]
-
         if current_input_node_0.output_computed is not None and current_input_node_1.output_computed is not None and current_input_node_2.output_computed is not None:
           self.linearized_list[i].compute_node(x=current_input_node_0.output_computed, y=current_input_node_1.output_computed, z=current_input_node_2.output_computed)
+      
       else:
         self.linearized_list[i].compute_node(self.linearized_list[i-1].output_computed)
 

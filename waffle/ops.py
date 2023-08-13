@@ -14,10 +14,8 @@ for the each operation below in this file.
 """
 
 from waffle.backend import cpu
-from enum import Enum
 from waffle import tensor
 
-OPS = Enum("OPS", ["NEG", "EXP", "LOG", "RELU", "ADD", "SUB", "MUL", "DIV", "POW", "SUM", "MAX", "GEMM"])
 
 def neg  (x:tensor)            -> tensor : return cpu.neg  (x)
 def exp  (x:tensor)            -> tensor : return cpu.exp  (x)
