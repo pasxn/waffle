@@ -15,7 +15,20 @@ You sort of still can add accelerators to the architecture. More details can be 
 ### Features
 #### Neural Networks
 
-Waffle can run neural networks given only data and the ONNX graph assuming we support all the operations in your graph. More details 
+Waffle can run neural networks given only data and the ONNX graph assuming we support all the operations in your graph. More details can be found [here](https://github.com/pasxn/waffle/blob/main/docs/abstractions.md/#adding-an-operation).
+
+```py
+from waffle import nn
+
+model = nn.Module('your_model_name', './path/to/your/model.onnx')
+model.compile()
+
+# assuming you have the data in the required format in the object data
+output = model.run(data)
+```
+#### Tensor Computation
+
+We have written a tensor library with all the features required for us to run basic neural networks. Have a look at [tensor.py](https://github.com/pasxn/waffle/blob/main/waffle/tensor.py) for the exact details.
 
 ### Installation
 
@@ -36,3 +49,7 @@ python3 -m pip install -e '.[testing]'
 ```bash
 python -m pytest -s -v
 ```
+
+### License
+
+[MIT](https://github.com/pasxn/waffle/blob/main/LICENSE)

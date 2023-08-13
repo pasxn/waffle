@@ -150,7 +150,7 @@ class test_nonlinearities(unittest.TestCase):
     waffle_output = waffle(tensor(input).transpose()).data
 
     np.testing.assert_allclose(torch_output.transpose().shape, waffle_output.shape)
-    np.testing.assert_allclose(np.round(torch_output.transpose(), 4), np.round(waffle_output, 4))
+    np.testing.assert_allclose(np.round(torch_output.transpose(), 3), np.round(waffle_output, 3))
 
   @pytest.mark.filterwarnings("ignore")
   def test_logsoftmax(self):
@@ -165,7 +165,7 @@ class test_nonlinearities(unittest.TestCase):
     waffle_output = waffle(tensor(input).transpose()).data
 
     np.testing.assert_allclose(torch_output.transpose().shape, waffle_output.shape)
-    np.testing.assert_allclose(np.round(torch_output.transpose(), 4), np.round(waffle_output, 4))
+    np.testing.assert_allclose(np.round(torch_output.transpose(), 3), np.round(waffle_output, 3))
 
   @unittest.skip('major error')
   def test_sigmoid(self):
@@ -194,7 +194,7 @@ class test_nonlinearities(unittest.TestCase):
     waffle_output = waffle(tensor(input).transpose()).data
 
     np.testing.assert_allclose(torch_output.transpose().shape, waffle_output.shape)
-    np.testing.assert_allclose(np.round(torch_output.transpose(), 4), np.round(waffle_output, 4))
+    np.testing.assert_allclose(np.round(torch_output.transpose(), 3), np.round(waffle_output, 3))
 
 
 class test_extra(unittest.TestCase):

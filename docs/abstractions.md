@@ -1,2 +1,2 @@
-## Adding an accelerator
 ## Adding an operation
+## Adding an accelerator
