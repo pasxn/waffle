@@ -1,6 +1,6 @@
 <div align="center">
 
-# waffle documentation
+# Waffle Documentation
 
 </div>
 

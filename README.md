@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://raw.githubusercontent.com/pasxn/waffle/docs/docs/assets/logo.jpg" alt="logo" width="180"/>
+<img src="https://raw.githubusercontent.com/pasxn/waffle/main/docs/assets/logo.jpg" alt="logo" width="180"/>
 
 ## waffle: a simple machine learning inference framework for the edge!
 
