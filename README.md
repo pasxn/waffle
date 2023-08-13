@@ -44,7 +44,7 @@ or if you wanna run tests,
 python3 -m pip install -e '.[testing]'
 ```
 
-### Running tests
+### Running Tests
 
 ```bash
 python -m pytest -s -v
