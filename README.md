@@ -4,7 +4,7 @@
 
 ## waffle: a simple machine learning inference framework for the edge!
 
-[Homepage](https://github.com/pasxn/waffle) | [Documentation](https://github.com/pasxn/waffle/blob/main/docs/abstractions.md) | [Examples](/examples)
+[Homepage](https://github.com/pasxn/waffle) | [Documentation](https://github.com/pasxn/waffle/blob/main/docs/documentation.md) | [Examples](/examples)
 
 </div>
 
