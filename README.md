@@ -8,14 +8,14 @@
 
 </div>
 
-This is an effort to learn how neural networks work by building a simple toy inference framework. Originally inspired by [karpathy/micrograd](https://github.com/karpathy/micrograd). Micrograd works only on scalars. Waffle works on tensors and uses [Numpy](https://numpy.org/) under the hood. The original plan was to provide GPU acceleration by targeting the [Raspberry Pi 4](https://www.raspberrypi.com/products/raspberry-pi-4-model-b/) SoC. But due to technical complexities the hardware acceleration code was made stale and moved [here](https://github.com/pasxn/v3dBLAS).
+This is an effort to learn how neural networks work by writing a simple inference framework. This was originally inspired by [karpathy/micrograd](https://github.com/karpathy/micrograd). Micrograd works only on scalars. Waffle works on tensors and for that, uses [Numpy](https://numpy.org) under the hood. The initial plan was to provide GPU acceleration by targeting the [BCM2711](https://datasheets.raspberrypi.com/bcm2711/bcm2711-peripherals.pdf) SoC in [Raspberry Pi 4](https://www.raspberrypi.com/products/raspberry-pi-4-model-b). But due to technical complexities, hardware acceleration code was made stale and moved [here](https://github.com/pasxn/v3dBLAS).
 
 You sort of still can add accelerators to the architecture. More details can be found [here](https://github.com/pasxn/waffle/blob/main/docs/abstractions.md/#adding-an-accelerator).
 
 ### Features
 #### Neural Networks
 
-Waffle can run neural networks given only data and the ONNX graph assuming we support all the operations in your graph. More details can be found [here](https://github.com/pasxn/waffle/blob/main/docs/abstractions.md/#adding-an-operation).
+Waffle can run neural networks given only data and the ONNX graph assuming we support all the operations in your graph. You can even add your custom operations. More details about that can be found [here](https://github.com/pasxn/waffle/blob/main/docs/abstractions.md/#adding-an-operation).
 
 ```py
 from waffle import nn
