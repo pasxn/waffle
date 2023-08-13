@@ -1,4 +1,9 @@
-# waffle
+<div align="center">
+
+[![logo](https://raw.githubusercontent.com/tinygrad/tinygrad/master/docs/logo.png)]()
+## waffle
+
+##### A simple machine learning inference framework for the edge
 
 ### Installation
 
