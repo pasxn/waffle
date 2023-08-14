@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://raw.githubusercontent.com/pasxn/waffle/main/docs/assets/logo.png" alt="logo" width="180"/>
+<img src="https://raw.githubusercontent.com/pasxn/waffle/main/docs/assets/logo.png" alt="logo" width="160"/>
 
 ## waffle: a simple machine learning inference framework for the edge!
 
@@ -23,7 +23,7 @@ from waffle import nn
 model = nn.Module('your_model_name', './path/to/your/model.onnx')
 model.compile()
 
-# assuming you have the data in the required format in the object data
+# assuming you have data in the required format in an object called data
 output = model.run(data)
 ```
 #### Tensor Computation
