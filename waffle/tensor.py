@@ -9,15 +9,10 @@ class tensor:
     if isinstance(data, list):
       if isinstance(data[0], tensor):
         if isinstance(data[0][0], tensor):
-          datalist_i = []
-          for element in data:
-            datalist_j = []
-            for innerelement in element: datalist_j.append(innerelement.data)
-            datalist_i.append(datalist_j)
+          datalist_i = list(map(lambda element: list(map(lambda innderelement: innderelement.data, element)), data))
           self.data = np.array(datalist_i).astype(np.float32)
         else:
-          datalist = []
-          for element in data: datalist.append(element.data)
+          datalist = list(map(lambda x: x.data, data))
           self.data = np.array(datalist).astype(np.float32)
       else: self.data = np.array(data, dtype=np.float32)
     elif isinstance(data, int) or isinstance(data, float) or isinstance(data, np.float32):
@@ -71,6 +66,10 @@ class tensor:
   @staticmethod
   def eye(dim:int, **kwargs) -> 'tensor':
     return tensor(np.eye(dim).astype(np.float32), **kwargs)
+  
+  @staticmethod
+  def frombuffer(buffer, dtype=np.float32) -> 'tensor':
+    return tensor(np.frombuffer(buffer, dtype=dtype))
   
 
   # ***** CPU explicit helper functions *****
@@ -135,6 +134,9 @@ class tensor:
 
   def buffer_index(self, v:int, w:int, x:int, y:int, z:int) -> 'tensor':
     return tensor(self.data[v][w:x, y:z])
+  
+  def remove_nan(self) -> 'tensor':
+    return tensor(self.data[~np.isnan(self.data)])
   
   
   # ***** slicing and indexing *****
