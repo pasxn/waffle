@@ -126,8 +126,8 @@ class tensor:
     indices = np.where(self.data == val.data)
     return tensor(indices[0]) if indices[0].shape[0] > 1 else indices[0][0]
 
-  def buffer_index(self, x:int, y:int, z:int) -> 'tensor':
-    return tensor(self.data[x][y, z])
+  def buffer_index(self, v:int, w:int, x:int, y:int, z:int) -> 'tensor':
+    return tensor(self.data[v][w:x, y:z])
   
   
   # ***** slicing and indexing *****
