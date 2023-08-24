@@ -9,8 +9,8 @@ class tensor:
     if isinstance(data, list):
       if isinstance(data[0], tensor):
         if isinstance(data[0][0], tensor):
-          datalist_i = list(map(lambda element: list(map(lambda innderelement: innderelement.data, element)), data))
-          self.data = np.array(datalist_i).astype(np.float32)
+          datalist = list(map(lambda element: list(map(lambda innderelement: innderelement.data, element)), data))
+          self.data = np.array(datalist).astype(np.float32)
         else:
           datalist = list(map(lambda x: x.data, data))
           self.data = np.array(datalist).astype(np.float32)
