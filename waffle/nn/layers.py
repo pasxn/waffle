@@ -95,13 +95,12 @@ class Conv2D:
 
       # NOTE: numpy exposed
       filter_out = tensor(np.array(filter_out)).transpose()
-      intermediate_x.append(filter_out.data)
+      intermediate_x.append(filter_out)
 
     reshaped_x_height = filter_out.shape[0]*self.num_channels
     reshaped_x_width  = filter_out.shape[1]
 
-    # NOTE: numpy exposed
-    reshaped_x = tensor(np.array(intermediate_x)).reshape(reshaped_x_height, reshaped_x_width)
+    reshaped_x = tensor(intermediate_x).reshape(reshaped_x_height, reshaped_x_width)
     reshaped_w = self.filtr.reshape(self.num_kernels, reshaped_x_height)
 
     output = reshaped_w@reshaped_x
@@ -118,10 +117,9 @@ class Conv2D:
     biased_output = []; self.bias = self.bias.flatten()
     for i in range(output.len):
       biased_array = output[i] + self.bias[i]
-      biased_output.append(biased_array.data)
+      biased_output.append(biased_array)
 
-    # NOTE: numpy exposed
-    biased_output = tensor(np.array(biased_output))
+    biased_output = tensor(biased_output)
     biased_output = biased_output.permute((1, 2, 0))
 
     return biased_output
@@ -161,8 +159,7 @@ class MaxPool2D:
       filter_out = np.array(filter_out)
       intermediate_x.append(filter_out)
 
-    # NOTE: numpy exposed
-    intermediate_x = tensor(np.array(intermediate_x))
+    intermediate_x = tensor(intermediate_x)
 
     output_height = int(((image_height - filter_height)/self.stride) + 1)
     output_width  = int(((image_width - filter_width)/self.stride) + 1)
