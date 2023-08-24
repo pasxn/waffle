@@ -1,7 +1,6 @@
 from waffle.onnx.node import Node
 from waffle import tensor
 from typing import List
-import numpy as np
 import onnx
 
 
@@ -22,9 +21,7 @@ def read_onnx(model_path:str) -> List[Node]:
       elif attr.type == onnx.AttributeProto.STRING:
         attribute['values'] = attr.s.decode('utf-8')
       elif attr.type == onnx.AttributeProto.TENSOR:
-        tensor_data = np.frombuffer(attr.t.raw_data, dtype=np.float32)
-        tensor_data = tensor_data[~np.isnan(tensor_data)]
-        attribute['values'] = tensor_data.reshape(attr.t.dims)
+        attribute['values'] = tensor.frombuffer(attr.t.raw_data).remove_nan().data.reshape(attr.t.dims)
 
       attributes.append(attribute)
 
@@ -36,8 +33,8 @@ def read_onnx(model_path:str) -> List[Node]:
           parameter['name'] = initializer.name
           parameter['shape'] = initializer.dims
 
-          weight_array = np.frombuffer(initializer.raw_data, dtype=np.float32)
-          parameter['values'] = tensor(weight_array.reshape(initializer.dims))
+          weight_array = tensor.frombuffer(initializer.raw_data)
+          parameter['values'] = tensor(weight_array.data.reshape(initializer.dims))
 
           params.append(parameter)
 

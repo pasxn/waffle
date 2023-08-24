@@ -72,6 +72,10 @@ class tensor:
   def eye(dim:int, **kwargs) -> 'tensor':
     return tensor(np.eye(dim).astype(np.float32), **kwargs)
   
+  @staticmethod
+  def frombuffer(buffer, dtype=np.float32) -> 'tensor':
+    return tensor(np.frombuffer(buffer, dtype=dtype))
+  
 
   # ***** CPU explicit helper functions *****
   def resize(self, *shape, **kwargs): # order='C' or order='F'
@@ -135,6 +139,9 @@ class tensor:
 
   def buffer_index(self, v:int, w:int, x:int, y:int, z:int) -> 'tensor':
     return tensor(self.data[v][w:x, y:z])
+  
+  def remove_nan(self) -> 'tensor':
+    return tensor(self.data[~np.isnan(self.data)])
   
   
   # ***** slicing and indexing *****
