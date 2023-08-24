@@ -1,19 +1,30 @@
 import math
-import numpy as np
 from typing import Tuple, List, Union, Callable
-
+import numpy as np
 from waffle import ops
 
 
 class tensor:
   def __init__(self, data:Union[int, float, List, Tuple, np.ndarray]):
     if isinstance(data, list):
-      self.data = np.array(data, dtype=np.float32)
+      if isinstance(data[0], tensor):
+        if isinstance(data[0][0], tensor):
+          datalist_i = []
+          for element in data:
+            datalist_j = []
+            for innerelement in element: datalist_j.append(innerelement.data)
+            datalist_i.append(datalist_j)
+          self.data = np.array(datalist_i).astype(np.float32)
+        else:
+          datalist = []
+          for element in data: datalist.append(element.data)
+          self.data = np.array(datalist).astype(np.float32)
+      else: self.data = np.array(data, dtype=np.float32)
     elif isinstance(data, int) or isinstance(data, float) or isinstance(data, np.float32):
       self.data = np.array([data], dtype=np.float32)
     elif isinstance(data, np.ndarray):
       if data.shape == tuple(): data = data.reshape((1,))
-      self.data = data if data.shape else data.reshape((1,))
+      self.data = data.astype(np.float32) if data.shape else data.reshape((1,)).astype(np.float32)
     else:
       raise RuntimeError(f"can't create Tensor from {data}")
     
@@ -121,6 +132,9 @@ class tensor:
   def where(self, val:'tensor') -> Union['tensor', int]:
     indices = np.where(self.data == val.data)
     return tensor(indices[0]) if indices[0].shape[0] > 1 else indices[0][0]
+
+  def buffer_index(self, v:int, w:int, x:int, y:int, z:int) -> 'tensor':
+    return tensor(self.data[v][w:x, y:z])
   
   
   # ***** slicing and indexing *****
