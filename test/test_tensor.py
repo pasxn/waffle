@@ -83,6 +83,9 @@ class test_tensor(unittest.TestCase):
     np.testing.assert_allclose(0, t1.where(tensor(1)).data)
     np.testing.assert_allclose(tensor([2, 3]).data, t1.where(tensor(3)).data)
 
+    t1 = tensor.randn(4, 7, 8)
+    np.testing.assert_allclose(t1.data[0][1, 2], t1.buffer_index(0, 1, 2).data)
+
   def test_broadcasting(self):
     t1 = tensor.ones(2)
     t2 = tensor.ones(2)

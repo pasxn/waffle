@@ -125,6 +125,9 @@ class tensor:
   def where(self, val:'tensor') -> Union['tensor', int]:
     indices = np.where(self.data == val.data)
     return tensor(indices[0]) if indices[0].shape[0] > 1 else indices[0][0]
+
+  def buffer_index(self, x:int, y:int, z:int) -> 'tensor':
+    return tensor(self.data[x][y, z])
   
   
   # ***** slicing and indexing *****
