@@ -2,6 +2,8 @@ from waffle import tensor
 from waffle import ops
 from typing import Tuple, Union
 
+import numpy as np
+
 
 # ***** nn ops *****
 class Linear:
@@ -72,11 +74,9 @@ class Conv2D:
     # add self.padding
     padded_image = []
     for i in range(self.num_channels):
-      padded_image.append(image[i].pad2d(self.padding).data)
+      padded_image.append(image[i].pad2d(self.padding))
 
-    # NOTE: numpy exposed
-    import numpy as np
-    image = tensor(np.array(padded_image))
+    image = tensor(padded_image)
     image_height = image.shape[1]; image_width = image.shape[2]
 
     # check stride
