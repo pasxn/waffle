@@ -1,7 +1,6 @@
 import math
-import numpy as np
 from typing import Tuple, List, Union, Callable
-
+import numpy as np
 from waffle import ops
 
 
@@ -9,9 +8,17 @@ class tensor:
   def __init__(self, data:Union[int, float, List, Tuple, np.ndarray]):
     if isinstance(data, list):
       if isinstance(data[0], tensor):
-        datalist = []
-        for element in data: datalist.append(element.data)
-        self.data = np.array(datalist).astype(np.float32)
+        if isinstance(data[0][0], tensor):
+          datalist_i = []
+          for element in data:
+            datalist_j = []
+            for innerelement in element: datalist_j.append(innerelement.data)
+            datalist_i.append(datalist_j)
+          self.data = np.array(datalist_i).astype(np.float32)
+        else:
+          datalist = []
+          for element in data: datalist.append(element.data)
+          self.data = np.array(datalist).astype(np.float32)
       else: self.data = np.array(data, dtype=np.float32)
     elif isinstance(data, int) or isinstance(data, float) or isinstance(data, np.float32):
       self.data = np.array([data], dtype=np.float32)
