@@ -9,11 +9,8 @@ class tensor:
     if isinstance(data, list):
       if isinstance(data[0], tensor):
         if isinstance(data[0][0], tensor):
-          datalist = list(map(lambda element: list(map(lambda innderelement: innderelement.data, element)), data))
-          self.data = np.array(datalist).astype(np.float32)
-        else:
-          datalist = list(map(lambda x: x.data, data))
-          self.data = np.array(datalist).astype(np.float32)
+          self.data = np.array(list(map(lambda x: list(map(lambda y: y.data, x)), data))).astype(np.float32)
+        else: self.data = np.array(list(map(lambda x: x.data, data))).astype(np.float32)
       else: self.data = np.array(data, dtype=np.float32)
     elif isinstance(data, int) or isinstance(data, float) or isinstance(data, np.float32):
       self.data = np.array([data], dtype=np.float32)
