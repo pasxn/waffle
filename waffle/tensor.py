@@ -6,17 +6,16 @@ from waffle import ops
 
 class tensor:
   def __init__(self, data:Union[int, float, List, Tuple, np.ndarray]):
-    if isinstance(data, list):
-      if isinstance(data[0], tensor):
-        if isinstance(data[0][0], tensor):
-          self.data = np.array(list(map(lambda x: list(map(lambda y: y.data, x)), data))).astype(np.float32)
-        else: self.data = np.array(list(map(lambda x: x.data, data))).astype(np.float32)
-      else: self.data = np.array(data, dtype=np.float32)
-    elif isinstance(data, int) or isinstance(data, float) or isinstance(data, np.float32):
+    if isinstance(data, int) or isinstance(data, float) or isinstance(data, np.float32):
       self.data = np.array([data], dtype=np.float32)
     elif isinstance(data, np.ndarray):
       if data.shape == tuple(): data = data.reshape((1,))
-      self.data = data.astype(np.float32) if data.shape else data.reshape((1,)).astype(np.float32)
+      self.data = data.astype(np.float32) if data.shape else data.reshape((1,)).astype(np.float32)    
+    elif isinstance(data, list):
+      if isinstance(data[0], tensor):
+        if isinstance(data[0][0], tensor): self.data = np.array(list(map(lambda x: list(map(lambda y: y.data, x)), data))).astype(np.float32)
+        else: self.data = np.array(list(map(lambda x: x.data, data))).astype(np.float32)
+      else: self.data = np.array(data, dtype=np.float32)
     else:
       raise RuntimeError(f"can't create Tensor from {data}")
     
