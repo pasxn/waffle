@@ -4,7 +4,7 @@ from waffle.onnx.node import Node
 import os
 
 WFLDBG = os.environ.get('WFLDBG')
-
+#edit spaces for 2
 class onnxGraph:
     def __init__(self, linearized_list):
         self.nodes = [Node(node.name, node.input, node.output, node.op_type, node.attributes, node.params) for node in linearized_list]
@@ -17,7 +17,7 @@ class onnxGraph:
             for input_name in node.input:
                 for j, other_node in enumerate(self.nodes):
                     if input_name in other_node.output:
-                        node.input_indices.append(j)
+                        node.input_indices.append(j)    
 
     def hard_traverse(self):
         for i, node in enumerate(self.nodes):
