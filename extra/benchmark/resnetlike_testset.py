@@ -20,7 +20,7 @@ execution_time_torch = end_time - start_time
 counter = 0
 
 # waffle
-model = nn.Module('mnist_resnetlike', './extra/models/resnetlike/resnetlike_mnist.onnx')
+model = nn.Module('mnist_resnetlike', './extra/models/resnetlike/resnetlike_mnist.onnx', mode ='graph')
 model.compile()
 
 start_time = time.perf_counter_ns()
