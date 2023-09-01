@@ -2,69 +2,34 @@ from typing import List
 from waffle import tensor
 from waffle.onnx.node import Node  
 import os
-
+from collections import deque
 WFLDBG = os.environ.get('WFLDBG')
-#edit spaces for 2
+#WFLDBG = 1
 class onnxGraph:
-    def __init__(self, linearized_list):
-        self.nodes = [Node(node.name, node.input, node.output, node.op_type, node.attributes, node.params) for node in linearized_list]
-        self.build_graph()
-        self.hard_traverse()
-
-    def build_graph(self):
-        for i, node in enumerate(self.nodes):
-            node.input_indices = []
-            for input_name in node.input:
-                for j, other_node in enumerate(self.nodes):
-                    if input_name in other_node.output:
-                        node.input_indices.append(j)    
+    def __init__(self, linearized_list: List[Node]):
+        self.linearized_list = linearized_list
+        self.graph = {}  # Initialize an empty graph as a dictionary
 
     def hard_traverse(self):
-        for i, node in enumerate(self.nodes):
-            inputs = []
-            if i == 0:
-                inputs.append(-1)
-            for input_index in node.input_indices:
-                inputs.append(input_index)
+        # Initialize the graph dictionary with nodes as keys and empty lists as values
+        for node in self.linearized_list:
+            self.graph[node] = []
+        
+        # Iterate through nodes to establish connections based on input and output names
+        for node in self.linearized_list:
+            for output_name in node.output:
+                # Find nodes that have this output name as an input
+                for connected_node in self.linearized_list:
+                    if output_name in connected_node.input:
+                        # Add the connected node to the current node's connections
+                        self.graph[node].append(connected_node)
+        node.search_layer()
+        
+        if WFLDBG:
+            print('\n------------------ ONNX Graph Connections ------------------')
+            for node, connected_nodes in self.graph.items():
+              print(f"{node.name} -> {[n.name for n in connected_nodes]}")
 
-            node.set_traverse_input(inputs)
-            node.search_layer()
-            
-    def run(self, input):
-        i = 0
-        while self.nodes[-1].output_computed is None:
-            current_node = self.nodes[i]
-            current_node_traverse_input_len = len(current_node.traverse_input) if current_node.traverse_input is not None else 9999
 
-            if current_node_traverse_input_len == 1:
-                if current_node.traverse_input[0] == -1:
-                    current_node.compute_node(input)
-                else:
-                    current_input_node = self.nodes[current_node.traverse_input[0]]
-                    if current_input_node.output_computed is not None:
-                        current_node.compute_node(current_input_node.output_computed)
-
-            elif current_node_traverse_input_len == 2:
-                current_input_node_0 = self.nodes[current_node.traverse_input[0]]
-                current_input_node_1 = self.nodes[current_node.traverse_input[1]]
-                if current_input_node_0.output_computed is not None and current_input_node_1.output_computed is not None:
-                    current_node.compute_node(x=current_input_node_0.output_computed, y=current_input_node_1.output_computed)
-
-            elif current_node_traverse_input_len == 3:
-                current_input_node_0 = self.nodes[current_node.traverse_input[0]]
-                current_input_node_1 = self.nodes[current_node.traverse_input[1]]
-                current_input_node_2 = self.nodes[current_node.traverse_input[2]]
-                if current_input_node_0.output_computed is not None and current_input_node_1.output_computed is not None and current_input_node_2.output_computed is not None:
-                    current_node.compute_node(x=current_input_node_0.output_computed, y=current_input_node_1.output_computed, z=current_input_node_2.output_computed)
-
-            else:
-                current_node.compute_node(self.nodes[i - 1].output_computed)
-
-            i = i + 1 if i < len(self.nodes) - 1 else 0
-
-        result = self.nodes[-1].output_computed
-
-        for node in self.nodes:
-            node.output_computed = None
-
-        return result
+    def run(self, input: tensor) -> tensor:
+      pass
