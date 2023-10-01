@@ -11,62 +11,64 @@ class onnxGraph:
         self.graph = {}  # Initialize an empty graph as a dictionary
 
     def hard_traverse(self):
-        # Initialize the graph dictionary with nodes as keys and empty lists as values
+        # Initialize the graph dictionary with nodes as keys and Node objects as values
         for node in self.linearized_list:
             self.graph[node] = []
-        
+
         # Iterate through nodes to establish connections based on input and output names
         for node in self.linearized_list:
             for output_name in node.output:
                 # Find nodes that have this output name as an input
                 for connected_node in self.linearized_list:
                     if output_name in connected_node.input:
-                        # Add the connected node to the current node's connections
+                        # Add the connected Node object to the current node's connections
                         self.graph[node].append(connected_node)
-        node.search_layer()
-        
+
+        # Set the compute_node method for each Node object based on the self.graph structure
+        for node in self.graph:
+            node.search_layer()
+
         if WFLDBG:
             print('\n------------------ ONNX Graph Connections ------------------')
             for node, connected_nodes in self.graph.items():
-              print(f"{node.name} -> {[n.name for n in connected_nodes]}")
-
+                print(f"{node.name} -> {[n.name for n in connected_nodes]}")
 
     def run(self, input: tensor) -> tensor:
-            self.input_tensor = input
-            visited = {node: False for node in self.graph.keys()}
+        print('\n------------------ ONNX Graph Computation ------------------')
+        # Find the nodes with no incoming connections to start DFS
+        start_nodes = [node for node, connections in self.graph.items() if not connections]
 
-            def dfs(node):
-                visited[node] = True
+        # Dictionary to store computed node outputs
+        computed_outputs = {}
 
-                # Recursively visit connected nodes
-                for connected_node in self.graph[node]:
-                    if not visited[connected_node]:
-                        dfs(connected_node)
+        # Define a DFS function
+        def dfs(node):
+            # If the output is already computed, return it
+            if node in computed_outputs:
+                return computed_outputs[node]
 
-                # Compute the output of the current node using its compute_node method
-                if node.traverse_input is None:
-                    node.compute_node(self.input_tensor)
-                elif len(node.traverse_input) == 1:
-                    input_node = self.graph[node][0]
-                    node.compute_node(input_node.output_computed)
-                elif len(node.traverse_input) == 2:
-                    input_node1, input_node2 = self.graph[node]
-                    node.compute_node(input_node1.output_computed, input_node2.output_computed)
-                elif len(node.traverse_input) == 3:
-                    input_node1, input_node2, input_node3 = self.graph[node]
-                    node.compute_node(input_node1.output_computed, input_node2.output_computed, input_node3.output_computed)
+            # Calculate the input tensors based on the number of inputs (0 to 3)
+            inputs = []
+            for connected_node in self.graph[node]:
+                input_tensor = dfs(connected_node)
+                inputs.append(input_tensor)
 
-            # Find the starting nodes (nodes with no incoming connections)
-            start_nodes = [node for node, connected_nodes in self.graph.items() if not any(connected_node in self.graph for connected_node in connected_nodes)]
+            # Calculate the output of the current node
+            if len(inputs) == 1:
+                node.compute_node(inputs[0])
+            elif len(inputs) == 2:
+                node.compute_node(inputs[0], inputs[1])
+            elif len(inputs) == 3:
+                node.compute_node(inputs[0], inputs[1], inputs[2])
+            else:
+                node.compute_node(input)
 
-            for start_node in start_nodes:
-                if not visited[start_node]:
-                    dfs(start_node)
+            # Store the computed output
+            computed_outputs[node] = node.output_computed
+            print(f'Node: {node.name.rjust(15)}   Output shape: {node.output_computed.shape if node.output_computed is not None else "None"}')
+            return node.output_computed
 
-            result = self.linearized_list[-1].output_computed
+        # Initialize the result by performing DFS on start nodes
+        result = dfs(start_nodes[0])
 
-            # Reset output_computed for all nodes
-            for node in self.linearized_list:
-                node.output_computed = None
-
-            return result
+        return result
