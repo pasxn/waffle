@@ -8,7 +8,7 @@ WFLDBG = 1
 class onnxGraph:
     def __init__(self, linearized_list: List[Node]):
         self.linearized_list = linearized_list
-        self.graph = {}  # Initialize an empty graph as a dictionary
+        self.graph = {}  # Name the graph dictionary as 'graph'
 
     def hard_traverse(self):
         # Initialize the graph dictionary with nodes as keys and Node objects as values
@@ -32,43 +32,48 @@ class onnxGraph:
             print('\n------------------ ONNX Graph Connections ------------------')
             for node, connected_nodes in self.graph.items():
                 print(f"{node.name} -> {[n.name for n in connected_nodes]}")
-
+    
     def run(self, input: tensor) -> tensor:
-        print('\n------------------ ONNX Graph Computation ------------------')
-        # Find the nodes with no incoming connections to start DFS
-        start_nodes = [node for node, connections in self.graph.items() if not connections]
+        visited = set()  # To keep track of visited nodes
+        stack = []       # Stack to store nodes to be processed
+        result = None    # To store the final result
 
-        # Dictionary to store computed node outputs
-        computed_outputs = {}
+        # Start from the first node in the graph
+        start_node = next(iter(self.graph.keys()))
 
-        # Define a DFS function
-        def dfs(node):
-            # If the output is already computed, return it
-            if node in computed_outputs:
-                return computed_outputs[node]
+        while start_node:
+            # If the node has not been visited yet
+            if start_node not in visited:
+                visited.add(start_node)
 
-            # Calculate the input tensors based on the number of inputs (0 to 3)
-            inputs = []
-            for connected_node in self.graph[node]:
-                input_tensor = dfs(connected_node)
-                inputs.append(input_tensor)
+                # Determine the inputs for the current node
+                inputs = []
+                for input_name in start_node.input:
+                    for connected_node in self.graph[start_node]:
+                        if input_name in connected_node.output:
+                            if connected_node not in visited:
+                                # If a connected node has not been visited, add it to the stack
+                                stack.append(connected_node)
+                            inputs.append(connected_node.output_computed)
 
-            # Calculate the output of the current node
-            if len(inputs) == 1:
-                node.compute_node(inputs[0])
-            elif len(inputs) == 2:
-                node.compute_node(inputs[0], inputs[1])
-            elif len(inputs) == 3:
-                node.compute_node(inputs[0], inputs[1], inputs[2])
+                # Compute the node based on the number of inputs
+                if len(inputs) == 1:
+                    start_node.compute_node(inputs[0])
+                elif len (inputs) == 2:
+                    start_node.compute_node(inputs[0], inputs[1])
+                elif len(inputs) == 3:
+                    start_node.compute_node(inputs[0], inputs[1], inputs[2])
+                else:
+                    start_node.compute_node(input)
+
+                # Update the result
+                result = start_node.output_computed
+
+            # Check if there are more nodes in the stack to visit
+            if stack:
+                start_node = stack.pop()
             else:
-                node.compute_node(input)
-
-            # Store the computed output
-            computed_outputs[node] = node.output_computed
-            print(f'Node: {node.name.rjust(15)}   Output shape: {node.output_computed.shape if node.output_computed is not None else "None"}')
-            return node.output_computed
-
-        # Initialize the result by performing DFS on start nodes
-        result = dfs(start_nodes[0])
+                # If there are no more nodes in the stack, break the loop
+                break
 
         return result
