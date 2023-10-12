@@ -3,6 +3,7 @@ from waffle import tensor
 from waffle.onnx.node import Node  
 import os
 from collections import deque
+import numpy as np
 WFLDBG = os.environ.get('WFLDBG')
 WFLDBG = 1
 class onnxGraph:
@@ -32,48 +33,47 @@ class onnxGraph:
             print('\n------------------ ONNX Graph Connections ------------------')
             for node, connected_nodes in self.graph.items():
                 print(f"{node.name} -> {[n.name for n in connected_nodes]}")
-    
+
     def run(self, input: tensor) -> tensor:
-        visited = set()  # To keep track of visited nodes
-        stack = []       # Stack to store nodes to be processed
-        result = None    # To store the final result
+        print('\n------------------ ONNX Graph Computation ------------------')
 
-        # Start from the first node in the graph
-        start_node = next(iter(self.graph.keys()))
+        # Initialize the result as the input tensor
+        result = input
 
-        while start_node:
-            # If the node has not been visited yet
-            if start_node not in visited:
-                visited.add(start_node)
+        # Keep track of nodes that need to be revisited
+        nodes_to_revisit = []
 
-                # Determine the inputs for the current node
+        for node in self.linearized_list:
+            if node in self.graph:
+                # Calculate the input tensors based on the number of inputs (0 to 3)
                 inputs = []
-                for input_name in start_node.input:
-                    for connected_node in self.graph[start_node]:
-                        if input_name in connected_node.output:
-                            if connected_node not in visited:
-                                # If a connected node has not been visited, add it to the stack
-                                stack.append(connected_node)
-                            inputs.append(connected_node.output_computed)
+                for connected_node in self.graph[node]:
+                    if connected_node.output_computed is not None:
+                        inputs.append(connected_node.output_computed)
 
-                # Compute the node based on the number of inputs
-                if len(inputs) == 1:
-                    start_node.compute_node(inputs[0])
-                elif len (inputs) == 2:
-                    start_node.compute_node(inputs[0], inputs[1])
-                elif len(inputs) == 3:
-                    start_node.compute_node(inputs[0], inputs[1], inputs[2])
+                # Check if all inputs are computed
+                if all(input_tensor is not None for input_tensor in inputs):
+                    # Calculate the output of the current node
+                    if len(inputs) == 1:
+                        node.compute_node(inputs[0])
+                    elif len(inputs) == 2:
+                        node.compute_node(inputs[0], inputs[1])
+                    elif len(inputs) == 3:
+                        node.compute_node(inputs[0], inputs[1], inputs[2])
+                    else:
+                        node.compute_node(result)  # Use the overall result as input
+
+                    # Update the result with the current node's output
+                    result = node.output_computed
+
+                    # Print the computation progress
+                    print(f'Node: {node.name.rjust(15)}   Output shape: {node.output_computed.shape if node.output_computed is not None else "None"}')
+
+                    # Clear any nodes to revisit since the calculation is complete
+                    nodes_to_revisit.clear()
                 else:
-                    start_node.compute_node(input)
-
-                # Update the result
-                result = start_node.output_computed
-
-            # Check if there are more nodes in the stack to visit
-            if stack:
-                start_node = stack.pop()
-            else:
-                # If there are no more nodes in the stack, break the loop
-                break
+                    # Not all inputs are computed, add the node to the revisit list
+                    nodes_to_revisit.append(node)
 
         return result
+
