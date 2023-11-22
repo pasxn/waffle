@@ -15,5 +15,7 @@ image = tensor(transform(image).numpy()).flatten().transpose().expand(1)
 model = nn.Module('mnist_mlp', './extra/models/mnist_mlp/mnist_mlp.onnx')
 model.compile()
 
+print(image.shape)
+
 output = model.run(image)
 print(f"result: {output.where(output.max())}")
