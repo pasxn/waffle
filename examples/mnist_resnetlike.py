@@ -12,7 +12,7 @@ transform = transforms.Compose([transforms.Resize((28, 28)),
 
 image = tensor(transform(image).numpy()).squeeze()
 
-model = nn.Module('mnist_resnetlike', './extra//models/resnetlike/resnetlike_mnist.onnx')
+model = nn.Module('mnist_resnetlike', './extra/models/resnetlike/resnetlike_mnist.onnx')
 model.compile()
 
 output = model.run(image)
