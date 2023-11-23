@@ -4,15 +4,14 @@ from waffle.nn.layers import Flatten, Add, Fake
 
 from waffle import tensor
 from waffle.onnx.onnxread import read_onnx
-from waffle.onnx.onnxgraph import onnxGraph
 from waffle.onnx.onnxlist import onnxList
 
 
 class Module:
-  def __init__(self, name:str, path:str, mode:str='list'):
+  def __init__(self, name:str, path:str):
     self.model_name = name; self.onnx_obj = None
     self.linearized_model = read_onnx(path)
-    self.onnx_obj = onnxList(self.linearized_model) if mode == 'list' else onnxGraph(self.linearized_model) 
+    self.onnx_obj = onnxList(self.linearized_model)
 
   def compile(self):
     self.onnx_obj.hard_traverse()
